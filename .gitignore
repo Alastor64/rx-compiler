@@ -13,3 +13,8 @@ __pycache__/
 # Local files
 dev/
 *.local.*
+
+# some tools
+tools/
+
+gencpp/
