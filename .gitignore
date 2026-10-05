@@ -5,7 +5,7 @@
 /.xmake/
 
 # ANTLR
-.antlr
+.antlr/
 
 # Python test runner
 __pycache__/
@@ -15,6 +15,9 @@ dev/
 *.local.*
 
 # some tools
-tools/
+/tools/
 
-gencpp/
+/gencpp/
+/lib/
+/include/antlr4-runtime
+/build/
