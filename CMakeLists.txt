@@ -186,12 +186,70 @@ target_compile_options(rx_lexer PRIVATE
 # target_link_libraries(rx_parser PUBLIC rx_lexer)
 
 
+
+# =============================================================================
+# 你自己的代码：src/ 根目录放实现和头文件，src/main/ 放带 main() 的入口
+#
+# 目录约定：
+#   src/*.hpp  src/*.cpp     你的头文件和实现 → 编成静态库 rx_my
+#   src/main/*.cpp           每个文件 → 一个可执行文件（文件名即可执行文件名）
+#
+# 三层结构：rx_lexer（ANTLR 生成代码）← rx_my（你的实现）← 各个入口
+# =============================================================================
+
+# 你的源码根目录（仓库根下的 src/）。
+set(RX_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
+
+# 收集 src/ 根目录下的 .cpp 和 .hpp。
+#   GLOB 不递归进子目录，所以 src/main/*.cpp 不会被收进库里 —— 这正是我们要的：
+#   带 main() 的文件如果进了库，链接可执行文件时可能撞车（重复的 main）。
+#   CONFIGURE_DEPENDS：以后新增/删除文件，下次 build 会自动重新扫描，不用手动重跑 cmake。
+file(GLOB RX_MY_SOURCES CONFIGURE_DEPENDS "${RX_SRC_DIR}/*.cpp")
+file(GLOB RX_MY_HEADERS CONFIGURE_DEPENDS "${RX_SRC_DIR}/*.hpp")
+
+# 一个 .cpp 都没有时报错（例如目录被改名），而不是静默编出一个空库。
+if(NOT RX_MY_SOURCES)
+    message(FATAL_ERROR "${RX_SRC_DIR} 下没有找到任何 .cpp 文件。")
+endif()
+
+# 你的实现编成静态库，产物 build/librx_my.a。
+# （头文件列进来只是为了让 IDE 能看到它们，不参与编译。）
+add_library(rx_my STATIC ${RX_MY_SOURCES} ${RX_MY_HEADERS})
+
+# PUBLIC：链接 rx_my 的目标自动获得 src/ 头文件路径，
+# 于是 src/main/*.cpp 里可以直接 #include "tokenizer.hpp"。
+target_include_directories(rx_my PUBLIC "${RX_SRC_DIR}")
+
+# 你的代码要用 ANTLR 的类（RxLexer 等），所以链接 rx_lexer。
+# PUBLIC：你的头文件里暴露了 ANTLR 类型（tokenizer.hpp 里 #include 了 RxLexer.h），
+# 链接你的可执行文件同样需要这些头文件和运行时。
+target_link_libraries(rx_my PUBLIC rx_lexer)
+
+# 可选：给你自己的代码打开常用告警（生成代码那边已用 -w 关掉，互不影响）。
+# target_compile_options(rx_my PRIVATE
+#     $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall;-Wextra>)
+
+
 # -----------------------------------------------------------------------------
-# 临时验证用的小命令行（可选）。它读一个 .rx 文件，把词法结果逐行打出来，
-# 用来确认“库真的能编译、能链接、能跑”。等你有了真正的驱动，可以删掉。
-#   add_executable(...)      ：生成一个可执行文件，产物是 build/rx_lexer_dump。
-#   target_link_libraries(... PRIVATE ...)：链接 rx_lexer。
-#       PRIVATE 表示只是我内部要用，不需要传染给别的目标。
+# src/main/ 下每个 .cpp 生成一个可执行文件：
+#   src/main/dump.cpp  -> build/dump
+#   src/main/count.cpp -> build/count
+# 可执行文件名 = 去掉 .cpp 的文件名，所以别用中文或空格命名。
 # -----------------------------------------------------------------------------
-# add_executable(rx_lexer_dump "${CMAKE_CURRENT_SOURCE_DIR}/tools/token_dump.cpp")
-# target_link_libraries(rx_lexer_dump PRIVATE rx_lexer)
+file(GLOB RX_MAIN_SOURCES CONFIGURE_DEPENDS "${RX_SRC_DIR}/main/*.cpp")
+
+foreach(main_source IN LISTS RX_MAIN_SOURCES)
+    # NAME_WE：去掉目录和扩展名的文件名，例如 ".../src/main/dump.cpp" → "dump"
+    get_filename_component(main_name "${main_source}" NAME_WE)
+
+    # 只包含这一个 main 文件的可执行文件
+    add_executable("${main_name}" "${main_source}")
+
+    # PRIVATE：这个可执行文件自己需要 rx_my，不传染给别人
+    target_link_libraries("${main_name}" PRIVATE rx_my)
+endforeach()
+
+# 一个入口都没有时提示一下（不是错误，可能你正在重构）
+if(NOT RX_MAIN_SOURCES)
+    message(STATUS "src/main/ 下没有 .cpp，本次不生成任何可执行文件。")
+endif()

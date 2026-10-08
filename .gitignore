@@ -19,5 +19,5 @@ dev/
 
 /gencpp/
 /lib/
-/include/antlr4-runtime
+/include/
 /build/
