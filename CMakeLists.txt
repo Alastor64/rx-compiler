@@ -178,12 +178,12 @@ target_compile_options(rx_lexer PRIVATE
 #       所以链接 rx_lexer。用 PUBLIC 是为了让“链接 rx_parser 的人”也自动
 #       获得 lexer 的头文件和库。
 # -----------------------------------------------------------------------------
-# add_library(rx_parser STATIC
-#     "${RX_GEN_DIR}/RxParser.cpp"
-#     "${RX_GEN_DIR}/RxParserBaseListener.cpp"
-#     "${RX_GEN_DIR}/RxParserBaseVisitor.cpp")
-# target_include_directories(rx_parser PUBLIC "${RX_GEN_DIR}")
-# target_link_libraries(rx_parser PUBLIC rx_lexer)
+add_library(rx_parser STATIC
+    "${RX_GEN_DIR}/RxParser.cpp"
+    "${RX_GEN_DIR}/RxParserBaseListener.cpp"
+    "${RX_GEN_DIR}/RxParserBaseVisitor.cpp")
+target_include_directories(rx_parser PUBLIC "${RX_GEN_DIR}")
+target_link_libraries(rx_parser PUBLIC rx_lexer)
 
 
 
@@ -223,7 +223,7 @@ target_include_directories(rx_my PUBLIC "${RX_SRC_DIR}")
 # 你的代码要用 ANTLR 的类（RxLexer 等），所以链接 rx_lexer。
 # PUBLIC：你的头文件里暴露了 ANTLR 类型（tokenizer.hpp 里 #include 了 RxLexer.h），
 # 链接你的可执行文件同样需要这些头文件和运行时。
-target_link_libraries(rx_my PUBLIC rx_lexer)
+target_link_libraries(rx_my PUBLIC rx_parser)
 
 # 可选：给你自己的代码打开常用告警（生成代码那边已用 -w 关掉，互不影响）。
 # target_compile_options(rx_my PRIVATE
