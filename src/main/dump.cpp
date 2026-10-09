@@ -1,4 +1,3 @@
-#include "MyDef.hpp"
 #include "RxLexer.h"
 #include "RxParser.h"
 #include <ANTLRInputStream.h>
@@ -7,8 +6,6 @@
 #include <Token.h>
 #include <cstdio>
 #include <fstream>
-#include <stdexcept>
-#include <string>
 #include <tree/ParseTree.h>
 #include <tree/Trees.h>
 using namespace std;
@@ -71,6 +68,7 @@ int main(int argc, char **args) {
     if (parser.getNumberOfSyntaxErrors() ||
         parser.getCurrentToken()->getType() != antlr4::Token::EOF)
         return 1;
+    cout << cst->toStringTree(1) << endl;
     // cout << antlr4::tree::Trees::toStringTree(cst, &parser) << endl;
     return 0;
 }
