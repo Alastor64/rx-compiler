@@ -1,3 +1,4 @@
+#include "DisplayVisitor.hpp"
 #include "RxLexer.h"
 #include "RxParser.h"
 #include <ANTLRInputStream.h>
@@ -68,7 +69,11 @@ int main(int argc, char **args) {
     if (parser.getNumberOfSyntaxErrors() ||
         parser.getCurrentToken()->getType() != antlr4::Token::EOF)
         return 1;
-    cout << cst->toStringTree(1) << endl;
-    // cout << antlr4::tree::Trees::toStringTree(cst, &parser) << endl;
+    // cout << cst->toString() << endl;
+    // RxParser::CrateContext *ctx;
+    // ctx->item();
+    // cout << antlr4::tree::Trees::toStringTree(cst, &parser, 1) << endl;
+    DisplayVisitor dv(std::cout);
+    dv.visit(cst);
     return 0;
 }

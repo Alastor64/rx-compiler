@@ -23,3 +23,7 @@ dev/
 /lib/
 /include/
 /build/
+
+# fully AI generated code
+/src/DisplayVisitor.hpp
+/src/*.md
