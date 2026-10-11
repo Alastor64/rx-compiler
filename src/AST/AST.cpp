@@ -1,7 +1,6 @@
 #include "AST.hpp"
 #include "MyDef.hpp"
 #include "MyParserVisitor.hpp"
-#include "RxParserVisitor.h"
 Span::Span() { begin = end = 0; }
 Span::Span(size_t b, size_t e) : begin(b), end(e) {}
 Span Span::getRuleSpan(antlr4::ParserRuleContext *ctx) {
@@ -25,7 +24,6 @@ Span Span::getTokenSpan(antlr4::Token *tk) {
 ASTnode::~ASTnode() {};
 ASTnode::ASTnode(Span p) : pos(p) {};
 ASTItem::~ASTItem() {};
-ASTItem::ASTItem(Span p) : ASTnode(p) {};
 
 any ASTtool::pack(ASTnode *p) { return any(p); }
 any MyParserVisitor::visitItem(RxParser::ItemContext *ctx) {

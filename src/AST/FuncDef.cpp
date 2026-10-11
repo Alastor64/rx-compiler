@@ -11,10 +11,18 @@
 #include <any>
 #include <utility>
 #include <vector>
-ASTFuncDef::ASTFuncDef(Span p) : ASTItem(p) {}
+ASTFuncDef::ASTFuncDef(Span p) : ASTItem(p) {
+    self = nullptr;
+    block = nullptr;
+    ret = nullptr;
+}
 ASTFuncDef::~ASTFuncDef() {
     delete self;
+    delete block;
+    delete ret;
     self = nullptr;
+    block = nullptr;
+    ret = nullptr;
     for (auto &i : params) {
         delete i;
         i = nullptr;
@@ -25,10 +33,14 @@ any MyParserVisitor::visitFunctionDefinition(
     ASTFuncDef *res = new ASTFuncDef(Span::getRuleSpan(ctx));
     res->name = any_cast<std::string>(ctx->identifier()->accept(this));
     std::pair<ASTSelfParam *, vector<ASTParam *>> tmp(nullptr, 0);
-    tmp = any_cast<decltype(tmp)>(ctx->functionParameters()->accept(this));
+    if (ctx->functionParameters())
+        tmp = any_cast<decltype(tmp)>(ctx->functionParameters()->accept(this));
     res->self = tmp.first;
     swap(res->params, tmp.second);
-    res->ret = ASTtool::unpack<ASTType>(ctx->typeRef()->accept(this));
+    if (ctx->typeRef())
+        res->ret = ASTtool::unpack<ASTType>(ctx->typeRef()->accept(this));
+    else
+        res->ret = new ASTTUnit(Span(res->pos.end, res->pos.end));
     res->block =
         ASTtool::unpack<ASTBlock>(ctx->blockExpression()->accept((this)));
     return ASTtool::pack(res);

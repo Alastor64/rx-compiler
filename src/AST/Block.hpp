@@ -2,11 +2,10 @@
 #include "AST.hpp"
 class ASTExpr : public ASTnode {
   public:
-    ASTExpr(Span p);
-    virtual ~ASTExpr();
+    using ASTnode::ASTnode;
 };
 class ASTBlock : public ASTExpr {
   public:
-    ASTBlock(Span p);
+    using ASTExpr::ASTExpr;
     virtual ~ASTBlock();
 };

@@ -3,7 +3,6 @@
 #include "MyParserVisitor.hpp"
 #include "RxParser.h"
 #include <any>
-ASTCrate::ASTCrate(Span p) : ASTnode(p), items(0) {}
 ASTCrate::~ASTCrate() {
     for (auto &i : items) {
         delete i;

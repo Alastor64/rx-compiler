@@ -5,7 +5,7 @@
 #include <vector>
 class ASTCrate : public ASTnode {
   public:
-    ASTCrate(Span p);
+    using ASTnode::ASTnode;
     std::vector<ASTItem *> items;
     virtual ~ASTCrate();
 };

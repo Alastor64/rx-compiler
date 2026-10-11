@@ -20,13 +20,10 @@ class ASTnode {
     Span pos;
     ASTnode &operator=(ASTnode) = delete;
     ASTnode(ASTnode &) = delete;
-
-  protected:
     ASTnode(Span p);
 };
 class ASTItem : public ASTnode {
-  protected:
-    ASTItem(Span p);
+    using ASTnode::ASTnode;
 
   public:
     virtual ~ASTItem();
