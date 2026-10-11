@@ -1,5 +1,6 @@
 #include "Type.hpp"
 #include "AST.hpp"
+#include "Expr.hpp"
 #include "MyParserVisitor.hpp"
 #include "myErr.hpp"
 ASTTRef::ASTTRef(Span p) : ASTType(p) {
@@ -38,5 +39,22 @@ MyParserVisitor::visitReferenceType(RxParser::ReferenceTypeContext *ctx) {
         tmp->inner = res;
         res = tmp;
     }
+    return ASTtool::pack(res);
+}
+
+ASTTArray::~ASTTArray() {
+    delete elem;
+    delete len;
+    elem = nullptr;
+    len = nullptr;
+}
+ASTTArray::ASTTArray(Span p) : ASTType(p) {
+    elem = nullptr;
+    len = nullptr;
+}
+std::any MyParserVisitor::visitArrayType(RxParser::ArrayTypeContext *ctx) {
+    ASTTArray *res = new ASTTArray(Span::getRuleSpan(ctx));
+    res->elem = ASTtool::unpack<ASTType>(ctx->typeRef()->accept(this));
+    res->len = ASTtool::unpack<ASTExpr>(ctx->constValue()->accept(this));
     return ASTtool::pack(res);
 }

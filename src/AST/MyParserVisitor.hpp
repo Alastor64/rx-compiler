@@ -24,4 +24,6 @@ class MyParserVisitor : public RxParserBaseVisitor {
     virtual std::any visitTypeRef(RxParser::TypeRefContext *ctx) override;
     virtual std::any
     visitReferenceType(RxParser::ReferenceTypeContext *ctx) override;
+
+    virtual std::any visitArrayType(RxParser::ArrayTypeContext *ctx) override;
 };

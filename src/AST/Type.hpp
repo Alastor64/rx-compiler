@@ -1,5 +1,6 @@
 #pragma once
 #include "AST.hpp"
+#include "Expr.hpp"
 class ASTType : public ASTnode {
   public:
     using ASTnode::ASTnode;
@@ -13,7 +14,9 @@ class ASTTRef : public ASTType {
 };
 class ASTTArray : public ASTType {
   public:
-    using ASTType::ASTType;
+    ASTType *elem;
+    ASTExpr *len;
+    ASTTArray(Span p);
     virtual ~ASTTArray();
 };
 class ASTTUnit : public ASTType {
