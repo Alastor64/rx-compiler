@@ -5,4 +5,5 @@ class MyErr {
 
   public:
     MyErr(std::string tmp);
+    const char *what() const;
 };

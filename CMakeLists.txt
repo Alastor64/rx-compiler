@@ -200,6 +200,49 @@ target_link_libraries(rx_parser PUBLIC rx_lexer)
 # 你的源码根目录（仓库根下的 src/）。
 set(RX_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
+
+# -----------------------------------------------------------------------------
+# AST 库：把 src/AST/ 下的实现编成一个静态库 rx_ast
+#
+#   src/AST/*.hpp   AST 结点、Builder / Visitor 的头文件
+#   src/AST/*.cpp   AST 的实现 → 产物 build/librx_ast.a
+#
+# 依赖方向是 rx_ast → rx_parser：AST.hpp 里 #include 了 RxParserBaseVisitor.h，
+# Span 又用到 antlr4::Token / ParserRuleContext，这些都在 parser 那层。
+# -----------------------------------------------------------------------------
+
+# AST 源码目录。注意：这一行必须放在上面 set(RX_SRC_DIR ...) 之后，
+# 否则 RX_SRC_DIR 还是空的。想放在文件更前面的话，这里换成
+# "${CMAKE_CURRENT_SOURCE_DIR}/src/AST" 和下方同名的 src 路径。
+set(RX_AST_DIR "${RX_SRC_DIR}/AST")
+
+# 收集 src/AST/ 下的 .cpp / .hpp（同样不递归，和 src/ 的规则保持一致；
+# 以后 AST 想再分子目录，把两处 GLOB 换成 GLOB_RECURSE 即可）。
+file(GLOB RX_AST_SOURCES CONFIGURE_DEPENDS "${RX_AST_DIR}/*.cpp")
+file(GLOB RX_AST_HEADERS CONFIGURE_DEPENDS "${RX_AST_DIR}/*.hpp")
+
+# 目录里一个 .cpp 都没有时给人话提示。不写这句，CMake 只会报
+# “No SOURCES given to target: rx_ast”，看不出是哪个目录出的问题。
+if(NOT RX_AST_SOURCES)
+    message(FATAL_ERROR "${RX_AST_DIR} 下没有找到任何 .cpp 文件。")
+endif()
+
+add_library(rx_ast STATIC ${RX_AST_SOURCES} ${RX_AST_HEADERS})
+
+# 两个 PUBLIC 包含路径，作用不同，都要有：
+#   ${RX_AST_DIR} ：AST 自己的头文件，别处可以直接 #include "ASTNode.hpp"
+#   ${RX_SRC_DIR} ：src/ 根目录，AST 的实现里要 #include "AST.hpp" / "MyDef.hpp"
+# 用 PUBLIC，链接 rx_ast 的人（rx_my、各个可执行文件）自动继承这两条路径。
+target_include_directories(rx_ast PUBLIC
+    "${RX_AST_DIR}"
+    "${RX_SRC_DIR}")
+
+# PUBLIC：使用 AST 的代码也要能看到 RxParser / ANTLR 的类型，
+# 这一句会连带把 rx_parser → rx_lexer → antlr4_static 一起带过来。
+target_link_libraries(rx_ast PUBLIC rx_parser)
+
+
+
 # 收集 src/ 根目录下的 .cpp 和 .hpp。
 #   GLOB 不递归进子目录，所以 src/main/*.cpp 不会被收进库里 —— 这正是我们要的：
 #   带 main() 的文件如果进了库，链接可执行文件时可能撞车（重复的 main）。
@@ -223,7 +266,7 @@ target_include_directories(rx_my PUBLIC "${RX_SRC_DIR}")
 # 你的代码要用 ANTLR 的类（RxLexer 等），所以链接 rx_lexer。
 # PUBLIC：你的头文件里暴露了 ANTLR 类型（tokenizer.hpp 里 #include 了 RxLexer.h），
 # 链接你的可执行文件同样需要这些头文件和运行时。
-target_link_libraries(rx_my PUBLIC rx_parser)
+target_link_libraries(rx_my PUBLIC rx_ast)
 
 # 可选：给你自己的代码打开常用告警（生成代码那边已用 -w 关掉，互不影响）。
 # target_compile_options(rx_my PRIVATE
