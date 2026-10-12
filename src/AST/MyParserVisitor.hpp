@@ -40,4 +40,9 @@ class MyParserVisitor : public RxParserBaseVisitor {
 
     virtual std::any
     visitGenericClose(RxParser::GenericCloseContext *ctx) override;
+
+    virtual std::any visitSelfParam(RxParser::SelfParamContext *ctx) override;
+
+    virtual std::any
+    visitFunctionParam(RxParser::FunctionParamContext *ctx) override;
 };

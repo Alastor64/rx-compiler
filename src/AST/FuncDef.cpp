@@ -7,6 +7,8 @@
 #include "RxParser.h"
 #include "SelfParam.hpp"
 #include "Type.hpp"
+#include <any>
+#include <string>
 #include <utility>
 #include <vector>
 ASTFuncDef::ASTFuncDef(Span p) : ASTItem(p) {
@@ -53,4 +55,14 @@ any MyParserVisitor::visitFunctionParameters(
         tmp.second.push_back(ASTtool::unpack<ASTParam>(i->accept(this)));
     }
     return std::move(any(tmp));
+}
+
+any MyParserVisitor::visitFunctionParam(RxParser::FunctionParamContext *ctx) {
+    auto tmp = any_cast<std::pair<string, bool>>(
+        ctx->identifierBinding()->accept(this));
+    auto res = new ASTParam(Span::getRuleSpan(ctx));
+    res->if_mut = tmp.second;
+    res->name = tmp.first;
+    res->type = ASTtool::unpack<ASTType>(ctx->typeRef()->accept(this));
+    return ASTtool::pack(res);
 }
