@@ -26,4 +26,18 @@ class MyParserVisitor : public RxParserBaseVisitor {
     visitReferenceType(RxParser::ReferenceTypeContext *ctx) override;
 
     virtual std::any visitArrayType(RxParser::ArrayTypeContext *ctx) override;
+    virtual std::any visitTypePath(RxParser::TypePathContext *ctx) override;
+
+    virtual std::any
+    visitTypePathSegment(RxParser::TypePathSegmentContext *ctx) override;
+    virtual std::any
+    visitPathIdentSegment(RxParser::PathIdentSegmentContext *ctx) override;
+
+    virtual std::any
+    visitGenericArgs(RxParser::GenericArgsContext *ctx) override;
+
+    virtual std::any visitGenericArg(RxParser::GenericArgContext *ctx) override;
+
+    virtual std::any
+    visitGenericClose(RxParser::GenericCloseContext *ctx) override;
 };

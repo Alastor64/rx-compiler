@@ -1,6 +1,7 @@
 #pragma once
 #include "AST.hpp"
 #include "Expr.hpp"
+#include "MyClasses.hpp"
 class ASTType : public ASTnode {
   public:
     using ASTnode::ASTnode;
@@ -23,4 +24,9 @@ class ASTTUnit : public ASTType {
   public:
     using ASTType::ASTType;
 };
-class ASTTPath : public ASTType {};
+class ASTTPath : public ASTType {
+  public:
+    using ASTType::ASTType;
+    vector<ASTPathSeg *> path;
+    virtual ~ASTTPath();
+};
