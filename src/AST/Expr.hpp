@@ -1,14 +1,9 @@
 #pragma once
 #include "AST.hpp"
-#include "Path.hpp"
+#include "MyClasses.hpp"
 class ASTExpr : public ASTnode {
   public:
     using ASTnode::ASTnode;
-};
-class ASTEPath : public ASTExpr {
-  public:
-    vector<ASTPathSeg *> path;
-    using ASTExpr::ASTExpr;
 };
 class ASTEIf : public ASTExpr {};
 // while loop(if condition=nullptr)
@@ -17,13 +12,21 @@ class ASTEStruct : public ASTExpr {};
 // int true false (unit)
 class ASTELiteral : public ASTExpr {
   public:
-    string integer;
+    string int_text;
     bool if_int;
     bool if_true;
     bool if_false;
     bool if_unit; // realize in nonblockexpr
     ASTELiteral(Span p);
 };
+
+class ASTEPath : public ASTExpr {
+  public:
+    vector<ASTPathSeg *> path;
+    using ASTExpr::ASTExpr;
+    virtual ~ASTEPath();
+};
+
 // [,,,]
 class ASTEArray : public ASTExpr {};
 // [;]

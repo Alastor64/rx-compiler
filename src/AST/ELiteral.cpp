@@ -7,7 +7,7 @@ any MyParserVisitor::visitLiteralExpression(
     ASTELiteral *res = new ASTELiteral(Span::getRuleSpan(ctx));
     if (ctx->INTEGER_LITERAL()) {
         res->if_int = 1;
-        res->integer = ctx->INTEGER_LITERAL()->getText();
+        res->int_text = ctx->INTEGER_LITERAL()->getText();
     }
     if (ctx->TRUE()) {
         res->if_true = 1;

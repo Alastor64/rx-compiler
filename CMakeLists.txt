@@ -1,6 +1,5 @@
 # =============================================================================
-# Rx 编译器前端构建脚本（当前只到词法阶段：先把 ANTLR 生成的词法分析器
-# 编成一个静态库 rx_lexer）。
+# Rx 编译器前端构建脚本。
 #
 # 用法：在仓库根目录执行下面两条命令
 #   cmake -S . -B build      第 1 步：读本文件，在 build/ 里生成构建系统
@@ -194,7 +193,6 @@ target_link_libraries(rx_parser PUBLIC rx_lexer)
 #   src/*.hpp  src/*.cpp     你的头文件和实现 → 编成静态库 rx_my
 #   src/main/*.cpp           每个文件 → 一个可执行文件（文件名即可执行文件名）
 #
-# 三层结构：rx_lexer（ANTLR 生成代码）← rx_my（你的实现）← 各个入口
 # =============================================================================
 
 # 你的源码根目录（仓库根下的 src/）。
@@ -210,6 +208,26 @@ set(RX_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 # 依赖方向是 rx_ast → rx_parser：AST.hpp 里 #include 了 RxParserBaseVisitor.h，
 # Span 又用到 antlr4::Token / ParserRuleContext，这些都在 parser 那层。
 # -----------------------------------------------------------------------------
+
+
+set(RX_ERR_DIR "${RX_SRC_DIR}/Err")
+
+file(GLOB RX_ERR_SOURCES CONFIGURE_DEPENDS "${RX_ERR_DIR}/*.cpp")
+file(GLOB RX_ERR_HEADERS CONFIGURE_DEPENDS "${RX_ERR_DIR}/*.hpp")
+
+if(NOT RX_ERR_SOURCES)
+    message(FATAL_ERROR "${RX_ERR_DIR} 下没有找到任何 .cpp 文件。")
+endif()
+
+add_library(rx_err STATIC ${RX_ERR_SOURCES} ${RX_ERR_HEADERS})
+
+target_include_directories(rx_err PUBLIC 
+    "${RX_ERR_DIR}"
+    "${RX_SRC_DIR}"
+)
+
+target_link_libraries(rx_err)
+
 
 # AST 源码目录。注意：这一行必须放在上面 set(RX_SRC_DIR ...) 之后，
 # 否则 RX_SRC_DIR 还是空的。想放在文件更前面的话，这里换成
@@ -235,38 +253,19 @@ add_library(rx_ast STATIC ${RX_AST_SOURCES} ${RX_AST_HEADERS})
 # 用 PUBLIC，链接 rx_ast 的人（rx_my、各个可执行文件）自动继承这两条路径。
 target_include_directories(rx_ast PUBLIC
     "${RX_AST_DIR}"
-    "${RX_SRC_DIR}")
+    "${RX_SRC_DIR}"
+)
 
 # PUBLIC：使用 AST 的代码也要能看到 RxParser / ANTLR 的类型，
 # 这一句会连带把 rx_parser → rx_lexer → antlr4_static 一起带过来。
-target_link_libraries(rx_ast PUBLIC rx_parser)
+target_link_libraries(rx_ast PUBLIC rx_parser rx_err)
 
 
 
-# 收集 src/ 根目录下的 .cpp 和 .hpp。
-#   GLOB 不递归进子目录，所以 src/main/*.cpp 不会被收进库里 —— 这正是我们要的：
-#   带 main() 的文件如果进了库，链接可执行文件时可能撞车（重复的 main）。
-#   CONFIGURE_DEPENDS：以后新增/删除文件，下次 build 会自动重新扫描，不用手动重跑 cmake。
-file(GLOB RX_MY_SOURCES CONFIGURE_DEPENDS "${RX_SRC_DIR}/*.cpp")
-file(GLOB RX_MY_HEADERS CONFIGURE_DEPENDS "${RX_SRC_DIR}/*.hpp")
 
-# 一个 .cpp 都没有时报错（例如目录被改名），而不是静默编出一个空库。
-if(NOT RX_MY_SOURCES)
-    message(FATAL_ERROR "${RX_SRC_DIR} 下没有找到任何 .cpp 文件。")
-endif()
 
-# 你的实现编成静态库，产物 build/librx_my.a。
-# （头文件列进来只是为了让 IDE 能看到它们，不参与编译。）
-add_library(rx_my STATIC ${RX_MY_SOURCES} ${RX_MY_HEADERS})
 
-# PUBLIC：链接 rx_my 的目标自动获得 src/ 头文件路径，
-# 于是 src/main/*.cpp 里可以直接 #include "tokenizer.hpp"。
-target_include_directories(rx_my PUBLIC "${RX_SRC_DIR}")
 
-# 你的代码要用 ANTLR 的类（RxLexer 等），所以链接 rx_lexer。
-# PUBLIC：你的头文件里暴露了 ANTLR 类型（tokenizer.hpp 里 #include 了 RxLexer.h），
-# 链接你的可执行文件同样需要这些头文件和运行时。
-target_link_libraries(rx_my PUBLIC rx_ast)
 
 # 可选：给你自己的代码打开常用告警（生成代码那边已用 -w 关掉，互不影响）。
 # target_compile_options(rx_my PRIVATE
@@ -288,8 +287,8 @@ foreach(main_source IN LISTS RX_MAIN_SOURCES)
     # 只包含这一个 main 文件的可执行文件
     add_executable("${main_name}" "${main_source}")
 
-    # PRIVATE：这个可执行文件自己需要 rx_my，不传染给别人
-    target_link_libraries("${main_name}" PRIVATE rx_my)
+    # PRIVATE：这个可执行文件自己需要 rx_ast，不传染给别人
+    target_link_libraries("${main_name}" PRIVATE rx_ast)
 endforeach()
 
 # 一个入口都没有时提示一下（不是错误，可能你正在重构）

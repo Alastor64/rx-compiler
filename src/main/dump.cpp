@@ -1,3 +1,4 @@
+#include "AST.hpp"
 #include "DisplayVisitor.hpp"
 #include "RxLexer.h"
 #include "RxParser.h"
@@ -23,6 +24,7 @@ bool invalid_token(int t) {
     }
 }
 int main(int argc, char **args) {
+
     ifstream s(args[1], ios::binary);
     if (!s)
         return 2;
@@ -78,5 +80,6 @@ int main(int argc, char **args) {
     // cout << antlr4::tree::Trees::toStringTree(cst, &parser, 1) << endl;
     DisplayVisitor dv(std::cout);
     dv.visit(cst);
+    Span::getRuleSpan((antlr4::ParserRuleContext *)cst);
     return 0;
 }

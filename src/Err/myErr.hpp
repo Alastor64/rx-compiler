@@ -5,5 +5,6 @@ class MyErr {
 
   public:
     MyErr(std::string tmp);
+    MyErr(const char *s);
     const char *what() const;
 };

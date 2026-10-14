@@ -3,8 +3,11 @@
 #include "MyDef.hpp"
 #include "MyParserVisitor.hpp"
 #include "RxParser.h"
+#include "RxParserVisitor.h"
 #include "Type.hpp"
 #include "myErr.hpp"
+#include <tree/ParseTree.h>
+#include <tree/ParseTreeType.h>
 
 ASTPathSeg::~ASTPathSeg() {
     for (auto &i : args) {
@@ -13,20 +16,11 @@ ASTPathSeg::~ASTPathSeg() {
     }
 }
 any MyParserVisitor::visitTypePath(RxParser::TypePathContext *ctx) {
-    ASTTPath *res = new ASTTPath(Span::getRuleSpan(ctx));
-    for (auto &i : ctx->typePathSegment()) {
-        res->path.push_back(ASTtool::unpack<ASTPathSeg>(i->accept(this)));
-    }
-    return ASTtool::pack(res);
+    return BuildPath<RxParser::TypePathContext>::build(ctx, this);
 }
 any MyParserVisitor::visitTypePathSegment(
     RxParser::TypePathSegmentContext *ctx) {
-    ASTPathSeg *res = new ASTPathSeg(Span::getRuleSpan(ctx));
-    res->id = any_cast<string>(ctx->pathIdentSegment()->accept(this));
-    if (ctx->genericArgs())
-        res->args =
-            any_cast<vector<ASTType *>>(ctx->genericArgs()->accept(this));
-    return ASTtool::pack(res);
+    return BuildPathSeg<RxParser::TypePathSegmentContext>::build(ctx, this);
 }
 any MyParserVisitor::visitPathIdentSegment(
     RxParser::PathIdentSegmentContext *ctx) {
@@ -49,7 +43,24 @@ any MyParserVisitor::visitGenericArg(RxParser::GenericArgContext *ctx) {
 any MyParserVisitor::visitGenericClose(RxParser::GenericCloseContext *ctx) {
     throw MyErr("visitGenericClose should not be used!");
 }
+
+any MyParserVisitor::visitPathExprSegment(
+    RxParser::PathExprSegmentContext *ctx) {
+    return BuildPathSeg<RxParser::PathExprSegmentContext>::build(ctx, this);
+}
+
+any MyParserVisitor::visitPathInExpression(
+    RxParser::PathInExpressionContext *ctx) {
+    return BuildPath<RxParser::PathInExpressionContext>::build(ctx, this);
+}
+
 ASTTPath::~ASTTPath() {
+    for (auto &i : path) {
+        delete i;
+        i = nullptr;
+    }
+}
+ASTEPath::~ASTEPath() {
     for (auto &i : path) {
         delete i;
         i = nullptr;
