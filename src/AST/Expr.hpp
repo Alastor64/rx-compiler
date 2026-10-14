@@ -1,6 +1,56 @@
 #pragma once
 #include "AST.hpp"
+#include "Path.hpp"
 class ASTExpr : public ASTnode {
   public:
     using ASTnode::ASTnode;
 };
+class ASTEPath : public ASTExpr {
+  public:
+    vector<ASTPathSeg *> path;
+    using ASTExpr::ASTExpr;
+};
+class ASTEIf : public ASTExpr {};
+// while loop(if condition=nullptr)
+class ASTEWhile : public ASTExpr {};
+class ASTEStruct : public ASTExpr {};
+// int true false (unit)
+class ASTELiteral : public ASTExpr {
+  public:
+    string integer;
+    bool if_int;
+    bool if_true;
+    bool if_false;
+    bool if_unit; // realize in nonblockexpr
+    ASTELiteral(Span p);
+};
+// [,,,]
+class ASTEArray : public ASTExpr {};
+// [;]
+class ASTERepeat : public ASTExpr {};
+// return continue break
+class ASTEBranch : public ASTExpr {};
+
+class ASTEOperator : public ASTExpr {
+  public:
+};
+
+// + - * / && || & | ^ % < > <= >= == !=
+class ASTOBinary : public ASTEOperator {};
+// - ! * & &mut &&mut(2 nodes) &&(2 nodes)
+class ASTOUnary : public ASTEOperator {};
+// ()
+class ASTOCall : public ASTEOperator {};
+// []
+class ASTOIndex : public ASTEOperator {};
+// .
+class ASTOField : public ASTEOperator {};
+// .()
+class ASTOMethod : public ASTEOperator {};
+// = += *= /= %= -= ^= |= &= <<= >>=
+class ASTOAssign : public ASTEOperator {};
+// as
+class ASTOCast : public ASTEOperator {};
+// << >>
+class ASTOShift : public ASTEOperator {};
+// (expr) no new node

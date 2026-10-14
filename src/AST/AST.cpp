@@ -1,6 +1,8 @@
 #include "AST.hpp"
 #include "MyDef.hpp"
 #include "MyParserVisitor.hpp"
+#include "myErr.hpp"
+#include <tree/ParseTree.h>
 Span::Span() { begin = end = 0; }
 Span::Span(size_t b, size_t e) : begin(b), end(e) {}
 Span Span::getRuleSpan(antlr4::ParserRuleContext *ctx) {
@@ -30,4 +32,7 @@ any MyParserVisitor::visitItem(RxParser::ItemContext *ctx) {
     if (ctx->children.empty())
         return ASTtool::pack(nullptr);
     return ctx->children[0]->accept(this);
+}
+any MyParserVisitor::visitChildren(antlr4::tree::ParseTree *ctx) {
+    throw MyErr("unrealized visitor");
 }

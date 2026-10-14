@@ -24,20 +24,13 @@ any MyParserVisitor::visitTypePathSegment(
     ASTPathSeg *res = new ASTPathSeg(Span::getRuleSpan(ctx));
     res->id = any_cast<string>(ctx->pathIdentSegment()->accept(this));
     if (ctx->genericArgs())
-        res->args = std::move(
-            any_cast<vector<ASTType *>>(ctx->genericArgs()->accept(this)));
+        res->args =
+            any_cast<vector<ASTType *>>(ctx->genericArgs()->accept(this));
     return ASTtool::pack(res);
 }
 any MyParserVisitor::visitPathIdentSegment(
     RxParser::PathIdentSegmentContext *ctx) {
-    string res;
-    // if (ctx->SELF_TYPE())
-    //     res = "Self";
-    // else if (ctx->SELF_VALUE())
-    //     res = "self";
-    // else
-    res = ctx->getText();
-    return res;
+    return ctx->getText();
 }
 any MyParserVisitor::visitGenericArgs(RxParser::GenericArgsContext *ctx) {
     vector<ASTType *> res;

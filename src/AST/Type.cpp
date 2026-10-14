@@ -34,7 +34,7 @@ MyParserVisitor::visitReferenceType(RxParser::ReferenceTypeContext *ctx) {
     if (ctx->children.size() < 2)
         throw MyErr("unkown err in RefenceType");
     res->inner = ASTtool::unpack<ASTType>(ctx->children.back()->accept(this));
-    if (ctx->children.front()->getText().length() > 1) {
+    if (ctx->ANDAND()) {
         ASTTRef *tmp = new ASTTRef(Span::getRuleSpan(ctx));
         tmp->inner = res;
         res = tmp;

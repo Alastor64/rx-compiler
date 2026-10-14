@@ -1,5 +1,6 @@
 #pragma once
 #include "MyDef.hpp"
+#include "RxParser.h"
 #include "RxParserBaseVisitor.h"
 #include <any>
 class MyParserVisitor : public RxParserBaseVisitor {
@@ -45,4 +46,8 @@ class MyParserVisitor : public RxParserBaseVisitor {
 
     virtual std::any
     visitFunctionParam(RxParser::FunctionParamContext *ctx) override;
+    virtual any visitChildren(antlr4::tree::ParseTree *node) override;
+
+    virtual std::any
+    visitLiteralExpression(RxParser::LiteralExpressionContext *ctx) override;
 };

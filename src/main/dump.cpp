@@ -34,7 +34,7 @@ int main(int argc, char **args) {
     t.fill();
     for (auto &i : t.getTokens()) {
         if (invalid_token(i->getType())) {
-            // cout << "lexer reject" << endl;
+            cout << "lexer reject" << endl;
             return 1;
         }
     }
@@ -66,9 +66,12 @@ int main(int argc, char **args) {
             break;
         }
     }
-    if (parser.getNumberOfSyntaxErrors() ||
-        parser.getCurrentToken()->getType() != antlr4::Token::EOF)
+    if (parser.getNumberOfSyntaxErrors())
         return 1;
+    if (parser.getCurrentToken()->getType() != antlr4::Token::EOF) {
+        printf("not EOF\n");
+        return 1;
+    }
     // cout << cst->toString() << endl;
     // RxParser::CrateContext *ctx;
     // ctx->item();

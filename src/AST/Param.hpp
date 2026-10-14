@@ -3,8 +3,9 @@
 #include "Type.hpp"
 class ASTParam : public ASTnode {
   public:
-    using ASTnode::ASTnode;
+    ASTParam(Span p);
     ASTType *type;
     string name;
     bool if_mut;
+    virtual ~ASTParam();
 };
