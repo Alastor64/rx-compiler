@@ -56,4 +56,7 @@ class MyParserVisitor : public RxParserBaseVisitor {
 
     virtual std::any
     visitPathExprSegment(RxParser::PathExprSegmentContext *ctx) override;
+
+    virtual std::any
+    visitArrayExpression(RxParser::ArrayExpressionContext *ctx) override;
 };

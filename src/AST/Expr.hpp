@@ -1,6 +1,7 @@
 #pragma once
 #include "AST.hpp"
 #include "MyClasses.hpp"
+#include <vector>
 class ASTExpr : public ASTnode {
   public:
     using ASTnode::ASTnode;
@@ -28,9 +29,20 @@ class ASTEPath : public ASTExpr {
 };
 
 // [,,,]
-class ASTEArray : public ASTExpr {};
+class ASTEArray : public ASTExpr {
+  public:
+    vector<ASTExpr *> elem;
+    using ASTExpr::ASTExpr;
+    virtual ~ASTEArray();
+};
 // [;]
-class ASTERepeat : public ASTExpr {};
+class ASTERepeat : public ASTExpr {
+  public:
+    ASTExpr *elem;
+    ASTExpr *len;
+    ASTERepeat(Span p);
+    virtual ~ASTERepeat();
+};
 // return continue break
 class ASTEBranch : public ASTExpr {};
 
