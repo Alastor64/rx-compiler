@@ -12,3 +12,7 @@ using std::size_t;
 using std::string;
 using std::swap;
 using std::vector;
+class Void {
+    virtual ~Void() {}
+};
+const vector<Void *> nullvecptr = vector<Void *>(0);

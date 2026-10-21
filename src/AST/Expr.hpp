@@ -48,10 +48,18 @@ class ASTEBranch : public ASTExpr {};
 
 class ASTEOperator : public ASTExpr {
   public:
+    using ASTExpr::ASTExpr;
+    string op;
 };
 
 // + - * / && || & | ^ % < > <= >= == !=
-class ASTOBinary : public ASTEOperator {};
+class ASTOBinary : public ASTEOperator {
+  public:
+    ASTExpr *left;
+    ASTExpr *right;
+    ASTOBinary(Span);
+    virtual ~ASTOBinary();
+};
 // - ! * & &mut &&mut(2 nodes) &&(2 nodes)
 class ASTOUnary : public ASTEOperator {};
 // ()

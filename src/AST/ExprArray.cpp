@@ -5,7 +5,7 @@
 any MyParserVisitor::visitArrayExpression(
     RxParser::ArrayExpressionContext *ctx) {
     ASTExpr *res;
-    if (ctx->constValue()) {
+    if (ctx->SEMI()) {
         ASTERepeat *tmp = new ASTERepeat(Span::getRuleSpan(ctx));
         tmp->elem =
             ASTtool::unpack<ASTExpr>(ctx->expression().front()->accept(this));

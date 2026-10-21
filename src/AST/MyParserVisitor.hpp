@@ -59,4 +59,9 @@ class MyParserVisitor : public RxParserBaseVisitor {
 
     virtual std::any
     visitArrayExpression(RxParser::ArrayExpressionContext *ctx) override;
+
+    virtual std::any visitMultiplicativeExpression(
+        RxParser::MultiplicativeExpressionContext *ctx) override;
+    virtual std::any
+    visitAdditiveExpression(RxParser::AdditiveExpressionContext *ctx) override;
 };

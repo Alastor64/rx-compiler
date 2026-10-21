@@ -15,3 +15,9 @@ ASTERepeat::~ASTERepeat() {
     delete len;
     len = elem = nullptr;
 }
+ASTOBinary::ASTOBinary(Span p) : ASTEOperator(p) { left = right = nullptr; }
+ASTOBinary::~ASTOBinary() {
+    delete left;
+    delete right;
+    left = right = nullptr;
+}
