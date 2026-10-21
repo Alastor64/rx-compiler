@@ -8,7 +8,6 @@
 #include <Parser.h>
 #include <ParserRuleContext.h>
 #include <tree/ParseTreeVisitor.h>
-#include <vector>
 class ExprBinary {
   private:
     static any work(antlr4::tree::ParseTreeVisitor *visitor,
