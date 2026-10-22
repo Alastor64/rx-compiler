@@ -1,6 +1,7 @@
 #pragma once
 #include "MyDef.hpp"
 #include <utility>
+#include <vector>
 class ASTnode;
 class ASTType;
 class ASTPathSeg;
@@ -20,3 +21,9 @@ template <typename T> class PtrVec {
         return std::move(tmp);
     }
 };
+template <typename T> vector<T *> makePtrVec(T *x) {
+    if (x)
+        return vector<T *>(1, x);
+    else
+        return vector<T *>(0);
+}

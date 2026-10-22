@@ -8,6 +8,7 @@
 #include <Parser.h>
 #include <ParserRuleContext.h>
 #include <tree/ParseTreeVisitor.h>
+#include <vector>
 class ExprBinary {
   private:
     static any work(antlr4::tree::ParseTreeVisitor *visitor,
@@ -38,20 +39,52 @@ class ExprBinary {
 
   public:
     ExprBinary() = delete;
-    template <typename T, typename U, typename Y, typename Z>
+    template <typename T, typename U, typename Y = Void, typename Z = Void>
     static any build(antlr4::tree::ParseTreeVisitor *visitor,
                      const vector<T *> &op, const vector<U *> &pre,
-                     const vector<Y *> &mid, const vector<Z *> &suc) {
+                     const vector<Y *> &mid = nullvecptr,
+                     const vector<Z *> &suc = nullvecptr) {
         return work(visitor, RuleText::get(op),
                     PtrVec<antlr4::ParserRuleContext>::tran(pre, mid, suc));
     }
-    template <typename T, typename U, typename Y, typename Z>
+    template <typename U, typename Y = Void, typename Z = Void>
     static any build(antlr4::tree::ParseTreeVisitor *visitor, const string &op,
-                     const vector<U *> &pre, const vector<Y *> &mid,
-                     const vector<Z *> &suc) {
+                     const vector<U *> &pre,
+                     const vector<Y *> &mid = nullvecptr,
+                     const vector<Z *> &suc = nullvecptr) {
         return work(
             visitor,
-            vector<string>(pre.size() + mid.size() + suc.size() - 1, op),
+            vector<string>(
+                std::max(0, int(pre.size() + mid.size() + suc.size()) - 1), op),
             PtrVec<antlr4::ParserRuleContext>::tran(pre, mid, suc));
+    }
+    template <typename T, typename U, typename Y, typename Z, typename K>
+    static any buildSC(antlr4::tree::ParseTreeVisitor *visitor,
+                       const vector<T *> &op, U *specialClosed, Y *specail,
+                       const vector<Z *> &normal, K *closed) {
+        if (specialClosed)
+            return build(visitor, ERROP, makePtrVec(specialClosed));
+        else
+            return build(visitor, op, makePtrVec(specail), normal,
+                         makePtrVec(closed));
+    }
+    template <typename U, typename Y, typename Z, typename K>
+    static any buildSC(antlr4::tree::ParseTreeVisitor *visitor,
+                       const string &op, U *specialClosed, Y *specail,
+                       const vector<Z *> &normal, K *closed) {
+        if (specialClosed)
+            return build(visitor, ERROP, makePtrVec(specialClosed));
+        else
+            return build(visitor, op, makePtrVec(specail), normal,
+                         makePtrVec(closed));
+    }
+    static const string ERROP;
+    template <typename T> static string getCmpop(T *ctx) {
+        string op = ERROP;
+        if (ctx->LT())
+            op = "<";
+        else if (ctx->comparisonExceptLt())
+            op = ctx->comparisonExceptLt()->getText();
+        return op;
     }
 };

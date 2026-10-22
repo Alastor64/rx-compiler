@@ -64,4 +64,149 @@ class MyParserVisitor : public RxParserBaseVisitor {
         RxParser::MultiplicativeExpressionContext *ctx) override;
     virtual std::any
     visitAdditiveExpression(RxParser::AdditiveExpressionContext *ctx) override;
+
+    //
+
+    virtual std::any visitLogicalOrExpression(
+        RxParser::LogicalOrExpressionContext *ctx) override;
+
+    virtual std::any visitLogicalAndExpression(
+        RxParser::LogicalAndExpressionContext *ctx) override;
+
+    virtual std::any visitComparisonExpression(
+        RxParser::ComparisonExpressionContext *ctx) override;
+
+    virtual std::any
+    visitBitOrExpression(RxParser::BitOrExpressionContext *ctx) override;
+
+    virtual std::any visitClosedBitOrExpression(
+        RxParser::ClosedBitOrExpressionContext *ctx) override;
+
+    virtual std::any
+    visitBitXorExpression(RxParser::BitXorExpressionContext *ctx) override;
+
+    virtual std::any visitClosedBitXorExpression(
+        RxParser::ClosedBitXorExpressionContext *ctx) override;
+
+    virtual std::any
+    visitBitAndExpression(RxParser::BitAndExpressionContext *ctx) override;
+    virtual std::any visitClosedBitAndExpression(
+        RxParser::ClosedBitAndExpressionContext *ctx) override;
+
+    virtual std::any visitClosedAdditiveExpression(
+        RxParser::ClosedAdditiveExpressionContext *ctx) override;
+
+    virtual std::any visitClosedMultiplicativeExpression(
+        RxParser::ClosedMultiplicativeExpressionContext *ctx) override;
+
+    virtual std::any visitConditionLogicalOrExpression(
+        RxParser::ConditionLogicalOrExpressionContext *ctx) override;
+
+    virtual std::any visitConditionLogicalAndExpression(
+        RxParser::ConditionLogicalAndExpressionContext *ctx) override;
+
+    virtual std::any visitConditionComparisonExpression(
+        RxParser::ConditionComparisonExpressionContext *ctx) override;
+
+    virtual std::any visitConditionBitOrExpression(
+        RxParser::ConditionBitOrExpressionContext *ctx) override;
+
+    virtual std::any visitConditionClosedBitOrExpression(
+        RxParser::ConditionClosedBitOrExpressionContext *ctx) override;
+
+    virtual std::any visitConditionBitXorExpression(
+        RxParser::ConditionBitXorExpressionContext *ctx) override;
+
+    virtual std::any visitConditionClosedBitXorExpression(
+        RxParser::ConditionClosedBitXorExpressionContext *ctx) override;
+
+    virtual std::any visitConditionBitAndExpression(
+        RxParser::ConditionBitAndExpressionContext *ctx) override;
+
+    virtual std::any visitConditionClosedBitAndExpression(
+        RxParser::ConditionClosedBitAndExpressionContext *ctx) override;
+
+    virtual std::any visitConditionAdditiveExpression(
+        RxParser::ConditionAdditiveExpressionContext *ctx) override;
+
+    virtual std::any visitConditionClosedAdditiveExpression(
+        RxParser::ConditionClosedAdditiveExpressionContext *ctx) override;
+
+    virtual std::any visitConditionMultiplicativeExpression(
+        RxParser::ConditionMultiplicativeExpressionContext *ctx) override;
+
+    virtual std::any visitConditionClosedMultiplicativeExpression(
+        RxParser::ConditionClosedMultiplicativeExpressionContext *ctx) override;
+
+    virtual std::any visitConditionBreakLogicalOrExpression(
+        RxParser::ConditionBreakLogicalOrExpressionContext *ctx) override;
+    virtual std::any visitConditionBreakLogicalAndExpression(
+        RxParser::ConditionBreakLogicalAndExpressionContext *ctx) override;
+    virtual std::any visitConditionBreakComparisonExpression(
+        RxParser::ConditionBreakComparisonExpressionContext *ctx) override;
+    virtual std::any visitConditionBreakBitOrExpression(
+        RxParser::ConditionBreakBitOrExpressionContext *ctx) override;
+    virtual std::any visitConditionBreakClosedBitOrExpression(
+        RxParser::ConditionBreakClosedBitOrExpressionContext *ctx) override;
+
+    virtual std::any visitConditionBreakBitXorExpression(
+        RxParser::ConditionBreakBitXorExpressionContext *ctx) override;
+
+    virtual std::any visitConditionBreakClosedBitXorExpression(
+        RxParser::ConditionBreakClosedBitXorExpressionContext *ctx) override;
+
+    virtual std::any visitConditionBreakBitAndExpression(
+        RxParser::ConditionBreakBitAndExpressionContext *ctx) override;
+
+    virtual std::any visitConditionBreakClosedBitAndExpression(
+        RxParser::ConditionBreakClosedBitAndExpressionContext *ctx) override;
+    virtual std::any visitConditionBreakAdditiveExpression(
+        RxParser::ConditionBreakAdditiveExpressionContext *ctx) override;
+    virtual std::any visitConditionBreakClosedAdditiveExpression(
+        RxParser::ConditionBreakClosedAdditiveExpressionContext *ctx) override;
+
+    virtual std::any visitConditionBreakMultiplicativeExpression(
+        RxParser::ConditionBreakMultiplicativeExpressionContext *ctx) override;
+
+    virtual std::any visitConditionBreakClosedMultiplicativeExpression(
+        RxParser::ConditionBreakClosedMultiplicativeExpressionContext *ctx)
+        override;
+
+    virtual std::any visitStatementLogicalOrExpression(
+        RxParser::StatementLogicalOrExpressionContext *ctx) override;
+    virtual std::any visitStatementLogicalAndExpression(
+        RxParser::StatementLogicalAndExpressionContext *ctx) override;
+
+    virtual std::any visitStatementComparisonExpression(
+        RxParser::StatementComparisonExpressionContext *ctx) override;
+
+    virtual std::any visitStatementBitOrExpression(
+        RxParser::StatementBitOrExpressionContext *ctx) override;
+
+    virtual std::any visitStatementClosedBitOrExpression(
+        RxParser::StatementClosedBitOrExpressionContext *ctx) override;
+
+    virtual std::any visitStatementBitXorExpression(
+        RxParser::StatementBitXorExpressionContext *ctx) override;
+
+    virtual std::any visitStatementClosedBitXorExpression(
+        RxParser::StatementClosedBitXorExpressionContext *ctx) override;
+
+    virtual std::any visitStatementBitAndExpression(
+        RxParser::StatementBitAndExpressionContext *ctx) override;
+
+    virtual std::any visitStatementClosedBitAndExpression(
+        RxParser::StatementClosedBitAndExpressionContext *ctx) override;
+
+    virtual std::any visitStatementAdditiveExpression(
+        RxParser::StatementAdditiveExpressionContext *ctx) override;
+
+    virtual std::any visitStatementClosedAdditiveExpression(
+        RxParser::StatementClosedAdditiveExpressionContext *ctx) override;
+
+    virtual std::any visitStatementMultiplicativeExpression(
+        RxParser::StatementMultiplicativeExpressionContext *ctx) override;
+
+    virtual std::any visitStatementClosedMultiplicativeExpression(
+        RxParser::StatementClosedMultiplicativeExpressionContext *ctx) override;
 };
