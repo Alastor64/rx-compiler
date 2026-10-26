@@ -70,7 +70,13 @@ class ASTOField : public ASTEOperator {};
 // .()
 class ASTOMethod : public ASTEOperator {};
 // = += *= /= %= -= ^= |= &= <<= >>=
-class ASTOAssign : public ASTEOperator {};
+class ASTOAssign : public ASTEOperator {
+  public:
+    ASTExpr *place;
+    ASTExpr *value;
+    ASTOAssign(Span);
+    virtual ~ASTOAssign();
+};
 // as
 class ASTOCast : public ASTEOperator {};
 // << >>

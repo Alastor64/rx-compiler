@@ -28,3 +28,9 @@ ASTOShift::~ASTOShift() {
     delete expo;
     base = expo = nullptr;
 }
+ASTOAssign::ASTOAssign(Span p) : ASTEOperator(p) { place = value = nullptr; }
+ASTOAssign::~ASTOAssign() {
+    delete place;
+    delete value;
+    place = value = nullptr;
+}

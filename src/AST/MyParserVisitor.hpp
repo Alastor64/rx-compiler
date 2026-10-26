@@ -230,4 +230,13 @@ class MyParserVisitor : public RxParserBaseVisitor {
 
     virtual std::any visitStatementClosedShiftExpression(
         RxParser::StatementClosedShiftExpressionContext *ctx) override;
+
+    virtual std::any visitAssignmentExpression(
+        RxParser::AssignmentExpressionContext *ctx) override;
+    virtual std::any visitConditionAssignmentExpression(
+        RxParser::ConditionAssignmentExpressionContext *ctx) override;
+    virtual std::any visitConditionBreakAssignmentExpression(
+        RxParser::ConditionBreakAssignmentExpressionContext *ctx) override;
+    virtual std::any visitStatementAssignmentExpression(
+        RxParser::StatementAssignmentExpressionContext *ctx) override;
 };
