@@ -5,6 +5,7 @@
 #include <any>
 class MyParserVisitor : public RxParserBaseVisitor {
   public:
+    virtual any unreachable();
     virtual any visitCrate(RxParser::CrateContext *ctx) override;
     virtual any visitItem(RxParser::ItemContext *ctx) override;
     virtual std::any
@@ -239,4 +240,23 @@ class MyParserVisitor : public RxParserBaseVisitor {
         RxParser::ConditionBreakAssignmentExpressionContext *ctx) override;
     virtual std::any visitStatementAssignmentExpression(
         RxParser::StatementAssignmentExpressionContext *ctx) override;
+    virtual std::any
+    visitCastExpression(RxParser::CastExpressionContext *ctx) override;
+    virtual std::any visitConditionCastExpression(
+        RxParser::ConditionCastExpressionContext *ctx) override;
+    virtual std::any visitConditionBreakCastExpression(
+        RxParser::ConditionBreakCastExpressionContext *ctx) override;
+    virtual std::any visitStatementCastExpression(
+        RxParser::StatementCastExpressionContext *ctx) override;
+    virtual std::any visitClosedCastExpression(
+        RxParser::ClosedCastExpressionContext *ctx) override;
+    virtual std::any visitConditionClosedCastExpression(
+        RxParser::ConditionClosedCastExpressionContext *ctx) override;
+    virtual std::any visitConditionBreakClosedCastExpression(
+        RxParser::ConditionBreakClosedCastExpressionContext *ctx) override;
+    virtual std::any visitStatementClosedCastExpression(
+        RxParser::StatementClosedCastExpressionContext *ctx) override;
+
+    virtual std::any
+    visitClosedCastType(RxParser::ClosedCastTypeContext *ctx) override;
 };

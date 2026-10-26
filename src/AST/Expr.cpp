@@ -1,6 +1,7 @@
 #include "Expr.hpp"
 #include "AST.hpp"
 #include "MyDef.hpp"
+#include "Type.hpp"
 ASTELiteral::ASTELiteral(Span p) : ASTExpr(p) {
     if_int = if_true = if_unit = if_false = 0;
 }
@@ -33,4 +34,14 @@ ASTOAssign::~ASTOAssign() {
     delete place;
     delete value;
     place = value = nullptr;
+}
+ASTOCast::ASTOCast(Span p) : ASTEOperator(p) {
+    value = nullptr;
+    type = nullptr;
+}
+ASTOCast::~ASTOCast() {
+    delete value;
+    delete type;
+    value = nullptr;
+    type = nullptr;
 }

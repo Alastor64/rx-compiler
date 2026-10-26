@@ -1,3 +1,4 @@
+#pragma once
 #include "Expr.hpp"
 #include "MyDef.hpp"
 #include "MyParserVisitor.hpp"

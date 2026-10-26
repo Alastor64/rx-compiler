@@ -78,7 +78,13 @@ class ASTOAssign : public ASTEOperator {
     virtual ~ASTOAssign();
 };
 // as
-class ASTOCast : public ASTEOperator {};
+class ASTOCast : public ASTEOperator {
+  public:
+    ASTExpr *value;
+    ASTType *type;
+    ASTOCast(Span);
+    virtual ~ASTOCast();
+};
 // << >>
 class ASTOShift : public ASTEOperator {
   public:
