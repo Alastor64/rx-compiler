@@ -1,5 +1,6 @@
 #include "AST.hpp"
 #include "DisplayVisitor.hpp"
+#include "MyParserVisitor.hpp"
 #include "RxLexer.h"
 #include "RxParser.h"
 #include <ANTLRInputStream.h>
@@ -82,4 +83,6 @@ int main(int argc, char **args) {
     dv.visit(cst);
     Span::getRuleSpan((antlr4::ParserRuleContext *)cst);
     return 0;
+    MyParserVisitor mv;
+    mv.visit(cst);
 }

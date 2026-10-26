@@ -1,5 +1,6 @@
 #include "Expr.hpp"
 #include "AST.hpp"
+#include "MyDef.hpp"
 ASTELiteral::ASTELiteral(Span p) : ASTExpr(p) {
     if_int = if_true = if_unit = if_false = 0;
 }
@@ -20,4 +21,10 @@ ASTOBinary::~ASTOBinary() {
     delete left;
     delete right;
     left = right = nullptr;
+}
+ASTOShift::ASTOShift(Span p) : ASTEOperator(p) { base = expo = nullptr; }
+ASTOShift::~ASTOShift() {
+    delete base;
+    delete expo;
+    base = expo = nullptr;
 }

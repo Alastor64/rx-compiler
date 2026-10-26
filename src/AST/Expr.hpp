@@ -74,5 +74,11 @@ class ASTOAssign : public ASTEOperator {};
 // as
 class ASTOCast : public ASTEOperator {};
 // << >>
-class ASTOShift : public ASTEOperator {};
+class ASTOShift : public ASTEOperator {
+  public:
+    ASTExpr *base;
+    ASTExpr *expo;
+    ASTOShift(Span);
+    virtual ~ASTOShift();
+};
 // (expr) no new node

@@ -209,4 +209,25 @@ class MyParserVisitor : public RxParserBaseVisitor {
 
     virtual std::any visitStatementClosedMultiplicativeExpression(
         RxParser::StatementClosedMultiplicativeExpressionContext *ctx) override;
+    ///
+    virtual std::any
+    visitShiftExpression(RxParser::ShiftExpressionContext *ctx) override;
+    virtual std::any visitClosedShiftExpression(
+        RxParser::ClosedShiftExpressionContext *ctx) override;
+    virtual std::any visitConditionShiftExpression(
+        RxParser::ConditionShiftExpressionContext *ctx) override;
+
+    virtual std::any visitConditionClosedShiftExpression(
+        RxParser::ConditionClosedShiftExpressionContext *ctx) override;
+    virtual std::any visitConditionBreakShiftExpression(
+        RxParser::ConditionBreakShiftExpressionContext *ctx) override;
+
+    virtual std::any visitConditionBreakClosedShiftExpression(
+        RxParser::ConditionBreakClosedShiftExpressionContext *ctx) override;
+
+    virtual std::any visitStatementShiftExpression(
+        RxParser::StatementShiftExpressionContext *ctx) override;
+
+    virtual std::any visitStatementClosedShiftExpression(
+        RxParser::StatementClosedShiftExpressionContext *ctx) override;
 };
