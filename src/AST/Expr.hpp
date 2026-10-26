@@ -60,7 +60,13 @@ class ASTOBinary : public ASTEOperator {
     virtual ~ASTOBinary();
 };
 // - ! * & &mut &&mut(2 nodes) &&(2 nodes)
-class ASTOUnary : public ASTEOperator {};
+class ASTOUnary : public ASTEOperator {
+  public:
+    bool if_mut;
+    ASTExpr *inner;
+    ASTOUnary(Span);
+    virtual ~ASTOUnary();
+};
 // ()
 class ASTOCall : public ASTEOperator {};
 // []

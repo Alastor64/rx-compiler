@@ -45,3 +45,11 @@ ASTOCast::~ASTOCast() {
     value = nullptr;
     type = nullptr;
 }
+ASTOUnary::ASTOUnary(Span p) : ASTEOperator(p) {
+    inner = nullptr;
+    if_mut = 0;
+}
+ASTOUnary::~ASTOUnary() {
+    delete inner;
+    inner = nullptr;
+}

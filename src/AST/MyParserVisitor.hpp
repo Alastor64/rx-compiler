@@ -259,4 +259,13 @@ class MyParserVisitor : public RxParserBaseVisitor {
 
     virtual std::any
     visitClosedCastType(RxParser::ClosedCastTypeContext *ctx) override;
+
+    virtual std::any
+    visitUnaryExpression(RxParser::UnaryExpressionContext *ctx) override;
+    virtual std::any visitConditionUnaryExpression(
+        RxParser::ConditionUnaryExpressionContext *ctx) override;
+    virtual std::any visitConditionBreakUnaryExpression(
+        RxParser::ConditionBreakUnaryExpressionContext *ctx) override;
+    virtual std::any visitStatementUnaryExpression(
+        RxParser::StatementUnaryExpressionContext *ctx) override;
 };
