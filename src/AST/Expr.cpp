@@ -1,6 +1,7 @@
 #include "Expr.hpp"
 #include "AST.hpp"
 #include "MyDef.hpp"
+#include "Path.hpp"
 #include "Type.hpp"
 ASTELiteral::ASTELiteral(Span p) : ASTExpr(p) {
     if_int = if_true = if_unit = if_false = 0;
@@ -52,4 +53,38 @@ ASTOUnary::ASTOUnary(Span p) : ASTEOperator(p) {
 ASTOUnary::~ASTOUnary() {
     delete inner;
     inner = nullptr;
+}
+ASTOIndex::ASTOIndex(Span p) : ASTEOperator(p) { array = index = nullptr; }
+ASTOIndex::~ASTOIndex() {
+    delete array;
+    delete index;
+    array = index = nullptr;
+}
+ASTOField::ASTOField(Span p) : ASTEOperator(p) { owner = nullptr; }
+ASTOField::~ASTOField() {
+    delete owner;
+    owner = nullptr;
+}
+ASTOCall::ASTOCall(Span p) : ASTEOperator(p) { func = nullptr; }
+ASTOCall::~ASTOCall() {
+    delete func;
+    func = nullptr;
+    for (auto &i : args) {
+        delete i;
+        i = nullptr;
+    }
+}
+ASTOMethod::ASTOMethod(Span p) : ASTEOperator(p) {
+    owner = nullptr;
+    func = nullptr;
+}
+ASTOMethod::~ASTOMethod() {
+    delete owner;
+    delete func;
+    owner = nullptr;
+    func = nullptr;
+    for (auto &i : args) {
+        delete i;
+        i = nullptr;
+    }
 }

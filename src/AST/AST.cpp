@@ -36,4 +36,4 @@ any MyParserVisitor::visitItem(RxParser::ItemContext *ctx) {
 any MyParserVisitor::visitChildren(antlr4::tree::ParseTree *ctx) {
     throw MyErr("unrealized visitor");
 }
-any MyParserVisitor::unreachable() { throw MyErr("unreachable"); }
+void MyParserVisitor::unreachable() { throw MyErr("unreachable"); }

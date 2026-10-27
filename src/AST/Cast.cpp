@@ -77,5 +77,6 @@ any MyParserVisitor::visitClosedCastType(RxParser::ClosedCastTypeContext *ctx) {
         res->path.push_back(tmp);
         return ASTtool::pack(res);
     }
-    return unreachable();
+    unreachable();
+    return nullptr;
 }

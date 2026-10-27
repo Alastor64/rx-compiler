@@ -5,7 +5,7 @@
 #include <any>
 class MyParserVisitor : public RxParserBaseVisitor {
   public:
-    virtual any unreachable();
+    static void unreachable();
     virtual any visitCrate(RxParser::CrateContext *ctx) override;
     virtual any visitItem(RxParser::ItemContext *ctx) override;
     virtual std::any
@@ -268,4 +268,13 @@ class MyParserVisitor : public RxParserBaseVisitor {
         RxParser::ConditionBreakUnaryExpressionContext *ctx) override;
     virtual std::any visitStatementUnaryExpression(
         RxParser::StatementUnaryExpressionContext *ctx) override;
+
+    virtual std::any
+    visitPostfixExpression(RxParser::PostfixExpressionContext *ctx) override;
+    virtual std::any visitConditionPostfixExpression(
+        RxParser::ConditionPostfixExpressionContext *ctx) override;
+    virtual std::any visitConditionBreakPostfixExpression(
+        RxParser::ConditionBreakPostfixExpressionContext *ctx) override;
+    virtual std::any visitStatementPostfixExpression(
+        RxParser::StatementPostfixExpressionContext *ctx) override;
 };

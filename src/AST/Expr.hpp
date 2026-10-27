@@ -1,6 +1,7 @@
 #pragma once
 #include "AST.hpp"
 #include "MyClasses.hpp"
+#include <vector>
 class ASTExpr : public ASTnode {
   public:
     using ASTnode::ASTnode;
@@ -68,13 +69,38 @@ class ASTOUnary : public ASTEOperator {
     virtual ~ASTOUnary();
 };
 // ()
-class ASTOCall : public ASTEOperator {};
+class ASTOCall : public ASTEOperator {
+  public:
+    ASTExpr *func;
+    vector<ASTExpr *> args;
+    ASTOCall(Span);
+    virtual ~ASTOCall();
+};
 // []
-class ASTOIndex : public ASTEOperator {};
+class ASTOIndex : public ASTEOperator {
+  public:
+    ASTExpr *array;
+    ASTExpr *index;
+    ASTOIndex(Span);
+    virtual ~ASTOIndex();
+};
 // .
-class ASTOField : public ASTEOperator {};
+class ASTOField : public ASTEOperator {
+  public:
+    ASTExpr *owner;
+    string id;
+    ASTOField(Span);
+    virtual ~ASTOField();
+};
 // .()
-class ASTOMethod : public ASTEOperator {};
+class ASTOMethod : public ASTEOperator {
+  public:
+    ASTExpr *owner;
+    ASTPathSeg *func;
+    vector<ASTExpr *> args;
+    ASTOMethod(Span);
+    virtual ~ASTOMethod();
+};
 // = += *= /= %= -= ^= |= &= <<= >>=
 class ASTOAssign : public ASTEOperator {
   public:

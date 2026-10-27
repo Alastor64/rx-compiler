@@ -15,6 +15,6 @@ class RuleText {
         for (auto *i : x) {
             tmp.push_back(i->getText());
         }
-        return std::move(tmp);
+        return tmp;
     }
 };

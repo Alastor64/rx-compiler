@@ -33,7 +33,7 @@ any MyParserVisitor::visitGenericArgs(RxParser::GenericArgsContext *ctx) {
         if (tmp)
             res.push_back(tmp);
     }
-    return std::move(res);
+    return res;
 }
 any MyParserVisitor::visitGenericArg(RxParser::GenericArgContext *ctx) {
     if (!ctx->typeRef())
