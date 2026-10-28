@@ -5,6 +5,8 @@
 class ASTnode;
 class ASTType;
 class ASTPathSeg;
+class ASTLet;
+class ASTStatement;
 template <typename T> class PtrVec {
   public:
     PtrVec() = delete;

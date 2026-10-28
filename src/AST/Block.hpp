@@ -6,3 +6,5 @@ class ASTBlock : public ASTExpr {
     using ASTExpr::ASTExpr;
     virtual ~ASTBlock();
 };
+class ASTLet : public ASTnode {};
+class ASTStatement : public ASTnode {};

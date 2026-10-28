@@ -4,7 +4,7 @@
 #include "Path.hpp"
 #include "Type.hpp"
 ASTELiteral::ASTELiteral(Span p) : ASTExpr(p) {
-    if_int = if_true = if_unit = if_false = 0;
+    if_int = if_true = if_false = 0;
 }
 ASTEArray::~ASTEArray() {
     for (auto &i : elem) {
@@ -87,4 +87,26 @@ ASTOMethod::~ASTOMethod() {
         delete i;
         i = nullptr;
     }
+}
+ASTEBranch::ASTEBranch(Span p) : ASTExpr(p) { value = nullptr; }
+ASTEBranch::~ASTEBranch() {
+    delete value;
+    value = nullptr;
+}
+ASTEStruct::ASTEStruct(Span p) : ASTExpr(p) { path = nullptr; }
+ASTEStruct::~ASTEStruct() {
+    delete path;
+    path = nullptr;
+    for (auto &i : member) {
+        i.del();
+    }
+}
+ASTEStruct::Field::Field(Span p, const string &i, ASTExpr *v) {
+    pos = p;
+    id = i;
+    value = v;
+}
+void ASTEStruct::Field::del() {
+    delete value;
+    value = nullptr;
 }

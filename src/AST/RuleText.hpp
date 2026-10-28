@@ -1,7 +1,6 @@
 #pragma once
 #include "MyDef.hpp"
 #include <RuleContext.h>
-#include <string>
 #include <type_traits>
 #include <vector>
 class RuleText {

@@ -6,10 +6,39 @@ class ASTExpr : public ASTnode {
   public:
     using ASTnode::ASTnode;
 };
+
+class ASTEUnit : public ASTExpr {
+  public:
+    using ASTExpr::ASTExpr;
+};
+class ASTEPath : public ASTExpr {
+  public:
+    vector<ASTPathSeg *> path;
+    using ASTExpr::ASTExpr;
+    virtual ~ASTEPath();
+};
+
 class ASTEIf : public ASTExpr {};
 // while loop(if condition=nullptr)
-class ASTEWhile : public ASTExpr {};
-class ASTEStruct : public ASTExpr {};
+class ASTEWhile : public ASTExpr {
+  public:
+    ASTExpr *condition;
+};
+class ASTEStruct : public ASTExpr {
+  public:
+    class Field {
+      public:
+        Span pos;
+        string id;
+        ASTExpr *value;
+        Field(Span, const string &, ASTExpr *);
+        void del();
+    };
+    ASTEPath *path;
+    vector<Field> member;
+    ASTEStruct(Span);
+    virtual ~ASTEStruct();
+};
 // int true false (unit)
 class ASTELiteral : public ASTExpr {
   public:
@@ -17,15 +46,7 @@ class ASTELiteral : public ASTExpr {
     bool if_int;
     bool if_true;
     bool if_false;
-    bool if_unit; // realize in nonblockexpr
     ASTELiteral(Span p);
-};
-
-class ASTEPath : public ASTExpr {
-  public:
-    vector<ASTPathSeg *> path;
-    using ASTExpr::ASTExpr;
-    virtual ~ASTEPath();
 };
 
 // [,,,]
@@ -44,7 +65,18 @@ class ASTERepeat : public ASTExpr {
     virtual ~ASTERepeat();
 };
 // return continue break
-class ASTEBranch : public ASTExpr {};
+class ASTEBranch : public ASTExpr {
+  public:
+    enum Kind {
+        CONTINUE,
+        BREAK,
+        RETURN,
+    };
+    Kind kind;
+    ASTExpr *value;
+    ASTEBranch(Span);
+    virtual ~ASTEBranch();
+};
 
 class ASTEOperator : public ASTExpr {
   public:

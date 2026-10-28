@@ -277,4 +277,7 @@ class MyParserVisitor : public RxParserBaseVisitor {
         RxParser::ConditionBreakPostfixExpressionContext *ctx) override;
     virtual std::any visitStatementPostfixExpression(
         RxParser::StatementPostfixExpressionContext *ctx) override;
+
+    virtual std::any
+    visitNonBlockPrimary(RxParser::NonBlockPrimaryContext *ctx) override;
 };
