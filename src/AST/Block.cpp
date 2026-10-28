@@ -48,3 +48,15 @@ any MyParserVisitor::visitExpressionWithBlock(
     }
     return ctx->blockExpression()->accept(this);
 }
+
+any MyParserVisitor::visitBlockExpression(
+    RxParser::BlockExpressionContext *ctx) {
+    ASTBlock *res = new ASTBlock(Span::getRuleSpan(ctx));
+    for (auto i : ctx->statement()) {
+        res->statement.push_back(
+            ASTtool::unpack<ASTStatement>(i->accept(this)));
+    }
+    if (ctx->statementExpression())
+        res->tail = ASTtool::unpack<ASTExpr>(ctx->statementExpression());
+    return ASTtool::pack(res);
+}

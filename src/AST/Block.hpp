@@ -3,7 +3,18 @@
 #include "Expr.hpp"
 #include <vector>
 class ASTLet : public ASTnode {};
-class ASTStatement : public ASTnode {};
+class ASTStatement : public ASTnode {
+  public:
+    enum Kind {
+        EXPR,
+        LET,
+    };
+    ASTStatement(Span);
+    virtual ~ASTStatement();
+    Kind kind;
+    ASTExpr *expr;
+    ASTLet *let;
+};
 class ASTBlock : public ASTExpr {
   public:
     ASTBlock(Span);

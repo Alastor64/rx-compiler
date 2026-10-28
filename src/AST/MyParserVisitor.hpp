@@ -286,4 +286,7 @@ class MyParserVisitor : public RxParserBaseVisitor {
 
     virtual std::any visitExpressionWithBlock(
         RxParser::ExpressionWithBlockContext *ctx) override;
+
+    virtual std::any
+    visitBlockExpression(RxParser::BlockExpressionContext *ctx) override;
 };
