@@ -11,6 +11,7 @@ class ASTStatement : public ASTnode {
     };
     ASTStatement(Span);
     virtual ~ASTStatement();
+    bool if_semi;
     Kind kind;
     ASTExpr *expr;
     ASTLet *let;

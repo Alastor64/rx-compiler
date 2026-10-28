@@ -2,6 +2,18 @@
 #include "AST.hpp"
 #include "Expr.hpp"
 #include "MyParserVisitor.hpp"
+#include "RxParser.h"
+ASTStatement::ASTStatement(Span p) : ASTnode(p) {
+    let = nullptr;
+    expr = nullptr;
+    if_semi = 0;
+}
+ASTStatement::~ASTStatement() {
+    delete let;
+    delete expr;
+    let = nullptr;
+    expr = nullptr;
+}
 ASTBlock::ASTBlock(Span p) : ASTExpr(p) { tail = nullptr; }
 ASTBlock::~ASTBlock() {
     delete tail;
@@ -53,10 +65,33 @@ any MyParserVisitor::visitBlockExpression(
     RxParser::BlockExpressionContext *ctx) {
     ASTBlock *res = new ASTBlock(Span::getRuleSpan(ctx));
     for (auto i : ctx->statement()) {
-        res->statement.push_back(
-            ASTtool::unpack<ASTStatement>(i->accept(this)));
+        auto tmp = ASTtool::unpack<ASTStatement>(i->accept(this));
+        if (tmp)
+            res->statement.push_back(tmp);
     }
     if (ctx->statementExpression())
-        res->tail = ASTtool::unpack<ASTExpr>(ctx->statementExpression());
+        res->tail =
+            ASTtool::unpack<ASTExpr>(ctx->statementExpression()->accept(this));
+    return ASTtool::pack(res);
+}
+any MyParserVisitor::visitStatement(RxParser::StatementContext *ctx) {
+    ASTStatement *res = new ASTStatement(Span::getRuleSpan(ctx));
+    res->if_semi = ctx->SEMI();
+    if (ctx->letStatement()) {
+        res->kind = ASTStatement::LET;
+        res->let = ASTtool::unpack<ASTLet>(ctx->letStatement()->accept(this));
+    } else if (ctx->statementExpression()) {
+        res->kind = ASTStatement::EXPR;
+        res->expr =
+            ASTtool::unpack<ASTExpr>(ctx->statementExpression()->accept(this));
+    } else if (ctx->expressionWithBlock()) {
+        res->kind = ASTStatement::EXPR;
+        res->expr =
+            ASTtool::unpack<ASTExpr>(ctx->expressionWithBlock()->accept(this));
+    } else if (ctx->SEMI()) {
+        delete res;
+        return ASTtool::pack(nullptr);
+    } else
+        unreachable();
     return ASTtool::pack(res);
 }
