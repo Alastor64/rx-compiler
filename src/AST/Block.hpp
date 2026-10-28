@@ -1,10 +1,13 @@
 #pragma once
 #include "AST.hpp"
 #include "Expr.hpp"
-class ASTBlock : public ASTExpr {
-  public:
-    using ASTExpr::ASTExpr;
-    virtual ~ASTBlock();
-};
+#include <vector>
 class ASTLet : public ASTnode {};
 class ASTStatement : public ASTnode {};
+class ASTBlock : public ASTExpr {
+  public:
+    ASTBlock(Span);
+    virtual ~ASTBlock();
+    vector<ASTStatement *> statement;
+    ASTExpr *tail;
+};

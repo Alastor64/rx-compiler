@@ -1,12 +1,12 @@
 #pragma once
 #include "MyDef.hpp"
 #include <utility>
-#include <vector>
 class ASTnode;
 class ASTType;
 class ASTPathSeg;
 class ASTLet;
 class ASTStatement;
+class ASTBlock;
 template <typename T> class PtrVec {
   public:
     PtrVec() = delete;

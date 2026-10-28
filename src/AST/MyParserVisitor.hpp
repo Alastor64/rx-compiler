@@ -280,4 +280,10 @@ class MyParserVisitor : public RxParserBaseVisitor {
 
     virtual std::any
     visitNonBlockPrimary(RxParser::NonBlockPrimaryContext *ctx) override;
+
+    virtual std::any
+    visitIfExpression(RxParser::IfExpressionContext *ctx) override;
+
+    virtual std::any visitExpressionWithBlock(
+        RxParser::ExpressionWithBlockContext *ctx) override;
 };

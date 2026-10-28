@@ -18,11 +18,26 @@ class ASTEPath : public ASTExpr {
     virtual ~ASTEPath();
 };
 
-class ASTEIf : public ASTExpr {};
+class ASTEIf : public ASTExpr {
+  public:
+    ASTEIf(Span);
+    virtual ~ASTEIf();
+    ASTExpr *condition;
+    ASTBlock *truestat;
+    ASTExpr *falsestat;
+};
 // while loop(if condition=nullptr)
 class ASTEWhile : public ASTExpr {
   public:
+    enum Kind {
+        WHILE,
+        LOOP,
+    };
+    ASTEWhile(Span);
+    virtual ~ASTEWhile();
+    Kind kind;
     ASTExpr *condition;
+    ASTBlock *block;
 };
 class ASTEStruct : public ASTExpr {
   public:

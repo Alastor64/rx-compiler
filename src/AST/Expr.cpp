@@ -1,5 +1,6 @@
 #include "Expr.hpp"
 #include "AST.hpp"
+#include "Block.hpp"
 #include "MyDef.hpp"
 #include "Path.hpp"
 #include "Type.hpp"
@@ -109,4 +110,24 @@ ASTEStruct::Field::Field(Span p, const string &i, ASTExpr *v) {
 void ASTEStruct::Field::del() {
     delete value;
     value = nullptr;
+}
+ASTEIf::ASTEIf(Span p) : ASTExpr(p) {
+    condition = falsestat = nullptr;
+    truestat = nullptr;
+}
+ASTEIf::~ASTEIf() {
+    delete condition;
+    delete truestat;
+    delete falsestat;
+    condition = falsestat = nullptr;
+}
+ASTEWhile::ASTEWhile(Span p) : ASTExpr(p) {
+    condition = nullptr;
+    block = nullptr;
+}
+ASTEWhile::~ASTEWhile() {
+    delete condition;
+    delete block;
+    condition = nullptr;
+    block = nullptr;
 }
