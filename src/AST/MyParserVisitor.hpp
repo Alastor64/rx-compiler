@@ -301,4 +301,13 @@ class MyParserVisitor : public RxParserBaseVisitor {
         RxParser::ConditionBreakExpressionContext *ctx) override;
     virtual std::any visitStatementExpression(
         RxParser::StatementExpressionContext *ctx) override;
+
+    virtual std::any
+    visitPrimaryExpression(RxParser::PrimaryExpressionContext *ctx) override;
+    virtual std::any
+    visitConditionPrimary(RxParser::ConditionPrimaryContext *ctx) override;
+    virtual std::any visitConditionPrimaryWithoutBareBlock(
+        RxParser::ConditionPrimaryWithoutBareBlockContext *ctx) override;
+    virtual std::any visitConstValue(RxParser::ConstValueContext *ctx) override;
+    virtual std::any visitMagnitude(RxParser::MagnitudeContext *ctx) override;
 };

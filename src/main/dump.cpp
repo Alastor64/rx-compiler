@@ -3,6 +3,7 @@
 #include "MyParserVisitor.hpp"
 #include "RxLexer.h"
 #include "RxParser.h"
+#include "myErr.hpp"
 #include <ANTLRInputStream.h>
 #include <CommonTokenStream.h>
 #include <Parser.h>
@@ -83,6 +84,10 @@ int main(int argc, char **args) {
     dv.visit(cst);
     Span::getRuleSpan((antlr4::ParserRuleContext *)cst);
     MyParserVisitor mv;
-    mv.visit(cst);
+    try {
+        mv.visit(cst);
+    } catch (MyErr e) {
+        cerr << e.what() << endl;
+    }
     return 0;
 }

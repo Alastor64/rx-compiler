@@ -16,6 +16,7 @@ class BuildPostfix {
                                ASTExpr *left,
                                RxParser::PostfixSuffixContext *ctx) {
         ASTOIndex *res = new ASTOIndex(Span::getRuleSpan(ctx));
+        res->pos.begin = left->pos.begin;
         res->array = left;
         res->index =
             ASTtool::unpack<ASTExpr>(ctx->expression()->accept(visitor));
@@ -25,6 +26,7 @@ class BuildPostfix {
     buildField([[maybe_unused]] antlr4::tree::ParseTreeVisitor *visitor,
                ASTExpr *left, RxParser::DotSuffixContext *ctx) {
         ASTOField *res = new ASTOField(Span::getRuleSpan(ctx));
+        res->pos.begin = left->pos.begin;
         res->owner = left;
         res->id = ctx->identifier()->getText();
         return res;
@@ -33,6 +35,7 @@ class BuildPostfix {
                                 ASTExpr *left,
                                 RxParser::DotSuffixContext *ctx) {
         ASTOMethod *res = new ASTOMethod(Span::getRuleSpan(ctx));
+        res->pos.begin = left->pos.begin;
         res->owner = left;
         res->func = ASTtool::unpack<ASTPathSeg>(
             ctx->pathExprSegment()->accept(visitor));
@@ -43,6 +46,7 @@ class BuildPostfix {
                               ASTExpr *left,
                               RxParser::PostfixSuffixContext *ctx) {
         ASTOCall *res = new ASTOCall(Span::getRuleSpan(ctx));
+        res->pos.begin = left->pos.begin;
         res->func = left;
         res->args = buildArgs(visitor, ctx->callArguments());
         return res;

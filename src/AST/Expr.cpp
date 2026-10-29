@@ -151,3 +151,43 @@ any MyParserVisitor::visitStatementExpression(
     RxParser::StatementExpressionContext *ctx) {
     return ctx->statementAssignmentExpression()->accept(this);
 }
+
+any MyParserVisitor::visitConstValue(RxParser::ConstValueContext *ctx) {
+    if (ctx->constValue())
+        return ctx->constValue()->accept(this);
+    else if (ctx->pathInExpression())
+        return ctx->pathInExpression()->accept(this);
+    else if (ctx->INTEGER_LITERAL() || ctx->TRUE() || ctx->FALSE()) {
+        ASTELiteral *res = new ASTELiteral(Span::getRuleSpan(ctx));
+        if (ctx->INTEGER_LITERAL()) {
+            res->if_int = 1;
+            res->int_text = ctx->INTEGER_LITERAL()->getText();
+        } else if (ctx->TRUE()) {
+            res->if_true = 1;
+        } else if (ctx->FALSE()) {
+            res->if_false = 1;
+        }
+        return ASTtool::pack(res);
+    } else if (ctx->MINUS()) {
+        ASTOUnary *res = new ASTOUnary(Span::getRuleSpan(ctx));
+        res->op = "-";
+        res->inner = ASTtool::unpack<ASTExpr>(ctx->magnitude()->accept(this));
+        return ASTtool::pack(res);
+    }
+    unreachable();
+    return nullptr;
+}
+any MyParserVisitor::visitMagnitude(RxParser::MagnitudeContext *ctx) {
+    if (ctx->magnitude())
+        return ctx->magnitude()->accept(this);
+    else if (ctx->pathInExpression())
+        return ctx->pathInExpression()->accept(this);
+    else if (ctx->INTEGER_LITERAL()) {
+        ASTELiteral *res = new ASTELiteral(Span::getRuleSpan(ctx));
+        res->if_int = 1;
+        res->int_text = ctx->INTEGER_LITERAL()->getText();
+        return ASTtool::pack(res);
+    }
+    unreachable();
+    return nullptr;
+}
