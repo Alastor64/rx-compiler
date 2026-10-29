@@ -291,4 +291,14 @@ class MyParserVisitor : public RxParserBaseVisitor {
     visitBlockExpression(RxParser::BlockExpressionContext *ctx) override;
 
     virtual std::any visitStatement(RxParser::StatementContext *ctx) override;
+
+    virtual std::any
+    visitLetStatement(RxParser::LetStatementContext *ctx) override;
+    virtual std::any visitExpression(RxParser::ExpressionContext *ctx) override;
+    virtual std::any visitConditionExpression(
+        RxParser::ConditionExpressionContext *ctx) override;
+    virtual std::any visitConditionBreakExpression(
+        RxParser::ConditionBreakExpressionContext *ctx) override;
+    virtual std::any visitStatementExpression(
+        RxParser::StatementExpressionContext *ctx) override;
 };

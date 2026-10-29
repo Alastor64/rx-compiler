@@ -1,8 +1,24 @@
 #include "Block.hpp"
 #include "AST.hpp"
 #include "Expr.hpp"
+#include "MyDef.hpp"
 #include "MyParserVisitor.hpp"
 #include "RxParser.h"
+#include "Type.hpp"
+#include <any>
+#include <string>
+#include <utility>
+ASTLet::ASTLet(Span p) : ASTnode(p) {
+    if_mut = 0;
+    type = nullptr;
+    expr = nullptr;
+}
+ASTLet::~ASTLet() {
+    delete type;
+    delete expr;
+    type = nullptr;
+    expr = nullptr;
+}
 ASTStatement::ASTStatement(Span p) : ASTnode(p) {
     let = nullptr;
     expr = nullptr;
@@ -93,5 +109,17 @@ any MyParserVisitor::visitStatement(RxParser::StatementContext *ctx) {
         return ASTtool::pack(nullptr);
     } else
         unreachable();
+    return ASTtool::pack(res);
+}
+any MyParserVisitor::visitLetStatement(RxParser::LetStatementContext *ctx) {
+    ASTLet *res = new ASTLet(Span::getRuleSpan(ctx));
+    auto tmp = any_cast<std::pair<string, bool>>(
+        ctx->identifierBinding()->accept(this));
+    res->if_mut = tmp.second;
+    res->id = tmp.first;
+    if (ctx->COLON()) {
+        res->type = ASTtool::unpack<ASTType>(ctx->typeRef()->accept(this));
+    }
+    res->expr = ASTtool::unpack<ASTExpr>(ctx->expression()->accept(this));
     return ASTtool::pack(res);
 }

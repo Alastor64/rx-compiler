@@ -82,7 +82,7 @@ int main(int argc, char **args) {
     DisplayVisitor dv(std::cout);
     dv.visit(cst);
     Span::getRuleSpan((antlr4::ParserRuleContext *)cst);
-    return 0;
     MyParserVisitor mv;
     mv.visit(cst);
+    return 0;
 }

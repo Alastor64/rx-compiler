@@ -1,8 +1,17 @@
 #pragma once
 #include "AST.hpp"
 #include "Expr.hpp"
+#include "Type.hpp"
 #include <vector>
-class ASTLet : public ASTnode {};
+class ASTLet : public ASTnode {
+  public:
+    ASTLet(Span);
+    virtual ~ASTLet();
+    string id;
+    ASTType *type;
+    bool if_mut;
+    ASTExpr *expr;
+};
 class ASTStatement : public ASTnode {
   public:
     enum Kind {

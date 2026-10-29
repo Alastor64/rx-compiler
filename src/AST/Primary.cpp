@@ -22,4 +22,5 @@ any MyParserVisitor::visitNonBlockPrimary(
         return ctx->pathInExpression()->accept(this);
     }
     unreachable();
+    return nullptr;
 }

@@ -2,6 +2,7 @@
 #include "AST.hpp"
 #include "Block.hpp"
 #include "MyDef.hpp"
+#include "MyParserVisitor.hpp"
 #include "Path.hpp"
 #include "Type.hpp"
 ASTELiteral::ASTELiteral(Span p) : ASTExpr(p) {
@@ -130,4 +131,23 @@ ASTEWhile::~ASTEWhile() {
     delete block;
     condition = nullptr;
     block = nullptr;
+}
+
+any MyParserVisitor::visitExpression(RxParser::ExpressionContext *ctx) {
+    return ctx->assignmentExpression()->accept(this);
+}
+
+any MyParserVisitor::visitConditionExpression(
+    RxParser::ConditionExpressionContext *ctx) {
+    return ctx->conditionAssignmentExpression()->accept(this);
+}
+
+any MyParserVisitor::visitConditionBreakExpression(
+    RxParser::ConditionBreakExpressionContext *ctx) {
+    return ctx->conditionBreakAssignmentExpression()->accept(this);
+}
+
+any MyParserVisitor::visitStatementExpression(
+    RxParser::StatementExpressionContext *ctx) {
+    return ctx->statementAssignmentExpression()->accept(this);
 }
