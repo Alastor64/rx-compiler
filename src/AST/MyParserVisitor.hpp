@@ -321,4 +321,12 @@ class MyParserVisitor : public RxParserBaseVisitor {
     visitOuterAttribute(RxParser::OuterAttributeContext *ctx) override;
 
     virtual std::any visitDeriveName(RxParser::DeriveNameContext *ctx) override;
+
+    virtual std::any
+    visitConstantItem(RxParser::ConstantItemContext *ctx) override;
+    virtual std::any
+    visitInherentImpl(RxParser::InherentImplContext *ctx) override;
+
+    virtual std::any
+    visitAssociatedItem(RxParser::AssociatedItemContext *ctx) override;
 };

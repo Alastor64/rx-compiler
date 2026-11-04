@@ -1,5 +1,6 @@
 #pragma once
 #include "AST.hpp"
+#include "Constant.hpp"
 #include "FuncDef.hpp"
 #include "MyDef.hpp"
 #include "RxParser.h"
@@ -10,5 +11,6 @@ class ASTCrate : public ASTnode {
     using ASTnode::ASTnode;
     vector<ASTFuncDef *> funcs;
     vector<ASTStruct *> structs;
+    vector<ASTConstant *> consts;
     virtual ~ASTCrate();
 };
