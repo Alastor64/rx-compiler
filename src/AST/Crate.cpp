@@ -14,6 +14,8 @@ any MyParserVisitor::visitItem(RxParser::ItemContext *ctx) {
         return ctx->structDefinition()->accept(this);
     if (ctx->constantItem())
         return ctx->constantItem()->accept(this);
+    if (ctx->inherentImpl())
+        return ctx->inherentImpl()->accept(this);
     return ASTtool::pack(nullptr);
 }
 ASTCrate::~ASTCrate() {
@@ -26,6 +28,10 @@ ASTCrate::~ASTCrate() {
         i = nullptr;
     }
     for (auto &i : consts) {
+        delete i;
+        i = nullptr;
+    }
+    for (auto &i : impls) {
         delete i;
         i = nullptr;
     }
@@ -42,6 +48,9 @@ std::any MyParserVisitor::visitCrate(RxParser::CrateContext *ctx) {
         }
         if (auto val = dynamic_cast<ASTConstant *>(tmp)) {
             res->consts.push_back(val);
+        }
+        if (auto val = dynamic_cast<ASTImpl *>(tmp)) {
+            res->impls.push_back(val);
         }
     }
     return ASTtool::pack(res);
