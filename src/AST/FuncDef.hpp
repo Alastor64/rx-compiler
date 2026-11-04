@@ -4,7 +4,7 @@
 #include "Param.hpp"
 #include "SelfParam.hpp"
 #include "Type.hpp"
-class ASTFuncDef : public ASTItem {
+class ASTFuncDef : public ASTnode {
   public:
     std::string name;
     ASTSelfParam *self;

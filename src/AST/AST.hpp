@@ -21,12 +21,6 @@ class ASTnode {
     ASTnode(ASTnode &) = delete;
     ASTnode(Span p);
 };
-class ASTItem : public ASTnode {
-    using ASTnode::ASTnode;
-
-  public:
-    virtual ~ASTItem();
-};
 class ASTtool {
   public:
     ASTtool() = delete;

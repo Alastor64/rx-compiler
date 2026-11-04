@@ -10,7 +10,7 @@
 #include <string>
 #include <utility>
 #include <vector>
-ASTFuncDef::ASTFuncDef(Span p) : ASTItem(p) {
+ASTFuncDef::ASTFuncDef(Span p) : ASTnode(p) {
     self = nullptr;
     block = nullptr;
     ret = nullptr;

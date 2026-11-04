@@ -310,4 +310,15 @@ class MyParserVisitor : public RxParserBaseVisitor {
         RxParser::ConditionPrimaryWithoutBareBlockContext *ctx) override;
     virtual std::any visitConstValue(RxParser::ConstValueContext *ctx) override;
     virtual std::any visitMagnitude(RxParser::MagnitudeContext *ctx) override;
+
+    virtual std::any
+    visitStructDefinition(RxParser::StructDefinitionContext *ctx) override;
+
+    virtual std::any
+    visitStructField(RxParser::StructFieldContext *ctx) override;
+
+    virtual std::any
+    visitOuterAttribute(RxParser::OuterAttributeContext *ctx) override;
+
+    virtual std::any visitDeriveName(RxParser::DeriveNameContext *ctx) override;
 };

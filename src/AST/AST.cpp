@@ -25,14 +25,13 @@ Span Span::getTokenSpan(antlr4::Token *tk) {
 }
 ASTnode::~ASTnode() {};
 ASTnode::ASTnode(Span p) : pos(p) {};
-ASTItem::~ASTItem() {};
 
 any ASTtool::pack(ASTnode *p) { return any(p); }
-any MyParserVisitor::visitItem(RxParser::ItemContext *ctx) {
-    if (ctx->children.empty())
-        return ASTtool::pack(nullptr);
-    return ctx->children[0]->accept(this);
-}
+// any MyParserVisitor::visitItem(RxParser::ItemContext *ctx) {
+//     if (ctx->children.empty())
+//         return ASTtool::pack(nullptr);
+//     return ctx->children[0]->accept(this);
+// }
 any MyParserVisitor::visitChildren(antlr4::tree::ParseTree *ctx) {
     throw MyErr("unrealized visitor");
 }
