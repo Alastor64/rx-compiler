@@ -4,9 +4,7 @@
 #include "FuncDef.hpp"
 #include "Impl.hpp"
 #include "MyDef.hpp"
-#include "RxParser.h"
 #include "Struct.hpp"
-#include <vector>
 class ASTCrate : public ASTnode {
   public:
     using ASTnode::ASTnode;
