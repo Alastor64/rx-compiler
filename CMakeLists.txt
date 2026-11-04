@@ -261,6 +261,25 @@ target_include_directories(rx_ast PUBLIC
 target_link_libraries(rx_ast PUBLIC rx_parser rx_err)
 
 
+# semantic
+set(RX_SEM_DIR "${RX_SRC_DIR}/semantic")
+
+file(GLOB RX_SEM_SOURCES CONFIGURE_DEPENDS "${RX_SEM_DIR}/*.cpp")
+file(GLOB RX_SEM_HEADERS CONFIGURE_DEPENDS "${RX_SEM_DIR}/*.hpp")
+
+if(NOT RX_SEM_SOURCES)
+    message(FATAL_ERROR "${RX_SEM_DIR} 下没有找到任何 .cpp 文件。")
+endif()
+
+add_library(rx_sem STATIC ${RX_SEM_SOURCES} ${RX_SEM_HEADERS})
+
+target_include_directories(rx_sem PUBLIC
+    "${RX_SEM_DIR}"
+)
+
+target_link_libraries(rx_sem PUBLIC rx_ast)
+
+
 
 
 
@@ -288,7 +307,7 @@ foreach(main_source IN LISTS RX_MAIN_SOURCES)
     add_executable("${main_name}" "${main_source}")
 
     # PRIVATE：这个可执行文件自己需要 rx_ast，不传染给别人
-    target_link_libraries("${main_name}" PRIVATE rx_ast)
+    target_link_libraries("${main_name}" PRIVATE rx_sem)
 endforeach()
 
 # 一个入口都没有时提示一下（不是错误，可能你正在重构）

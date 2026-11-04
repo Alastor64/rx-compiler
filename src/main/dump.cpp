@@ -1,8 +1,11 @@
 #include "AST.hpp"
+#include "Crate.hpp"
 #include "DisplayVisitor.hpp"
 #include "MyParserVisitor.hpp"
 #include "RxLexer.h"
 #include "RxParser.h"
+#include "Struct.hpp"
+#include "StructDeriveCheck.hpp"
 #include "myErr.hpp"
 #include <ANTLRInputStream.h>
 #include <CommonTokenStream.h>
@@ -84,10 +87,17 @@ int main(int argc, char **args) {
     dv.visit(cst);
     Span::getRuleSpan((antlr4::ParserRuleContext *)cst);
     MyParserVisitor mv;
+    ASTnode *tmp;
     try {
-        mv.visit(cst);
+        tmp = ASTtool::unpack<ASTnode>(mv.visit(cst));
     } catch (MyErr e) {
         cerr << e.what() << endl;
+    }
+    if (auto ast = dynamic_cast<ASTCrate *>(tmp)) {
+        printf("%d\n", StructDeriveCheck(ast));
+    }
+    if (auto ast = dynamic_cast<ASTStruct *>(tmp)) {
+        printf("%d\n", StructDeriveCheck(ast));
     }
     return 0;
 }
