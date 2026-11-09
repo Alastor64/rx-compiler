@@ -13,4 +13,7 @@ class ASTCrate : public ASTnode {
     vector<ASTConstant *> consts;
     vector<ASTImpl *> impls;
     virtual ~ASTCrate();
+    virtual any accept(ASTvisitor *visitor) override {
+        return visitor->visitCrate(this);
+    }
 };

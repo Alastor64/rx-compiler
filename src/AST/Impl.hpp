@@ -11,4 +11,7 @@ struct ASTImpl : public ASTnode {
     vector<ASTFuncDef *> funcs;
     ASTImpl(Span);
     virtual ~ASTImpl();
+    virtual any accept(ASTvisitor *visitor) override {
+        return visitor->visitImpl(this);
+    }
 };

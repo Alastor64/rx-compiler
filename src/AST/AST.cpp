@@ -26,7 +26,7 @@ Span Span::getTokenSpan(antlr4::Token *tk) {
 }
 ASTnode::~ASTnode() {};
 ASTnode::ASTnode(Span p) : pos(p) {};
-any ASTnode::accept(ASTvisitor *v) { return v->visitnode(this); }
+any ASTnode::accept(ASTvisitor *v) { return v->visitNode(this); }
 
 any ASTtool::pack(ASTnode *p) { return any(p); }
 // any MyParserVisitor::visitItem(RxParser::ItemContext *ctx) {

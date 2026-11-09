@@ -32,4 +32,7 @@ class ASTStruct : public ASTnode {
     vector<Field> fields;
     ASTStruct(Span);
     virtual ~ASTStruct();
+    virtual any accept(ASTvisitor *visitor) override {
+        return visitor->visitStruct(this);
+    }
 };
