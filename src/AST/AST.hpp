@@ -1,4 +1,5 @@
 #pragma once
+#include "ASTvisitor.hpp"
 #include "MyDef.hpp"
 #include "myErr.hpp"
 #include <ParserRuleContext.h>
@@ -20,6 +21,7 @@ class ASTnode {
     ASTnode &operator=(ASTnode) = delete;
     ASTnode(ASTnode &) = delete;
     ASTnode(Span p);
+    virtual any accept(ASTvisitor *);
 };
 class ASTtool {
   public:

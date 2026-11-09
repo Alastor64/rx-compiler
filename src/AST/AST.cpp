@@ -1,4 +1,5 @@
 #include "AST.hpp"
+#include "ASTvisitor.hpp"
 #include "MyDef.hpp"
 #include "MyParserVisitor.hpp"
 #include "myErr.hpp"
@@ -25,6 +26,7 @@ Span Span::getTokenSpan(antlr4::Token *tk) {
 }
 ASTnode::~ASTnode() {};
 ASTnode::ASTnode(Span p) : pos(p) {};
+any ASTnode::accept(ASTvisitor *v) { return v->visitnode(this); }
 
 any ASTtool::pack(ASTnode *p) { return any(p); }
 // any MyParserVisitor::visitItem(RxParser::ItemContext *ctx) {
