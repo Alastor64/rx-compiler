@@ -5,6 +5,7 @@
 #include <any>
 class MyParserVisitor : public RxParserBaseVisitor {
   public:
+    void reset();
     static void unreachable();
     virtual any visitCrate(RxParser::CrateContext *ctx) override;
     virtual any visitItem(RxParser::ItemContext *ctx) override;

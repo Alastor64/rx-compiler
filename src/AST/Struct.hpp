@@ -1,5 +1,7 @@
 #pragma once
 #include "AST.hpp"
+#include "Constant.hpp"
+#include "FuncDef.hpp"
 #include "Type.hpp"
 class ASTStruct : public ASTnode {
   public:
@@ -28,6 +30,9 @@ class ASTStruct : public ASTnode {
     Derive derive;
     string name;
     vector<Field> fields;
+    map<string, Field> _fields;
+    map<string, ASTFuncDef *> _methods;
+    map<string, ASTConstant *> _consts;
     ASTStruct(Span);
     virtual ~ASTStruct();
     virtual int accept(ASTvisitor *visitor) override;

@@ -9,6 +9,9 @@
 class ASTCrate : public ASTnode {
   public:
     using ASTnode::ASTnode;
+    map<string, ASTFuncDef *> _funcs;
+    map<string, ASTStruct *> _structs;
+    map<string, ASTConstant *> _consts;
     vector<ASTFuncDef *> funcs;
     vector<ASTStruct *> structs;
     vector<ASTConstant *> consts;
