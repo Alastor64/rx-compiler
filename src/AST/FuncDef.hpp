@@ -13,6 +13,6 @@ class ASTFuncDef : public ASTnode {
     ASTBlock *block;
     ASTFuncDef(Span p);
     virtual ~ASTFuncDef();
-    virtual any accept(ASTvisitor *visitor) override;
-    virtual any visitChildren(ASTvisitor *visitor) override;
+    virtual int accept(ASTvisitor *visitor) override;
+    virtual int visitChildren(ASTvisitor *visitor) override;
 };

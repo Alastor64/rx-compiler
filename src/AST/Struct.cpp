@@ -9,7 +9,7 @@
 #include "Type.hpp"
 #include <any>
 #include <vector>
-any ASTStruct::accept(ASTvisitor *visitor) {
+int ASTStruct::accept(ASTvisitor *visitor) {
     return visitor->visitStruct(this);
 }
 
@@ -75,8 +75,9 @@ any MyParserVisitor::visitDeriveName(RxParser::DeriveNameContext *ctx) {
     return any(ASTStruct::Derive(sta));
 }
 
-any ASTStruct::visitChildren(ASTvisitor *visitor) {
+int ASTStruct::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
     for (const auto &field : fields)
-        ChildrenTool::visitChild(field.type, visitor);
-    return {};
+        res |= ChildrenTool::visitChild(field.type, visitor);
+    return res;
 }

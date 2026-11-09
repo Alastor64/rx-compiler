@@ -7,6 +7,6 @@ class SelfErase : public ASTvisitor {
   public:
     vector<string> fa;
     void reset();
-    virtual any visitStruct(ASTStruct *ast) override;
-    virtual any visitImpl(ASTImpl *ast) override;
+    virtual int visitStruct(ASTStruct *ast) override;
+    virtual int visitImpl(ASTImpl *ast) override;
 };

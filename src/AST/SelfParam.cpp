@@ -3,7 +3,7 @@
 #include "AST.hpp"
 #include "MyParserVisitor.hpp"
 #include "RxParser.h"
-any ASTSelfParam::accept(ASTvisitor *visitor) {
+int ASTSelfParam::accept(ASTvisitor *visitor) {
     return visitor->visitSelfParam(this);
 }
 
@@ -17,4 +17,4 @@ any MyParserVisitor::visitSelfParam(RxParser::SelfParamContext *ctx) {
     return ASTtool::pack(res);
 }
 
-any ASTSelfParam::visitChildren(ASTvisitor *) { return {}; }
+int ASTSelfParam::visitChildren(ASTvisitor *) { return 0; }

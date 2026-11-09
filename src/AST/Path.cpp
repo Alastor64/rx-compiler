@@ -9,7 +9,7 @@
 #include "myErr.hpp"
 #include <tree/ParseTree.h>
 #include <tree/ParseTreeType.h>
-any ASTPathSeg::accept(ASTvisitor *visitor) {
+int ASTPathSeg::accept(ASTvisitor *visitor) {
     return visitor->visitPathSeg(this);
 }
 
@@ -71,17 +71,14 @@ ASTEPath::~ASTEPath() {
     }
 }
 
-any ASTEPath::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitList(path, visitor);
-    return {};
+int ASTEPath::visitChildren(ASTvisitor *visitor) {
+    return ChildrenTool::visitList(path, visitor);
 }
 
-any ASTPathSeg::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitList(args, visitor);
-    return {};
+int ASTPathSeg::visitChildren(ASTvisitor *visitor) {
+    return ChildrenTool::visitList(args, visitor);
 }
 
-any ASTTPath::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitList(path, visitor);
-    return {};
+int ASTTPath::visitChildren(ASTvisitor *visitor) {
+    return ChildrenTool::visitList(path, visitor);
 }

@@ -5,6 +5,6 @@ class ASTSelfParam : public ASTnode {
     ASTSelfParam(Span p);
     bool if_and;
     bool if_mut;
-    virtual any accept(ASTvisitor *visitor) override;
-    virtual any visitChildren(ASTvisitor *) override;
+    virtual int accept(ASTvisitor *visitor) override;
+    virtual int visitChildren(ASTvisitor *) override;
 };

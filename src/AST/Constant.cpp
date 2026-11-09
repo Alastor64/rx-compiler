@@ -5,7 +5,7 @@
 #include "Expr.hpp"
 #include "MyParserVisitor.hpp"
 #include "Type.hpp"
-any ASTConstant::accept(ASTvisitor *visitor) {
+int ASTConstant::accept(ASTvisitor *visitor) {
     return visitor->visitConstant(this);
 }
 
@@ -27,8 +27,9 @@ any MyParserVisitor::visitConstantItem(RxParser::ConstantItemContext *ctx) {
     return ASTtool::pack(res);
 }
 
-any ASTConstant::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(type, visitor);
-    ChildrenTool::visitChild(value, visitor);
-    return {};
+int ASTConstant::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(type, visitor);
+    res |= ChildrenTool::visitChild(value, visitor);
+    return res;
 }

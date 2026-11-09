@@ -3,7 +3,7 @@
 #include "ASTvisitor.hpp"
 #include "ChildrenTool.hpp"
 #include "MyParserVisitor.hpp"
-any ASTParam::accept(ASTvisitor *visitor) { return visitor->visitParam(this); }
+int ASTParam::accept(ASTvisitor *visitor) { return visitor->visitParam(this); }
 
 ASTParam::ASTParam(Span p) : ASTnode(p) { if_mut = 0; }
 ASTParam::~ASTParam() {
@@ -20,7 +20,6 @@ any MyParserVisitor::visitFunctionParam(RxParser::FunctionParamContext *ctx) {
     return ASTtool::pack(res);
 }
 
-any ASTParam::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(type, visitor);
-    return {};
+int ASTParam::visitChildren(ASTvisitor *visitor) {
+    return ChildrenTool::visitChild(type, visitor);
 }

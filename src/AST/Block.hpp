@@ -11,8 +11,8 @@ class ASTLet : public ASTnode {
     ASTType *type;
     bool if_mut;
     ASTExpr *expr;
-    virtual any accept(ASTvisitor *visitor) override;
-    virtual any visitChildren(ASTvisitor *visitor) override;
+    virtual int accept(ASTvisitor *visitor) override;
+    virtual int visitChildren(ASTvisitor *visitor) override;
 };
 class ASTStatement : public ASTnode {
   public:
@@ -26,8 +26,8 @@ class ASTStatement : public ASTnode {
     Kind kind;
     ASTExpr *expr;
     ASTLet *let;
-    virtual any accept(ASTvisitor *visitor) override;
-    virtual any visitChildren(ASTvisitor *visitor) override;
+    virtual int accept(ASTvisitor *visitor) override;
+    virtual int visitChildren(ASTvisitor *visitor) override;
 };
 class ASTBlock : public ASTExpr {
   public:
@@ -35,6 +35,6 @@ class ASTBlock : public ASTExpr {
     virtual ~ASTBlock();
     vector<ASTStatement *> statement;
     ASTExpr *tail;
-    virtual any accept(ASTvisitor *visitor) override;
-    virtual any visitChildren(ASTvisitor *visitor) override;
+    virtual int accept(ASTvisitor *visitor) override;
+    virtual int visitChildren(ASTvisitor *visitor) override;
 };

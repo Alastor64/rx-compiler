@@ -30,6 +30,6 @@ class ASTStruct : public ASTnode {
     vector<Field> fields;
     ASTStruct(Span);
     virtual ~ASTStruct();
-    virtual any accept(ASTvisitor *visitor) override;
-    virtual any visitChildren(ASTvisitor *visitor) override;
+    virtual int accept(ASTvisitor *visitor) override;
+    virtual int visitChildren(ASTvisitor *visitor) override;
 };

@@ -8,11 +8,11 @@
 #include "RxParser.h"
 #include "Type.hpp"
 #include <utility>
-any ASTLet::accept(ASTvisitor *visitor) { return visitor->visitLet(this); }
-any ASTStatement::accept(ASTvisitor *visitor) {
+int ASTLet::accept(ASTvisitor *visitor) { return visitor->visitLet(this); }
+int ASTStatement::accept(ASTvisitor *visitor) {
     return visitor->visitStatement(this);
 }
-any ASTBlock::accept(ASTvisitor *visitor) { return visitor->visitBlock(this); }
+int ASTBlock::accept(ASTvisitor *visitor) { return visitor->visitBlock(this); }
 
 ASTLet::ASTLet(Span p) : ASTnode(p) {
     if_mut = 0;
@@ -130,20 +130,23 @@ any MyParserVisitor::visitLetStatement(RxParser::LetStatementContext *ctx) {
     return ASTtool::pack(res);
 }
 
-any ASTLet::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(type, visitor);
-    ChildrenTool::visitChild(expr, visitor);
-    return {};
+int ASTLet::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(type, visitor);
+    res |= ChildrenTool::visitChild(expr, visitor);
+    return res;
 }
 
-any ASTStatement::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(expr, visitor);
-    ChildrenTool::visitChild(let, visitor);
-    return {};
+int ASTStatement::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(expr, visitor);
+    res |= ChildrenTool::visitChild(let, visitor);
+    return res;
 }
 
-any ASTBlock::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitList(statement, visitor);
-    ChildrenTool::visitChild(tail, visitor);
-    return {};
+int ASTBlock::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitList(statement, visitor);
+    res |= ChildrenTool::visitChild(tail, visitor);
+    return res;
 }

@@ -7,52 +7,52 @@
 #include "MyParserVisitor.hpp"
 #include "Path.hpp"
 #include "Type.hpp"
-any ASTExpr::accept(ASTvisitor *visitor) { return visitor->visitExpr(this); }
-any ASTEUnit::accept(ASTvisitor *visitor) { return visitor->visitEUnit(this); }
-any ASTEPath::accept(ASTvisitor *visitor) { return visitor->visitEPath(this); }
-any ASTEIf::accept(ASTvisitor *visitor) { return visitor->visitEIf(this); }
-any ASTEWhile::accept(ASTvisitor *visitor) {
+int ASTExpr::accept(ASTvisitor *visitor) { return visitor->visitExpr(this); }
+int ASTEUnit::accept(ASTvisitor *visitor) { return visitor->visitEUnit(this); }
+int ASTEPath::accept(ASTvisitor *visitor) { return visitor->visitEPath(this); }
+int ASTEIf::accept(ASTvisitor *visitor) { return visitor->visitEIf(this); }
+int ASTEWhile::accept(ASTvisitor *visitor) {
     return visitor->visitEWhile(this);
 }
-any ASTEStruct::accept(ASTvisitor *visitor) {
+int ASTEStruct::accept(ASTvisitor *visitor) {
     return visitor->visitEStruct(this);
 }
-any ASTELiteral::accept(ASTvisitor *visitor) {
+int ASTELiteral::accept(ASTvisitor *visitor) {
     return visitor->visitELiteral(this);
 }
-any ASTEArray::accept(ASTvisitor *visitor) {
+int ASTEArray::accept(ASTvisitor *visitor) {
     return visitor->visitEArray(this);
 }
-any ASTERepeat::accept(ASTvisitor *visitor) {
+int ASTERepeat::accept(ASTvisitor *visitor) {
     return visitor->visitERepeat(this);
 }
-any ASTEBranch::accept(ASTvisitor *visitor) {
+int ASTEBranch::accept(ASTvisitor *visitor) {
     return visitor->visitEBranch(this);
 }
-any ASTEOperator::accept(ASTvisitor *visitor) {
+int ASTEOperator::accept(ASTvisitor *visitor) {
     return visitor->visitOperator(this);
 }
-any ASTOBinary::accept(ASTvisitor *visitor) {
+int ASTOBinary::accept(ASTvisitor *visitor) {
     return visitor->visitOBinary(this);
 }
-any ASTOUnary::accept(ASTvisitor *visitor) {
+int ASTOUnary::accept(ASTvisitor *visitor) {
     return visitor->visitOUnary(this);
 }
-any ASTOCall::accept(ASTvisitor *visitor) { return visitor->visitOCall(this); }
-any ASTOIndex::accept(ASTvisitor *visitor) {
+int ASTOCall::accept(ASTvisitor *visitor) { return visitor->visitOCall(this); }
+int ASTOIndex::accept(ASTvisitor *visitor) {
     return visitor->visitOIndex(this);
 }
-any ASTOField::accept(ASTvisitor *visitor) {
+int ASTOField::accept(ASTvisitor *visitor) {
     return visitor->visitOField(this);
 }
-any ASTOMethod::accept(ASTvisitor *visitor) {
+int ASTOMethod::accept(ASTvisitor *visitor) {
     return visitor->visitOMethod(this);
 }
-any ASTOAssign::accept(ASTvisitor *visitor) {
+int ASTOAssign::accept(ASTvisitor *visitor) {
     return visitor->visitOAssign(this);
 }
-any ASTOCast::accept(ASTvisitor *visitor) { return visitor->visitOCast(this); }
-any ASTOShift::accept(ASTvisitor *visitor) {
+int ASTOCast::accept(ASTvisitor *visitor) { return visitor->visitOCast(this); }
+int ASTOShift::accept(ASTvisitor *visitor) {
     return visitor->visitOShift(this);
 }
 
@@ -243,99 +243,106 @@ any MyParserVisitor::visitMagnitude(RxParser::MagnitudeContext *ctx) {
     return nullptr;
 }
 
-any ASTExpr::visitChildren(ASTvisitor *) { return {}; }
+int ASTExpr::visitChildren(ASTvisitor *) { return 0; }
 
-any ASTEUnit::visitChildren(ASTvisitor *) { return {}; }
+int ASTEUnit::visitChildren(ASTvisitor *) { return 0; }
 
-any ASTEIf::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(condition, visitor);
-    ChildrenTool::visitChild(truestat, visitor);
-    ChildrenTool::visitChild(falsestat, visitor);
-    return {};
+int ASTEIf::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(condition, visitor);
+    res |= ChildrenTool::visitChild(truestat, visitor);
+    res |= ChildrenTool::visitChild(falsestat, visitor);
+    return res;
 }
 
-any ASTEWhile::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(condition, visitor);
-    ChildrenTool::visitChild(block, visitor);
-    return {};
+int ASTEWhile::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(condition, visitor);
+    res |= ChildrenTool::visitChild(block, visitor);
+    return res;
 }
 
-any ASTEStruct::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(path, visitor);
+int ASTEStruct::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(path, visitor);
     for (const auto &field : member)
-        ChildrenTool::visitChild(field.value, visitor);
-    return {};
+        res |= ChildrenTool::visitChild(field.value, visitor);
+    return res;
 }
 
-any ASTELiteral::visitChildren(ASTvisitor *) { return {}; }
+int ASTELiteral::visitChildren(ASTvisitor *) { return 0; }
 
-any ASTEArray::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitList(elem, visitor);
-    return {};
+int ASTEArray::visitChildren(ASTvisitor *visitor) {
+    return ChildrenTool::visitList(elem, visitor);
 }
 
-any ASTERepeat::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(elem, visitor);
-    ChildrenTool::visitChild(len, visitor);
-    return {};
+int ASTERepeat::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(elem, visitor);
+    res |= ChildrenTool::visitChild(len, visitor);
+    return res;
 }
 
-any ASTEBranch::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(value, visitor);
-    return {};
+int ASTEBranch::visitChildren(ASTvisitor *visitor) {
+    return ChildrenTool::visitChild(value, visitor);
 }
 
-any ASTEOperator::visitChildren(ASTvisitor *) { return {}; }
+int ASTEOperator::visitChildren(ASTvisitor *) { return 0; }
 
-any ASTOBinary::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(left, visitor);
-    ChildrenTool::visitChild(right, visitor);
-    return {};
+int ASTOBinary::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(left, visitor);
+    res |= ChildrenTool::visitChild(right, visitor);
+    return res;
 }
 
-any ASTOUnary::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(inner, visitor);
-    return {};
+int ASTOUnary::visitChildren(ASTvisitor *visitor) {
+    return ChildrenTool::visitChild(inner, visitor);
 }
 
-any ASTOCall::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(func, visitor);
-    ChildrenTool::visitList(args, visitor);
-    return {};
+int ASTOCall::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(func, visitor);
+    res |= ChildrenTool::visitList(args, visitor);
+    return res;
 }
 
-any ASTOIndex::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(array, visitor);
-    ChildrenTool::visitChild(index, visitor);
-    return {};
+int ASTOIndex::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(array, visitor);
+    res |= ChildrenTool::visitChild(index, visitor);
+    return res;
 }
 
-any ASTOField::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(owner, visitor);
-    return {};
+int ASTOField::visitChildren(ASTvisitor *visitor) {
+    return ChildrenTool::visitChild(owner, visitor);
 }
 
-any ASTOMethod::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(owner, visitor);
-    ChildrenTool::visitChild(func, visitor);
-    ChildrenTool::visitList(args, visitor);
-    return {};
+int ASTOMethod::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(owner, visitor);
+    res |= ChildrenTool::visitChild(func, visitor);
+    res |= ChildrenTool::visitList(args, visitor);
+    return res;
 }
 
-any ASTOAssign::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(place, visitor);
-    ChildrenTool::visitChild(value, visitor);
-    return {};
+int ASTOAssign::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(place, visitor);
+    res |= ChildrenTool::visitChild(value, visitor);
+    return res;
 }
 
-any ASTOCast::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(value, visitor);
-    ChildrenTool::visitChild(type, visitor);
-    return {};
+int ASTOCast::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(value, visitor);
+    res |= ChildrenTool::visitChild(type, visitor);
+    return res;
 }
 
-any ASTOShift::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(base, visitor);
-    ChildrenTool::visitChild(expo, visitor);
-    return {};
+int ASTOShift::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(base, visitor);
+    res |= ChildrenTool::visitChild(expo, visitor);
+    return res;
 }

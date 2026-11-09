@@ -12,7 +12,7 @@
 #include <string>
 #include <utility>
 #include <vector>
-any ASTFuncDef::accept(ASTvisitor *visitor) {
+int ASTFuncDef::accept(ASTvisitor *visitor) {
     return visitor->visitFuncDef(this);
 }
 
@@ -62,10 +62,11 @@ any MyParserVisitor::visitFunctionParameters(
     return tmp;
 }
 
-any ASTFuncDef::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(self, visitor);
-    ChildrenTool::visitList(params, visitor);
-    ChildrenTool::visitChild(ret, visitor);
-    ChildrenTool::visitChild(block, visitor);
-    return {};
+int ASTFuncDef::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(self, visitor);
+    res |= ChildrenTool::visitList(params, visitor);
+    res |= ChildrenTool::visitChild(ret, visitor);
+    res |= ChildrenTool::visitChild(block, visitor);
+    return res;
 }

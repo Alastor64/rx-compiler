@@ -26,7 +26,7 @@ Span Span::getTokenSpan(antlr4::Token *tk) {
 }
 ASTnode::~ASTnode() {};
 ASTnode::ASTnode(Span p) : pos(p) {};
-any ASTnode::accept(ASTvisitor *v) { return v->visitNode(this); }
+int ASTnode::accept(ASTvisitor *v) { return v->visitNode(this); }
 
 any ASTtool::pack(ASTnode *p) { return any(p); }
 // any MyParserVisitor::visitItem(RxParser::ItemContext *ctx) {
@@ -39,4 +39,4 @@ any MyParserVisitor::visitChildren(antlr4::tree::ParseTree *ctx) {
 }
 void MyParserVisitor::unreachable() { throw MyErr("unreachable"); }
 
-any ASTnode::visitChildren(ASTvisitor *) { return {}; }
+int ASTnode::visitChildren(ASTvisitor *) { return 0; }

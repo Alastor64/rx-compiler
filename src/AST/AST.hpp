@@ -22,8 +22,8 @@ class ASTnode {
     ASTnode &operator=(ASTnode) = delete;
     ASTnode(ASTnode &) = delete;
     ASTnode(Span p);
-    virtual any accept(ASTvisitor *);
-    virtual any visitChildren(ASTvisitor *);
+    virtual int accept(ASTvisitor *);
+    virtual int visitChildren(ASTvisitor *);
 };
 class ASTtool {
   public:

@@ -5,13 +5,13 @@
 #include "Expr.hpp"
 #include "MyParserVisitor.hpp"
 #include "myErr.hpp"
-any ASTType::accept(ASTvisitor *visitor) { return visitor->visitType(this); }
-any ASTTRef::accept(ASTvisitor *visitor) { return visitor->visitTRef(this); }
-any ASTTArray::accept(ASTvisitor *visitor) {
+int ASTType::accept(ASTvisitor *visitor) { return visitor->visitType(this); }
+int ASTTRef::accept(ASTvisitor *visitor) { return visitor->visitTRef(this); }
+int ASTTArray::accept(ASTvisitor *visitor) {
     return visitor->visitTArray(this);
 }
-any ASTTUnit::accept(ASTvisitor *visitor) { return visitor->visitTUnit(this); }
-any ASTTPath::accept(ASTvisitor *visitor) { return visitor->visitTPath(this); }
+int ASTTUnit::accept(ASTvisitor *visitor) { return visitor->visitTUnit(this); }
+int ASTTPath::accept(ASTvisitor *visitor) { return visitor->visitTPath(this); }
 
 ASTTRef::ASTTRef(Span p) : ASTType(p) {
     inner = nullptr;
@@ -69,17 +69,17 @@ std::any MyParserVisitor::visitArrayType(RxParser::ArrayTypeContext *ctx) {
     return ASTtool::pack(res);
 }
 
-any ASTType::visitChildren(ASTvisitor *) { return {}; }
+int ASTType::visitChildren(ASTvisitor *) { return 0; }
 
-any ASTTRef::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(inner, visitor);
-    return {};
+int ASTTRef::visitChildren(ASTvisitor *visitor) {
+    return ChildrenTool::visitChild(inner, visitor);
 }
 
-any ASTTArray::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(elem, visitor);
-    ChildrenTool::visitChild(len, visitor);
-    return {};
+int ASTTArray::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(elem, visitor);
+    res |= ChildrenTool::visitChild(len, visitor);
+    return res;
 }
 
-any ASTTUnit::visitChildren(ASTvisitor *) { return {}; }
+int ASTTUnit::visitChildren(ASTvisitor *) { return 0; }

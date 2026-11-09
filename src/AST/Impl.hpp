@@ -6,10 +6,11 @@
 struct ASTImpl : public ASTnode {
   public:
     ASTType *type;
+    string id;
     vector<ASTConstant *> consts;
     vector<ASTFuncDef *> funcs;
     ASTImpl(Span);
     virtual ~ASTImpl();
-    virtual any accept(ASTvisitor *visitor) override;
-    virtual any visitChildren(ASTvisitor *visitor) override;
+    virtual int accept(ASTvisitor *visitor) override;
+    virtual int visitChildren(ASTvisitor *visitor) override;
 };

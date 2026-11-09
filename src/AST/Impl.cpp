@@ -7,7 +7,7 @@
 #include "MyParserVisitor.hpp"
 #include "RxParser.h"
 #include "Type.hpp"
-any ASTImpl::accept(ASTvisitor *visitor) { return visitor->visitImpl(this); }
+int ASTImpl::accept(ASTvisitor *visitor) { return visitor->visitImpl(this); }
 
 ASTImpl::ASTImpl(Span p) : ASTnode(p) { type = nullptr; }
 ASTImpl::~ASTImpl() {
@@ -43,9 +43,10 @@ any MyParserVisitor::visitAssociatedItem(RxParser::AssociatedItemContext *ctx) {
     return ASTtool::pack(nullptr);
 }
 
-any ASTImpl::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitChild(type, visitor);
-    ChildrenTool::visitList(consts, visitor);
-    ChildrenTool::visitList(funcs, visitor);
-    return {};
+int ASTImpl::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitChild(type, visitor);
+    res |= ChildrenTool::visitList(consts, visitor);
+    res |= ChildrenTool::visitList(funcs, visitor);
+    return res;
 }

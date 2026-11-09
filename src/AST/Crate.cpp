@@ -8,7 +8,7 @@
 #include "MyParserVisitor.hpp"
 #include "RxParser.h"
 #include "Struct.hpp"
-any ASTCrate::accept(ASTvisitor *visitor) { return visitor->visitCrate(this); }
+int ASTCrate::accept(ASTvisitor *visitor) { return visitor->visitCrate(this); }
 
 any MyParserVisitor::visitItem(RxParser::ItemContext *ctx) {
     if (ctx->functionDefinition())
@@ -59,10 +59,11 @@ std::any MyParserVisitor::visitCrate(RxParser::CrateContext *ctx) {
     return ASTtool::pack(res);
 }
 
-any ASTCrate::visitChildren(ASTvisitor *visitor) {
-    ChildrenTool::visitList(funcs, visitor);
-    ChildrenTool::visitList(structs, visitor);
-    ChildrenTool::visitList(consts, visitor);
-    ChildrenTool::visitList(impls, visitor);
-    return {};
+int ASTCrate::visitChildren(ASTvisitor *visitor) {
+    int res = 0;
+    res |= ChildrenTool::visitList(funcs, visitor);
+    res |= ChildrenTool::visitList(structs, visitor);
+    res |= ChildrenTool::visitList(consts, visitor);
+    res |= ChildrenTool::visitList(impls, visitor);
+    return res;
 }

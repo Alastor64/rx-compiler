@@ -8,6 +8,6 @@ class ASTParam : public ASTnode {
     string name;
     bool if_mut;
     virtual ~ASTParam();
-    virtual any accept(ASTvisitor *visitor) override;
-    virtual any visitChildren(ASTvisitor *visitor) override;
+    virtual int accept(ASTvisitor *visitor) override;
+    virtual int visitChildren(ASTvisitor *visitor) override;
 };
