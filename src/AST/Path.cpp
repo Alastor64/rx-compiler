@@ -1,13 +1,17 @@
 #include "Path.hpp"
 #include "AST.hpp"
+#include "ASTvisitor.hpp"
+#include "ChildrenTool.hpp"
 #include "MyDef.hpp"
 #include "MyParserVisitor.hpp"
 #include "RxParser.h"
-#include "RxParserVisitor.h"
 #include "Type.hpp"
 #include "myErr.hpp"
 #include <tree/ParseTree.h>
 #include <tree/ParseTreeType.h>
+any ASTPathSeg::accept(ASTvisitor *visitor) {
+    return visitor->visitPathSeg(this);
+}
 
 ASTPathSeg::~ASTPathSeg() {
     for (auto &i : args) {
@@ -65,4 +69,19 @@ ASTEPath::~ASTEPath() {
         delete i;
         i = nullptr;
     }
+}
+
+any ASTEPath::visitChildren(ASTvisitor *visitor) {
+    ChildrenTool::visitList(path, visitor);
+    return {};
+}
+
+any ASTPathSeg::visitChildren(ASTvisitor *visitor) {
+    ChildrenTool::visitList(args, visitor);
+    return {};
+}
+
+any ASTTPath::visitChildren(ASTvisitor *visitor) {
+    ChildrenTool::visitList(path, visitor);
+    return {};
 }

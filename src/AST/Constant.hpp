@@ -9,7 +9,6 @@ struct ASTConstant : public ASTnode {
     ASTExpr *value;
     ASTConstant(Span);
     virtual ~ASTConstant();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitConstant(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };

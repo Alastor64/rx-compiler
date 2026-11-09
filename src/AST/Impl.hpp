@@ -3,7 +3,6 @@
 #include "Constant.hpp"
 #include "FuncDef.hpp"
 #include "Type.hpp"
-#include <vector>
 struct ASTImpl : public ASTnode {
   public:
     ASTType *type;
@@ -11,7 +10,6 @@ struct ASTImpl : public ASTnode {
     vector<ASTFuncDef *> funcs;
     ASTImpl(Span);
     virtual ~ASTImpl();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitImpl(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };

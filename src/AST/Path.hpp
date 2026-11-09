@@ -11,9 +11,8 @@ class ASTPathSeg : public ASTnode {
     vector<ASTType *> args;
     using ASTnode::ASTnode;
     virtual ~ASTPathSeg();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitPathSeg(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 template <
     typename T,

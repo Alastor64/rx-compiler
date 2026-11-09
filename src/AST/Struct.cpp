@@ -1,5 +1,7 @@
 #include "Struct.hpp"
 #include "AST.hpp"
+#include "ASTvisitor.hpp"
+#include "ChildrenTool.hpp"
 #include "Expr.hpp"
 #include "MyDef.hpp"
 #include "MyParserVisitor.hpp"
@@ -7,6 +9,10 @@
 #include "Type.hpp"
 #include <any>
 #include <vector>
+any ASTStruct::accept(ASTvisitor *visitor) {
+    return visitor->visitStruct(this);
+}
+
 ASTStruct::Derive::Derive() { sta = 0; }
 ASTStruct::Derive::Derive(int _sta) { sta = _sta; }
 bool ASTStruct::Derive::err() const { return sta & 1; }
@@ -67,4 +73,10 @@ any MyParserVisitor::visitDeriveName(RxParser::DeriveNameContext *ctx) {
     if (ctx->EQ())
         sta |= 1 << 4;
     return any(ASTStruct::Derive(sta));
+}
+
+any ASTStruct::visitChildren(ASTvisitor *visitor) {
+    for (const auto &field : fields)
+        ChildrenTool::visitChild(field.type, visitor);
+    return {};
 }

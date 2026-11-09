@@ -1,4 +1,5 @@
 #pragma once
+#include "AST.hpp"
 #include "MyClasses.hpp"
 #include "MyDef.hpp"
 
@@ -6,44 +7,44 @@ class ASTvisitor {
   public:
     virtual any visitChildren(ASTnode *);
     virtual ~ASTvisitor() = default;
-    virtual any visitNode(ASTnode *) { return {}; }
+    virtual any visitNode(ASTnode *);
 
-    virtual any visitCrate(ASTCrate *) { return {}; }
-    virtual any visitFuncDef(ASTFuncDef *) { return {}; }
-    virtual any visitStruct(ASTStruct *) { return {}; }
-    virtual any visitConstant(ASTConstant *) { return {}; }
-    virtual any visitImpl(ASTImpl *) { return {}; }
-    virtual any visitParam(ASTParam *) { return {}; }
-    virtual any visitSelfParam(ASTSelfParam *) { return {}; }
-    virtual any visitPathSeg(ASTPathSeg *) { return {}; }
-    virtual any visitLet(ASTLet *) { return {}; }
-    virtual any visitStatement(ASTStatement *) { return {}; }
-    virtual any visitBlock(ASTBlock *) { return {}; }
+    virtual any visitCrate(ASTCrate *);
+    virtual any visitFuncDef(ASTFuncDef *);
+    virtual any visitStruct(ASTStruct *);
+    virtual any visitConstant(ASTConstant *);
+    virtual any visitImpl(ASTImpl *);
+    virtual any visitParam(ASTParam *);
+    virtual any visitSelfParam(ASTSelfParam *);
+    virtual any visitPathSeg(ASTPathSeg *);
+    virtual any visitLet(ASTLet *);
+    virtual any visitStatement(ASTStatement *);
+    virtual any visitBlock(ASTBlock *);
 
-    virtual any visitType(ASTType *) { return {}; }
-    virtual any visitTRef(ASTTRef *) { return {}; }
-    virtual any visitTArray(ASTTArray *) { return {}; }
-    virtual any visitTUnit(ASTTUnit *) { return {}; }
-    virtual any visitTPath(ASTTPath *) { return {}; }
+    virtual any visitType(ASTType *);
+    virtual any visitTRef(ASTTRef *);
+    virtual any visitTArray(ASTTArray *);
+    virtual any visitTUnit(ASTTUnit *);
+    virtual any visitTPath(ASTTPath *);
 
-    virtual any visitExpr(ASTExpr *) { return {}; }
-    virtual any visitEUnit(ASTEUnit *) { return {}; }
-    virtual any visitEPath(ASTEPath *) { return {}; }
-    virtual any visitEIf(ASTEIf *) { return {}; }
-    virtual any visitEWhile(ASTEWhile *) { return {}; }
-    virtual any visitEStruct(ASTEStruct *) { return {}; }
-    virtual any visitELiteral(ASTELiteral *) { return {}; }
-    virtual any visitEArray(ASTEArray *) { return {}; }
-    virtual any visitERepeat(ASTERepeat *) { return {}; }
-    virtual any visitEBranch(ASTEBranch *) { return {}; }
-    virtual any visitOperator(ASTEOperator *) { return {}; }
-    virtual any visitOBinary(ASTOBinary *) { return {}; }
-    virtual any visitOUnary(ASTOUnary *) { return {}; }
-    virtual any visitOCall(ASTOCall *) { return {}; }
-    virtual any visitOIndex(ASTOIndex *) { return {}; }
-    virtual any visitOField(ASTOField *) { return {}; }
-    virtual any visitOMethod(ASTOMethod *) { return {}; }
-    virtual any visitOAssign(ASTOAssign *) { return {}; }
-    virtual any visitOCast(ASTOCast *) { return {}; }
-    virtual any visitOShift(ASTOShift *) { return {}; }
+    virtual any visitExpr(ASTExpr *);
+    virtual any visitEUnit(ASTEUnit *);
+    virtual any visitEPath(ASTEPath *);
+    virtual any visitEIf(ASTEIf *);
+    virtual any visitEWhile(ASTEWhile *);
+    virtual any visitEStruct(ASTEStruct *);
+    virtual any visitELiteral(ASTELiteral *);
+    virtual any visitEArray(ASTEArray *);
+    virtual any visitERepeat(ASTERepeat *);
+    virtual any visitEBranch(ASTEBranch *);
+    virtual any visitOperator(ASTEOperator *);
+    virtual any visitOBinary(ASTOBinary *);
+    virtual any visitOUnary(ASTOUnary *);
+    virtual any visitOCall(ASTOCall *);
+    virtual any visitOIndex(ASTOIndex *);
+    virtual any visitOField(ASTOField *);
+    virtual any visitOMethod(ASTOMethod *);
+    virtual any visitOAssign(ASTOAssign *);
+    virtual any visitOCast(ASTOCast *);
+    virtual any visitOShift(ASTOShift *);
 };

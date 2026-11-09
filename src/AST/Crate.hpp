@@ -5,6 +5,7 @@
 #include "Impl.hpp"
 #include "MyDef.hpp"
 #include "Struct.hpp"
+
 class ASTCrate : public ASTnode {
   public:
     using ASTnode::ASTnode;
@@ -13,7 +14,6 @@ class ASTCrate : public ASTnode {
     vector<ASTConstant *> consts;
     vector<ASTImpl *> impls;
     virtual ~ASTCrate();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitCrate(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };

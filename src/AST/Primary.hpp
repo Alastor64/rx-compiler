@@ -2,7 +2,6 @@
 #include "AST.hpp"
 #include "Expr.hpp"
 #include "RxParser.h"
-#include "RxParserVisitor.h"
 #include <tree/ParseTreeVisitor.h>
 class BuildPrimary {
   public:

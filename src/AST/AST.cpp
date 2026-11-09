@@ -38,3 +38,5 @@ any MyParserVisitor::visitChildren(antlr4::tree::ParseTree *ctx) {
     throw MyErr("unrealized visitor");
 }
 void MyParserVisitor::unreachable() { throw MyErr("unreachable"); }
+
+any ASTnode::visitChildren(ASTvisitor *) { return {}; }

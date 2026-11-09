@@ -1,10 +1,14 @@
 #include "Impl.hpp"
 #include "AST.hpp"
+#include "ASTvisitor.hpp"
+#include "ChildrenTool.hpp"
 #include "Constant.hpp"
 #include "FuncDef.hpp"
 #include "MyParserVisitor.hpp"
 #include "RxParser.h"
 #include "Type.hpp"
+any ASTImpl::accept(ASTvisitor *visitor) { return visitor->visitImpl(this); }
+
 ASTImpl::ASTImpl(Span p) : ASTnode(p) { type = nullptr; }
 ASTImpl::~ASTImpl() {
     delete type;
@@ -37,4 +41,11 @@ any MyParserVisitor::visitAssociatedItem(RxParser::AssociatedItemContext *ctx) {
     if (ctx->functionDefinition())
         return ctx->functionDefinition()->accept(this);
     return ASTtool::pack(nullptr);
+}
+
+any ASTImpl::visitChildren(ASTvisitor *visitor) {
+    ChildrenTool::visitChild(type, visitor);
+    ChildrenTool::visitList(consts, visitor);
+    ChildrenTool::visitList(funcs, visitor);
+    return {};
 }

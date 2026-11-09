@@ -1,30 +1,27 @@
 #pragma once
 #include "AST.hpp"
 #include "MyClasses.hpp"
-#include <vector>
+
 class ASTExpr : public ASTnode {
   public:
     using ASTnode::ASTnode;
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitExpr(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *) override;
 };
 
 class ASTEUnit : public ASTExpr {
   public:
     using ASTExpr::ASTExpr;
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitEUnit(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *) override;
 };
 class ASTEPath : public ASTExpr {
   public:
     vector<ASTPathSeg *> path;
     using ASTExpr::ASTExpr;
     virtual ~ASTEPath();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitEPath(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 
 class ASTEIf : public ASTExpr {
@@ -34,9 +31,8 @@ class ASTEIf : public ASTExpr {
     ASTExpr *condition;
     ASTBlock *truestat;
     ASTExpr *falsestat;
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitEIf(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 // while loop(if condition=nullptr)
 class ASTEWhile : public ASTExpr {
@@ -50,9 +46,8 @@ class ASTEWhile : public ASTExpr {
     Kind kind;
     ASTExpr *condition;
     ASTBlock *block;
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitEWhile(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 class ASTEStruct : public ASTExpr {
   public:
@@ -68,9 +63,8 @@ class ASTEStruct : public ASTExpr {
     vector<Field> member;
     ASTEStruct(Span);
     virtual ~ASTEStruct();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitEStruct(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 // int true false (unit)
 class ASTELiteral : public ASTExpr {
@@ -80,9 +74,8 @@ class ASTELiteral : public ASTExpr {
     bool if_true;
     bool if_false;
     ASTELiteral(Span p);
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitELiteral(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *) override;
 };
 
 // [,,,]
@@ -91,9 +84,8 @@ class ASTEArray : public ASTExpr {
     vector<ASTExpr *> elem;
     using ASTExpr::ASTExpr;
     virtual ~ASTEArray();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitEArray(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 // [;]
 class ASTERepeat : public ASTExpr {
@@ -102,9 +94,8 @@ class ASTERepeat : public ASTExpr {
     ASTExpr *len;
     ASTERepeat(Span p);
     virtual ~ASTERepeat();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitERepeat(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 // return continue break
 class ASTEBranch : public ASTExpr {
@@ -118,18 +109,16 @@ class ASTEBranch : public ASTExpr {
     ASTExpr *value;
     ASTEBranch(Span);
     virtual ~ASTEBranch();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitEBranch(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 
 class ASTEOperator : public ASTExpr {
   public:
     using ASTExpr::ASTExpr;
     string op;
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitOperator(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *) override;
 };
 
 // + - * / && || & | ^ % < > <= >= == !=
@@ -139,9 +128,8 @@ class ASTOBinary : public ASTEOperator {
     ASTExpr *right;
     ASTOBinary(Span);
     virtual ~ASTOBinary();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitOBinary(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 // - ! * & &mut &&mut(2 nodes) &&(2 nodes)
 class ASTOUnary : public ASTEOperator {
@@ -150,9 +138,8 @@ class ASTOUnary : public ASTEOperator {
     ASTExpr *inner;
     ASTOUnary(Span);
     virtual ~ASTOUnary();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitOUnary(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 // ()
 class ASTOCall : public ASTEOperator {
@@ -161,9 +148,8 @@ class ASTOCall : public ASTEOperator {
     vector<ASTExpr *> args;
     ASTOCall(Span);
     virtual ~ASTOCall();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitOCall(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 // []
 class ASTOIndex : public ASTEOperator {
@@ -172,9 +158,8 @@ class ASTOIndex : public ASTEOperator {
     ASTExpr *index;
     ASTOIndex(Span);
     virtual ~ASTOIndex();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitOIndex(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 // .
 class ASTOField : public ASTEOperator {
@@ -183,9 +168,8 @@ class ASTOField : public ASTEOperator {
     string id;
     ASTOField(Span);
     virtual ~ASTOField();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitOField(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 // .()
 class ASTOMethod : public ASTEOperator {
@@ -195,9 +179,8 @@ class ASTOMethod : public ASTEOperator {
     vector<ASTExpr *> args;
     ASTOMethod(Span);
     virtual ~ASTOMethod();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitOMethod(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 // = += *= /= %= -= ^= |= &= <<= >>=
 class ASTOAssign : public ASTEOperator {
@@ -206,9 +189,8 @@ class ASTOAssign : public ASTEOperator {
     ASTExpr *value;
     ASTOAssign(Span);
     virtual ~ASTOAssign();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitOAssign(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 // as
 class ASTOCast : public ASTEOperator {
@@ -217,9 +199,8 @@ class ASTOCast : public ASTEOperator {
     ASTType *type;
     ASTOCast(Span);
     virtual ~ASTOCast();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitOCast(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 // << >>
 class ASTOShift : public ASTEOperator {
@@ -228,8 +209,7 @@ class ASTOShift : public ASTEOperator {
     ASTExpr *expo;
     ASTOShift(Span);
     virtual ~ASTOShift();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitOShift(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 // (expr) no new node

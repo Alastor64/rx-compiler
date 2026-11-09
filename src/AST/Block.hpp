@@ -2,7 +2,7 @@
 #include "AST.hpp"
 #include "Expr.hpp"
 #include "Type.hpp"
-#include <vector>
+
 class ASTLet : public ASTnode {
   public:
     ASTLet(Span);
@@ -11,9 +11,8 @@ class ASTLet : public ASTnode {
     ASTType *type;
     bool if_mut;
     ASTExpr *expr;
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitLet(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 class ASTStatement : public ASTnode {
   public:
@@ -27,9 +26,8 @@ class ASTStatement : public ASTnode {
     Kind kind;
     ASTExpr *expr;
     ASTLet *let;
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitStatement(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };
 class ASTBlock : public ASTExpr {
   public:
@@ -37,7 +35,6 @@ class ASTBlock : public ASTExpr {
     virtual ~ASTBlock();
     vector<ASTStatement *> statement;
     ASTExpr *tail;
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitBlock(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };

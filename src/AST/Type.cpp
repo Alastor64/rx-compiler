@@ -1,8 +1,18 @@
 #include "Type.hpp"
 #include "AST.hpp"
+#include "ASTvisitor.hpp"
+#include "ChildrenTool.hpp"
 #include "Expr.hpp"
 #include "MyParserVisitor.hpp"
 #include "myErr.hpp"
+any ASTType::accept(ASTvisitor *visitor) { return visitor->visitType(this); }
+any ASTTRef::accept(ASTvisitor *visitor) { return visitor->visitTRef(this); }
+any ASTTArray::accept(ASTvisitor *visitor) {
+    return visitor->visitTArray(this);
+}
+any ASTTUnit::accept(ASTvisitor *visitor) { return visitor->visitTUnit(this); }
+any ASTTPath::accept(ASTvisitor *visitor) { return visitor->visitTPath(this); }
+
 ASTTRef::ASTTRef(Span p) : ASTType(p) {
     inner = nullptr;
     if_mut = 0;
@@ -58,3 +68,18 @@ std::any MyParserVisitor::visitArrayType(RxParser::ArrayTypeContext *ctx) {
     res->len = ASTtool::unpack<ASTExpr>(ctx->constValue()->accept(this));
     return ASTtool::pack(res);
 }
+
+any ASTType::visitChildren(ASTvisitor *) { return {}; }
+
+any ASTTRef::visitChildren(ASTvisitor *visitor) {
+    ChildrenTool::visitChild(inner, visitor);
+    return {};
+}
+
+any ASTTArray::visitChildren(ASTvisitor *visitor) {
+    ChildrenTool::visitChild(elem, visitor);
+    ChildrenTool::visitChild(len, visitor);
+    return {};
+}
+
+any ASTTUnit::visitChildren(ASTvisitor *) { return {}; }

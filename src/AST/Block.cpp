@@ -1,13 +1,19 @@
 #include "Block.hpp"
 #include "AST.hpp"
+#include "ASTvisitor.hpp"
+#include "ChildrenTool.hpp"
 #include "Expr.hpp"
 #include "MyDef.hpp"
 #include "MyParserVisitor.hpp"
 #include "RxParser.h"
 #include "Type.hpp"
-#include <any>
-#include <string>
 #include <utility>
+any ASTLet::accept(ASTvisitor *visitor) { return visitor->visitLet(this); }
+any ASTStatement::accept(ASTvisitor *visitor) {
+    return visitor->visitStatement(this);
+}
+any ASTBlock::accept(ASTvisitor *visitor) { return visitor->visitBlock(this); }
+
 ASTLet::ASTLet(Span p) : ASTnode(p) {
     if_mut = 0;
     type = nullptr;
@@ -122,4 +128,22 @@ any MyParserVisitor::visitLetStatement(RxParser::LetStatementContext *ctx) {
     }
     res->expr = ASTtool::unpack<ASTExpr>(ctx->expression()->accept(this));
     return ASTtool::pack(res);
+}
+
+any ASTLet::visitChildren(ASTvisitor *visitor) {
+    ChildrenTool::visitChild(type, visitor);
+    ChildrenTool::visitChild(expr, visitor);
+    return {};
+}
+
+any ASTStatement::visitChildren(ASTvisitor *visitor) {
+    ChildrenTool::visitChild(expr, visitor);
+    ChildrenTool::visitChild(let, visitor);
+    return {};
+}
+
+any ASTBlock::visitChildren(ASTvisitor *visitor) {
+    ChildrenTool::visitList(statement, visitor);
+    ChildrenTool::visitChild(tail, visitor);
+    return {};
 }

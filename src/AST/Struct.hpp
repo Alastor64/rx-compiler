@@ -1,8 +1,6 @@
 #pragma once
 #include "AST.hpp"
 #include "Type.hpp"
-#include <type_traits>
-#include <vector>
 class ASTStruct : public ASTnode {
   public:
     class Field {
@@ -32,7 +30,6 @@ class ASTStruct : public ASTnode {
     vector<Field> fields;
     ASTStruct(Span);
     virtual ~ASTStruct();
-    virtual any accept(ASTvisitor *visitor) override {
-        return visitor->visitStruct(this);
-    }
+    virtual any accept(ASTvisitor *visitor) override;
+    virtual any visitChildren(ASTvisitor *visitor) override;
 };

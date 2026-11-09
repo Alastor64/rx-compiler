@@ -1,12 +1,15 @@
 #include "Crate.hpp"
 #include "AST.hpp"
+#include "ASTvisitor.hpp"
+#include "ChildrenTool.hpp"
 #include "Constant.hpp"
 #include "FuncDef.hpp"
 #include "MyDef.hpp"
 #include "MyParserVisitor.hpp"
 #include "RxParser.h"
 #include "Struct.hpp"
-#include <any>
+any ASTCrate::accept(ASTvisitor *visitor) { return visitor->visitCrate(this); }
+
 any MyParserVisitor::visitItem(RxParser::ItemContext *ctx) {
     if (ctx->functionDefinition())
         return ctx->functionDefinition()->accept(this);
@@ -54,4 +57,12 @@ std::any MyParserVisitor::visitCrate(RxParser::CrateContext *ctx) {
         }
     }
     return ASTtool::pack(res);
+}
+
+any ASTCrate::visitChildren(ASTvisitor *visitor) {
+    ChildrenTool::visitList(funcs, visitor);
+    ChildrenTool::visitList(structs, visitor);
+    ChildrenTool::visitList(consts, visitor);
+    ChildrenTool::visitList(impls, visitor);
+    return {};
 }

@@ -1,6 +1,8 @@
 #include "FuncDef.hpp"
 #include "AST.hpp"
+#include "ASTvisitor.hpp"
 #include "Block.hpp"
+#include "ChildrenTool.hpp"
 #include "MyDef.hpp"
 #include "MyParserVisitor.hpp"
 #include "Param.hpp"
@@ -10,6 +12,10 @@
 #include <string>
 #include <utility>
 #include <vector>
+any ASTFuncDef::accept(ASTvisitor *visitor) {
+    return visitor->visitFuncDef(this);
+}
+
 ASTFuncDef::ASTFuncDef(Span p) : ASTnode(p) {
     self = nullptr;
     block = nullptr;
@@ -54,4 +60,12 @@ any MyParserVisitor::visitFunctionParameters(
         tmp.second.push_back(ASTtool::unpack<ASTParam>(i->accept(this)));
     }
     return tmp;
+}
+
+any ASTFuncDef::visitChildren(ASTvisitor *visitor) {
+    ChildrenTool::visitChild(self, visitor);
+    ChildrenTool::visitList(params, visitor);
+    ChildrenTool::visitChild(ret, visitor);
+    ChildrenTool::visitChild(block, visitor);
+    return {};
 }

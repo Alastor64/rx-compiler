@@ -1,6 +1,10 @@
 #include "Param.hpp"
 #include "AST.hpp"
+#include "ASTvisitor.hpp"
+#include "ChildrenTool.hpp"
 #include "MyParserVisitor.hpp"
+any ASTParam::accept(ASTvisitor *visitor) { return visitor->visitParam(this); }
+
 ASTParam::ASTParam(Span p) : ASTnode(p) { if_mut = 0; }
 ASTParam::~ASTParam() {
     delete type;
@@ -14,4 +18,9 @@ any MyParserVisitor::visitFunctionParam(RxParser::FunctionParamContext *ctx) {
     res->name = std::move(tmp.first);
     res->type = ASTtool::unpack<ASTType>(ctx->typeRef()->accept(this));
     return ASTtool::pack(res);
+}
+
+any ASTParam::visitChildren(ASTvisitor *visitor) {
+    ChildrenTool::visitChild(type, visitor);
+    return {};
 }
