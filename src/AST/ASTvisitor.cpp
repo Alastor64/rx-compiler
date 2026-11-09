@@ -12,6 +12,7 @@
 #include "Struct.hpp"
 #include "Type.hpp"
 
+any ASTvisitor::visit(ASTnode *ast) { return ast->accept(this); }
 any ASTvisitor::visitChildren(ASTnode *ast) { return ast->visitChildren(this); }
 any ASTvisitor::visitNode(ASTnode *node) { return visitChildren(node); }
 

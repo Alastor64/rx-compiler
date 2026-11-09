@@ -1,6 +1,7 @@
 #include "ChildrenTool.hpp"
 #include "AST.hpp"
-void ChildrenTool::visitChild(ASTnode *node, ASTvisitor *visitor) {
+int ChildrenTool::visitChild(ASTnode *node, ASTvisitor *visitor) {
     if (node)
-        node->accept(visitor);
+        return node->accept(visitor);
+    return 0;
 }

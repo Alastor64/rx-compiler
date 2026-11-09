@@ -8,11 +8,13 @@ class ChildrenTool {
     // static void visitChild(ASTPathSeg *node, ASTvisitor *visitor);
     // static void visitChild(ASTType *node, ASTvisitor *visitor);
 
-    static void visitChild(ASTnode *node, ASTvisitor *visitor);
+    static int visitChild(ASTnode *node, ASTvisitor *visitor);
 
     template <typename T>
-    static void visitList(const vector<T *> &nodes, ASTvisitor *visitor) {
+    static int visitList(const vector<T *> &nodes, ASTvisitor *visitor) {
+        int res = 0;
         for (auto *node : nodes)
-            visitChild(node, visitor);
+            res |= visitChild(node, visitor);
+        return res;
     }
 };

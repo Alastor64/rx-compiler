@@ -5,6 +5,7 @@
 
 class ASTvisitor {
   public:
+    virtual any visit(ASTnode *);
     virtual any visitChildren(ASTnode *);
     virtual ~ASTvisitor() = default;
     virtual any visitNode(ASTnode *);
