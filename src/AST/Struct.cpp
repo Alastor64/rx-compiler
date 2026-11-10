@@ -95,8 +95,10 @@ any MyParserVisitor::visitDeriveName(RxParser::DeriveNameContext *ctx) {
 
 int ASTStruct::visitChildren(ASTvisitor *visitor) {
     int res = 0;
-    for (const auto &field : fields)
-        res |= ChildrenTool::visitChild(field->type, visitor);
+    res |= ChildrenTool::visitList(fields, visitor);
+    res |= ChildrenTool::visitMap(_fields, visitor);
+    res |= ChildrenTool::visitMap(_methods, visitor);
+    res |= ChildrenTool::visitMap(_consts, visitor);
     return res;
 }
 int ASTSField::visitChildren(ASTvisitor *visitor) {

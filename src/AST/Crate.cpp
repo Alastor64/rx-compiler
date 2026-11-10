@@ -73,8 +73,11 @@ std::any MyParserVisitor::visitCrate(RxParser::CrateContext *ctx) {
 
 int ASTCrate::visitChildren(ASTvisitor *visitor) {
     int res = 0;
+    res |= ChildrenTool::visitMap(_funcs, visitor);
     res |= ChildrenTool::visitList(funcs, visitor);
+    res |= ChildrenTool::visitMap(_structs, visitor);
     res |= ChildrenTool::visitList(structs, visitor);
+    res |= ChildrenTool::visitMap(_consts, visitor);
     res |= ChildrenTool::visitList(consts, visitor);
     res |= ChildrenTool::visitList(impls, visitor);
     return res;

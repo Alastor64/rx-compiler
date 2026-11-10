@@ -17,4 +17,12 @@ class ChildrenTool {
             res |= visitChild(node, visitor);
         return res;
     }
+
+    template <typename T>
+    static int visitMap(const map<string, T *> &nodes, ASTvisitor *visitor) {
+        int res = 0;
+        for (const auto &[_, node] : nodes)
+            res |= visitChild(node, visitor);
+        return res;
+    }
 };
