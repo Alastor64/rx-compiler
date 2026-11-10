@@ -3,12 +3,12 @@
 #include "Crate.hpp"
 #include "ImplShrink.hpp"
 #include "NameCollect.hpp"
-#include "SelfErase.hpp"
+#include "SelfEraseAndTypeArgsCheck.hpp"
 class SemanticChecker {
   public:
     ASTCrate *root;
     ImplShrink IS;
     NameCollect NC;
-    SelfErase SE;
+    SelfEraseAndTypeArgsCheck SEATAC;
     int SemanticCheck(ASTCrate *ast);
 };

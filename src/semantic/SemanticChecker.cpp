@@ -6,6 +6,7 @@
 int SemanticChecker::SemanticCheck(ASTCrate *ast) {
     root = ast;
     IS.reset();
-    SE.reset();
-    return StructDeriveCheck(ast) | IS.visit(ast) | NC.visit(ast);
+    SEATAC.reset();
+    return StructDeriveCheck(ast) | IS.visit(ast) | NC.visit(ast) |
+           SEATAC.visit(ast);
 }

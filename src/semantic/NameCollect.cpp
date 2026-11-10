@@ -1,6 +1,7 @@
 #include "NameCollect.hpp"
 #include "Crate.hpp"
 #include "Impl.hpp"
+#include "SemanticTool.hpp"
 #include "Struct.hpp"
 typename NameCollect::MP NameCollect::tmp;
 int NameCollect::visitCrate(ASTCrate *node) {
@@ -9,6 +10,10 @@ int NameCollect::visitCrate(ASTCrate *node) {
     string x;
     if (collect(tmp, node->structs, node->_structs))
         return 1;
+    for (auto i : node->_structs) {
+        if (SemanticTool::if_basic(i.first))
+            return 1;
+    }
     tmp.clear();
     if (collect(tmp, node->funcs, node->_funcs))
         return 1;
