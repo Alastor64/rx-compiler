@@ -2,6 +2,7 @@
 #include "AST.hpp"
 #include "MyClasses.hpp"
 #include "MyDef.hpp"
+#include "Struct.hpp"
 
 class ASTvisitor {
   public:
@@ -13,6 +14,7 @@ class ASTvisitor {
     virtual int visitCrate(ASTCrate *);
     virtual int visitFuncDef(ASTFuncDef *);
     virtual int visitStruct(ASTStruct *);
+    virtual int visitSField(ASTSField *);
     virtual int visitConstant(ASTConstant *);
     virtual int visitImpl(ASTImpl *);
     virtual int visitParam(ASTParam *);

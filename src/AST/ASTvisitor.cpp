@@ -18,6 +18,7 @@ int ASTvisitor::visitNode(ASTnode *node) { return visitChildren(node); }
 
 int ASTvisitor::visitCrate(ASTCrate *node) { return visitChildren(node); }
 int ASTvisitor::visitFuncDef(ASTFuncDef *node) { return visitChildren(node); }
+int ASTvisitor::visitSField(ASTSField *node) { return visitChildren(node); }
 int ASTvisitor::visitStruct(ASTStruct *node) { return visitChildren(node); }
 int ASTvisitor::visitConstant(ASTConstant *node) { return visitChildren(node); }
 int ASTvisitor::visitImpl(ASTImpl *node) { return visitChildren(node); }

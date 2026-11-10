@@ -3,16 +3,17 @@
 #include "Constant.hpp"
 #include "FuncDef.hpp"
 #include "Type.hpp"
+class ASTSField : public ASTnode {
+  public:
+    string name;
+    ASTType *type;
+    ASTSField(Span, string, ASTType *);
+    ~ASTSField();
+    virtual int accept(ASTvisitor *visitor) override;
+    virtual int visitChildren(ASTvisitor *visitor) override;
+};
 class ASTStruct : public ASTnode {
   public:
-    class Field {
-      public:
-        Span pos;
-        string name;
-        ASTType *type;
-        Field(Span, string, ASTType *);
-        void del();
-    };
     class Derive { // we drop the pos of derive
       public:
         int sta;
@@ -29,8 +30,8 @@ class ASTStruct : public ASTnode {
     };
     Derive derive;
     string name;
-    vector<Field> fields;
-    map<string, Field> _fields;
+    vector<ASTSField *> fields;
+    map<string, ASTSField *> _fields;
     map<string, ASTFuncDef *> _methods;
     map<string, ASTConstant *> _consts;
     ASTStruct(Span);

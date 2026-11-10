@@ -12,6 +12,9 @@
 int ASTStruct::accept(ASTvisitor *visitor) {
     return visitor->visitStruct(this);
 }
+int ASTSField::accept(ASTvisitor *visitor) {
+    return visitor->visitSField(this);
+}
 
 ASTStruct::Derive::Derive() { sta = 0; }
 ASTStruct::Derive::Derive(int _sta) { sta = _sta; }
@@ -28,16 +31,31 @@ void ASTStruct::Derive::merge(const Derive &x) {
 }
 ASTStruct::ASTStruct(Span p) : ASTnode(p) {}
 ASTStruct::~ASTStruct() {
-    for (auto i : fields) {
-        i.del();
+    for (auto &i : _fields) {
+        delete i.second;
+        i.second = nullptr;
+    }
+    for (auto &i : _methods) {
+        delete i.second;
+        i.second = nullptr;
+    }
+    for (auto &i : _consts) {
+        delete i.second;
+        i.second = nullptr;
+    }
+    for (auto &i : fields) {
+        delete i;
+        i = nullptr;
     }
 }
-ASTStruct::Field::Field(Span _pos, string _name, ASTType *_type) {
-    pos = _pos;
+ASTSField::ASTSField(Span _pos, string _name, ASTType *_type) : ASTnode(_pos) {
     name = _name;
     type = _type;
 }
-void ASTStruct::Field::del() { delete type; }
+ASTSField::~ASTSField() {
+    delete type;
+    type = nullptr;
+}
 any MyParserVisitor::visitStructDefinition(
     RxParser::StructDefinitionContext *ctx) {
     ASTStruct *res = new ASTStruct(Span::getRuleSpan(ctx));
@@ -46,14 +64,14 @@ any MyParserVisitor::visitStructDefinition(
         res->derive.merge(any_cast<ASTStruct::Derive>(i->accept(this)));
     }
     for (auto i : ctx->structField()) {
-        res->fields.push_back(any_cast<ASTStruct::Field>(i->accept(this)));
+        res->fields.push_back(ASTtool::unpack<ASTSField>(i->accept(this)));
     }
     return ASTtool::pack(res);
 }
 any MyParserVisitor::visitStructField(RxParser::StructFieldContext *ctx) {
-    return any(ASTStruct::Field(
-        Span::getRuleSpan(ctx), ctx->identifier()->getText(),
-        ASTtool::unpack<ASTType>(ctx->typeRef()->accept(this))));
+    return ASTtool::pack(
+        new ASTSField(Span::getRuleSpan(ctx), ctx->identifier()->getText(),
+                      ASTtool::unpack<ASTType>(ctx->typeRef()->accept(this))));
 }
 any MyParserVisitor::visitOuterAttribute(RxParser::OuterAttributeContext *ctx) {
     ASTStruct::Derive res(0);
@@ -78,6 +96,9 @@ any MyParserVisitor::visitDeriveName(RxParser::DeriveNameContext *ctx) {
 int ASTStruct::visitChildren(ASTvisitor *visitor) {
     int res = 0;
     for (const auto &field : fields)
-        res |= ChildrenTool::visitChild(field.type, visitor);
+        res |= ChildrenTool::visitChild(field->type, visitor);
     return res;
+}
+int ASTSField::visitChildren(ASTvisitor *visitor) {
+    return ChildrenTool::visitChild(type, visitor);
 }

@@ -22,6 +22,18 @@ any MyParserVisitor::visitItem(RxParser::ItemContext *ctx) {
     return ASTtool::pack(nullptr);
 }
 ASTCrate::~ASTCrate() {
+    for (auto &i : _funcs) {
+        delete i.second;
+        i.second = nullptr;
+    }
+    for (auto &i : _structs) {
+        delete i.second;
+        i.second = nullptr;
+    }
+    for (auto &i : _consts) {
+        delete i.second;
+        i.second = nullptr;
+    }
     for (auto &i : funcs) {
         delete i;
         i = nullptr;

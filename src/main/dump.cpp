@@ -4,6 +4,7 @@
 #include "MyParserVisitor.hpp"
 #include "RxLexer.h"
 #include "RxParser.h"
+#include "SemanticChecker.hpp"
 #include "Struct.hpp"
 #include "StructDeriveCheck.hpp"
 #include "myErr.hpp"
@@ -84,7 +85,7 @@ int main(int argc, char **args) {
     // ctx->item();
     // cout << antlr4::tree::Trees::toStringTree(cst, &parser, 1) << endl;
     DisplayVisitor dv(std::cout);
-    dv.visit(cst);
+    // dv.visit(cst);
     Span::getRuleSpan((antlr4::ParserRuleContext *)cst);
     MyParserVisitor mv;
     ASTnode *tmp;
@@ -93,11 +94,17 @@ int main(int argc, char **args) {
     } catch (MyErr e) {
         cerr << e.what() << endl;
     }
-    if (auto ast = dynamic_cast<ASTCrate *>(tmp)) {
-        printf("%d\n", StructDeriveCheck(ast));
-    }
-    if (auto ast = dynamic_cast<ASTStruct *>(tmp)) {
-        printf("%d\n", StructDeriveCheck(ast));
+    // if (auto ast = dynamic_cast<ASTCrate *>(tmp)) {
+    //     printf("%d\n", StructDeriveCheck(ast));
+    // }
+    // if (auto ast = dynamic_cast<ASTStruct *>(tmp)) {
+    //     printf("%d\n", StructDeriveCheck(ast));
+    // }
+    ASTCrate *ast = dynamic_cast<ASTCrate *>(tmp);
+    SemanticChecker SC;
+    if (ast) {
+        if (SC.SemanticCheck(ast))
+            return 0;
     }
     return 0;
 }
