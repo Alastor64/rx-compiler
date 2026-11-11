@@ -1,5 +1,4 @@
 #pragma once
-#include "AST.hpp"
 #include "Crate.hpp"
 #include "ImplShrink.hpp"
 #include "NameCollect.hpp"

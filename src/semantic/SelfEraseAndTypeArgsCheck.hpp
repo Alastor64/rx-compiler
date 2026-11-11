@@ -2,10 +2,8 @@
 #include "ASTvisitor.hpp"
 #include "Crate.hpp"
 #include "Expr.hpp"
-#include "FuncDef.hpp"
 #include "Path.hpp"
 #include "Struct.hpp"
-#include <vector>
 // remove all Self
 // check all path's arg num
 class SelfEraseAndTypeArgsCheck : public ASTvisitor {

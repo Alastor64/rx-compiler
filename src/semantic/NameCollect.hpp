@@ -1,13 +1,10 @@
 #pragma once
 #include "ASTvisitor.hpp"
-#include "Constant.hpp"
 #include "Crate.hpp"
-#include "FuncDef.hpp"
 #include "Impl.hpp"
 #include "MyDef.hpp"
 #include "Struct.hpp"
 #include <type_traits>
-#include <vector>
 class NameCollect : public ASTvisitor {
   public:
     using MP = map<string, int>;

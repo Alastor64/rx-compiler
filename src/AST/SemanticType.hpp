@@ -1,7 +1,6 @@
 #pragma once
 #include "Crate.hpp"
 #include "MyDef.hpp"
-#include <vector>
 class SemanticType {
   public:
     class Layer {

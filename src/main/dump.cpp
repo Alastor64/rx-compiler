@@ -5,8 +5,6 @@
 #include "RxLexer.h"
 #include "RxParser.h"
 #include "SemanticChecker.hpp"
-#include "Struct.hpp"
-#include "StructDeriveCheck.hpp"
 #include "myErr.hpp"
 #include <ANTLRInputStream.h>
 #include <CommonTokenStream.h>
