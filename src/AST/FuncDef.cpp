@@ -48,6 +48,7 @@ any MyParserVisitor::visitFunctionDefinition(
         res->ret = new ASTTUnit(Span(res->pos.end, res->pos.end));
     res->block =
         ASTtool::unpack<ASTBlock>(ctx->blockExpression()->accept((this)));
+    // ctx->genericParams();
     return ASTtool::pack(res);
 }
 any MyParserVisitor::visitFunctionParameters(
