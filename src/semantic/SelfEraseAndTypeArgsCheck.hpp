@@ -17,5 +17,5 @@ class SelfEraseAndTypeArgsCheck : public ASTvisitor {
     virtual int visitPathSeg(ASTPathSeg *node) override;
     virtual int visitEPath(ASTEPath *node) override;
     virtual int visitTPath(ASTTPath *node) override;
-    virtual int visitOMethod(ASTOMethod *node) override;
+    // virtual int visitOMethod(ASTOMethod *node) override;
 };

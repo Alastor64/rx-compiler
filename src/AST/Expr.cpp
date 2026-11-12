@@ -55,10 +55,13 @@ int ASTOCast::accept(ASTvisitor *visitor) { return visitor->visitOCast(this); }
 int ASTOShift::accept(ASTvisitor *visitor) {
     return visitor->visitOShift(this);
 }
-
-ASTELiteral::ASTELiteral(Span p) : ASTExpr(p) {
-    if_int = if_true = if_false = 0;
+ConstexprValue::ConstexprValue() {
+    value = 0;
+    overflow = 0;
+    minus = 0;
 }
+ASTExpr::ASTExpr(Span p) : ASTnode(p) {}
+ASTELiteral::ASTELiteral(Span p) : ASTExpr(p) { type = INT; }
 ASTEArray::~ASTEArray() {
     for (auto &i : elem) {
         delete i;
@@ -211,12 +214,14 @@ any MyParserVisitor::visitConstValue(RxParser::ConstValueContext *ctx) {
     else if (ctx->INTEGER_LITERAL() || ctx->TRUE() || ctx->FALSE()) {
         ASTELiteral *res = new ASTELiteral(Span::getRuleSpan(ctx));
         if (ctx->INTEGER_LITERAL()) {
-            res->if_int = 1;
+            res->type = ASTELiteral::INT;
             res->int_text = ctx->INTEGER_LITERAL()->getText();
         } else if (ctx->TRUE()) {
+            res->type = ASTELiteral::BOOL;
             res->if_true = 1;
         } else if (ctx->FALSE()) {
-            res->if_false = 1;
+            res->type = ASTELiteral::BOOL;
+            res->if_true = 0;
         }
         return ASTtool::pack(res);
     } else if (ctx->MINUS()) {
@@ -235,7 +240,7 @@ any MyParserVisitor::visitMagnitude(RxParser::MagnitudeContext *ctx) {
         return ctx->pathInExpression()->accept(this);
     else if (ctx->INTEGER_LITERAL()) {
         ASTELiteral *res = new ASTELiteral(Span::getRuleSpan(ctx));
-        res->if_int = 1;
+        res->type = ASTELiteral::INT;
         res->int_text = ctx->INTEGER_LITERAL()->getText();
         return ASTtool::pack(res);
     }

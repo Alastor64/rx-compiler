@@ -2,8 +2,6 @@
 #include "ChildrenTool.hpp"
 #include "Crate.hpp"
 #include "Expr.hpp"
-#include "FuncDef.hpp"
-#include "Impl.hpp"
 #include "Path.hpp"
 #include "Struct.hpp"
 #include <cstddef>
@@ -55,9 +53,9 @@ int SelfEraseAndTypeArgsCheck::visitEPath(ASTEPath *node) {
     }
     return 0;
 }
-int SelfEraseAndTypeArgsCheck::visitOMethod(ASTOMethod *node) {
-    pathTail = 1;
-    return node->func->accept(this) |
-           ChildrenTool::visitList(node->args, this) |
-           ChildrenTool::visitChild(node->owner, this);
-}
+// int SelfEraseAndTypeArgsCheck::visitOMethod(ASTOMethod *node) {
+//     pathTail = 1;
+//     return node->func->accept(this) |
+//            ChildrenTool::visitList(node->args, this) |
+//            ChildrenTool::visitChild(node->owner, this);
+// }

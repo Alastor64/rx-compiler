@@ -6,6 +6,7 @@
 
 class ASTvisitor {
   public:
+    static void unreachable();
     virtual int visit(ASTnode *);
     virtual int visitChildren(ASTnode *);
     virtual ~ASTvisitor() = default;

@@ -1,10 +1,19 @@
 #pragma once
 #include "AST.hpp"
 #include "MyClasses.hpp"
+#include "SemanticType.hpp"
 
+class ConstexprValue {
+  public:
+    ConstexprValue();
+    unsigned int value;
+    bool overflow;
+    bool minus;
+};
 class ASTExpr : public ASTnode {
   public:
-    using ASTnode::ASTnode;
+    ASTExpr(Span);
+    ConstexprValue constexprValue;
     virtual int accept(ASTvisitor *visitor) override;
     virtual int visitChildren(ASTvisitor *) override;
 };
@@ -69,10 +78,13 @@ class ASTEStruct : public ASTExpr {
 // int true false (unit)
 class ASTELiteral : public ASTExpr {
   public:
+    enum {
+        INT,
+        BOOL,
+    };
     string int_text;
-    bool if_int;
-    bool if_true;
-    bool if_false;
+    int if_true;
+    int type;
     ASTELiteral(Span p);
     virtual int accept(ASTvisitor *visitor) override;
     virtual int visitChildren(ASTvisitor *) override;
@@ -176,6 +188,7 @@ class ASTOMethod : public ASTEOperator {
   public:
     ASTExpr *owner;
     ASTPathSeg *func;
+    string id;
     vector<ASTExpr *> args;
     ASTOMethod(Span);
     virtual ~ASTOMethod();

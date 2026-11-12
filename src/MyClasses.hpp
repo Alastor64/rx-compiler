@@ -71,3 +71,4 @@ class ASTOCast;
 class ASTOShift;
 
 class ASTvisitor;
+class SemanticType;

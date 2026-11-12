@@ -83,7 +83,7 @@ int main(int argc, char **args) {
     // ctx->item();
     // cout << antlr4::tree::Trees::toStringTree(cst, &parser, 1) << endl;
     DisplayVisitor dv(std::cout);
-    // dv.visit(cst);
+    dv.visit(cst);
     Span::getRuleSpan((antlr4::ParserRuleContext *)cst);
     MyParserVisitor mv;
     ASTnode *tmp;
@@ -102,7 +102,7 @@ int main(int argc, char **args) {
     SemanticChecker SC;
     if (ast) {
         if (SC.SemanticCheck(ast))
-            return 0;
+            return 1;
     }
     return 0;
 }

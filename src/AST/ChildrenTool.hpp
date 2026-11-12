@@ -14,7 +14,8 @@ class ChildrenTool {
     static int visitList(const vector<T *> &nodes, ASTvisitor *visitor) {
         int res = 0;
         for (auto *node : nodes)
-            res |= visitChild(node, visitor);
+            if (node)
+                res |= visitChild(node, visitor);
         return res;
     }
 
@@ -22,7 +23,8 @@ class ChildrenTool {
     static int visitMap(const map<string, T *> &nodes, ASTvisitor *visitor) {
         int res = 0;
         for (const auto &[_, node] : nodes)
-            res |= visitChild(node, visitor);
+            if (node)
+                res |= visitChild(node, visitor);
         return res;
     }
 };

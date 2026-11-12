@@ -2,6 +2,7 @@
 // #include "ASTvisitor.hpp"
 #include "MyClasses.hpp"
 #include "MyDef.hpp"
+#include "SemanticType.hpp"
 #include "myErr.hpp"
 #include <ParserRuleContext.h>
 #include <Token.h>
@@ -18,6 +19,7 @@ struct Span {
 class ASTnode {
   public:
     virtual ~ASTnode();
+    SemanticType semanticType;
     Span pos;
     ASTnode &operator=(ASTnode) = delete;
     ASTnode(ASTnode &) = delete;

@@ -2,8 +2,10 @@
 #include "AST.hpp"
 #include "Expr.hpp"
 #include "MyClasses.hpp"
+#include "SemanticType.hpp"
 class ASTType : public ASTnode {
   public:
+    SemanticType semanticType;
     using ASTnode::ASTnode;
     virtual int accept(ASTvisitor *visitor) override;
     virtual int visitChildren(ASTvisitor *) override;

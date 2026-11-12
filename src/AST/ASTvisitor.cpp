@@ -12,6 +12,7 @@
 #include "Struct.hpp"
 #include "Type.hpp"
 
+void ASTvisitor::unreachable() { throw MyErr("unreachable AST"); }
 int ASTvisitor::visit(ASTnode *ast) { return ast->accept(this); }
 int ASTvisitor::visitChildren(ASTnode *ast) { return ast->visitChildren(this); }
 int ASTvisitor::visitNode(ASTnode *node) { return visitChildren(node); }

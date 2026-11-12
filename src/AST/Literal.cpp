@@ -6,14 +6,16 @@ any MyParserVisitor::visitLiteralExpression(
     RxParser::LiteralExpressionContext *ctx) {
     ASTELiteral *res = new ASTELiteral(Span::getRuleSpan(ctx));
     if (ctx->INTEGER_LITERAL()) {
-        res->if_int = 1;
+        res->type = ASTELiteral::INT;
         res->int_text = ctx->INTEGER_LITERAL()->getText();
     }
     if (ctx->TRUE()) {
+        res->type = ASTELiteral::BOOL;
         res->if_true = 1;
     }
     if (ctx->FALSE()) {
-        res->if_false = 1;
+        res->type = ASTELiteral::BOOL;
+        res->if_true = 0;
     }
     return ASTtool::pack(res);
 }
