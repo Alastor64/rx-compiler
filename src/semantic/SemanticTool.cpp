@@ -83,7 +83,7 @@ int SemanticTool::calIntValue(const string &s, unsigned int &res,
             start = 2;
         }
     }
-    for (int _ = start; _ < s.length(); _++) {
+    for (int _ = start; _ < int(s.length()); _++) {
         auto i = s[_];
         if (i == '_')
             continue;

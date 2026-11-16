@@ -8,7 +8,7 @@
 #include "SemanticType.hpp"
 #include "Type.hpp"
 #include "myErr.hpp"
-typename ConstValueShrink::MP ConstValueShrink::vis;
+// typename ConstValueShrink::MP ConstValueShrink::vis;
 void ConstValueShrink::reset() {
     vis.clear();
     results.clear();
@@ -69,14 +69,15 @@ int ConstValueShrink::visitConstant(ASTConstant *node) {
             return 1;
         }
         if (results.empty())
-            return 1;
+            throw MyErr("empty result");
         ConstexprValue res = results.back();
         results.pop_back();
         if (res.overflow)
             return 1;
-        if (my.outter().unsign()) {
-            return 1;
-        }
+        // wrong or unnecessary old code
+        // if (my.outter().unsign()) {
+        //     return 1;
+        // }
         // if (res.value > (1u << 31)) {
         //     return 1;
         // }

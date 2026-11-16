@@ -9,7 +9,7 @@
 class ConstValueShrink : public ASTvisitor {
   public:
     using MP = map<ASTConstant *, int>;
-    static MP vis;
+    MP vis;
     vector<ConstexprValue> results;
     ASTCrate *root;
     void reset();

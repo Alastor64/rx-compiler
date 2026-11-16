@@ -47,9 +47,9 @@ bool SemanticType::Layer::operator==(const Layer &x) const {
 bool SemanticType::Layer::operator!=(const Layer &x) const {
     return !((*this) == x);
 }
-SemanticType::Layer &SemanticType::outter() { return layers.front(); }
+SemanticType::Layer &SemanticType::outter() { return layers.back(); }
 const SemanticType::Layer &SemanticType::outter() const {
-    return layers.front();
+    return layers.back();
 }
 int SemanticType::Layer::unsign() const { return type == U32 || type == USIZE; }
 int SemanticType::Layer::ifint() const {

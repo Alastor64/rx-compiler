@@ -8,6 +8,7 @@ class ConstexprValue {
     ConstexprValue();
     unsigned int value;
     int overflow; // 是否溢出过（id只检查是否炸2^32-1，-号和constantItem根据类型严格检查是否溢出）
+    // minus seems useless now,but we just reserve it
     int minus; // 是否做过-号运算
 };
 class ASTExpr : public ASTnode {

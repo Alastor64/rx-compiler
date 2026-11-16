@@ -10,12 +10,13 @@
 #include <CommonTokenStream.h>
 #include <Parser.h>
 #include <Token.h>
+#include <cstddef>
 #include <cstdio>
 #include <fstream>
 #include <tree/ParseTree.h>
 #include <tree/Trees.h>
 using namespace std;
-bool invalid_token(int t) {
+bool invalid_token(size_t t) {
     switch (t) {
     case RxLexer::INVALID_CHARACTER_LITERAL:
     case RxLexer::INVALID_LIFETIME:
@@ -69,6 +70,7 @@ int main(int argc, char **args) {
             cst = parser.letStatement();
             break;
         default:
+            return 2;
             break;
         }
     }
@@ -89,8 +91,9 @@ int main(int argc, char **args) {
     ASTnode *tmp;
     try {
         tmp = ASTtool::unpack<ASTnode>(mv.visit(cst));
-    } catch (MyErr e) {
+    } catch (const MyErr &e) {
         cerr << e.what() << endl;
+        return 2;
     }
     // if (auto ast = dynamic_cast<ASTCrate *>(tmp)) {
     //     printf("%d\n", StructDeriveCheck(ast));
@@ -101,8 +104,15 @@ int main(int argc, char **args) {
     ASTCrate *ast = dynamic_cast<ASTCrate *>(tmp);
     SemanticChecker SC;
     if (ast) {
-        if (SC.SemanticCheck(ast))
-            return 1;
+        try {
+            if (SC.SemanticCheck(ast))
+                return 1;
+        } catch (const MyErr &e) {
+            // we will wont let any err be throw at the end,so the return value
+            // here does not matter
+            printf("%s\n", e.what());
+            return 2;
+        }
     }
     return 0;
 }

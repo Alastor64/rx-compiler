@@ -33,5 +33,7 @@ class SemanticChecker {
     // NamePathErase NPE; replace paths that represent constants
     // or variables with symbol IntUppering IU; ConstValueShrink CVS; TypeShrink
     // TS;
+
+    // 1:fail 0:pass
     int SemanticCheck(ASTCrate *ast);
 };
