@@ -7,6 +7,7 @@ struct ASTConstant : public ASTnode {
     string name;
     ASTType *type;
     ASTExpr *value;
+    unsigned int _value;
     ASTConstant(Span);
     virtual ~ASTConstant();
     virtual int accept(ASTvisitor *visitor) override;

@@ -12,6 +12,7 @@ int ASTConstant::accept(ASTvisitor *visitor) {
 ASTConstant::ASTConstant(Span p) : ASTnode(p) {
     type = nullptr;
     value = nullptr;
+    _value = 0;
 }
 ASTConstant::~ASTConstant() {
     delete type;

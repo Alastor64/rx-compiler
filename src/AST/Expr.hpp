@@ -7,13 +7,13 @@ class ConstexprValue {
   public:
     ConstexprValue();
     unsigned int value;
-    bool overflow;
-    bool minus;
+    int overflow; // 是否溢出过（id只检查是否炸2^32-1，-号和constantItem根据类型严格检查是否溢出）
+    int minus; // 是否做过-号运算
 };
 class ASTExpr : public ASTnode {
   public:
     ASTExpr(Span);
-    ConstexprValue constexprValue;
+    // ConstexprValue constexprValue;
     virtual int accept(ASTvisitor *visitor) override;
     virtual int visitChildren(ASTvisitor *) override;
 };
