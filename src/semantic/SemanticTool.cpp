@@ -53,7 +53,7 @@ int SemanticTool::constPathAnalysis(ASTCrate *root, ASTEPath *node,
 int SemanticTool::basicTypeConvertable(const SemanticType &_actual,
                                        const SemanticType &_target) {
     if (_actual.layers.size() != 1 || _target.layers.size() != 1)
-        return 1;
+        return 0;
     const SemanticType::Layer &actual = _actual.layers.front();
     const SemanticType::Layer &target = _target.layers.front();
     if (actual == target)

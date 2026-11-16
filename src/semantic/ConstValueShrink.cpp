@@ -7,6 +7,7 @@
 #include "SemanticTool.hpp"
 #include "SemanticType.hpp"
 #include "Type.hpp"
+#include "myErr.hpp"
 typename ConstValueShrink::MP ConstValueShrink::vis;
 void ConstValueShrink::reset() {
     vis.clear();
@@ -90,6 +91,8 @@ int ConstValueShrink::visitConstant(ASTConstant *node) {
         SemanticType &actual = value->semanticType, &my = node->semanticType;
         if (!SemanticTool::basicTypeConvertable(actual, my))
             return 1;
+        if (results.empty())
+            throw MyErr("empty result");
         ConstexprValue res = results.back();
         results.pop_back();
         if (my.outter().ifint()) {
@@ -171,7 +174,10 @@ int ConstValueShrink::visitOUnary(ASTOUnary *node) {
             return 1;
         }
     } else if (auto value = dynamic_cast<ASTELiteral *>(node->inner)) {
-        value->accept(this);
+        if (value->accept(this))
+            return 1;
+        if (results.empty())
+            throw MyErr("empty result");
         tmp = results.back();
         results.pop_back();
         const auto &t = value->semanticType.outter();
@@ -181,6 +187,7 @@ int ConstValueShrink::visitOUnary(ASTOUnary *node) {
             return 1;
         if (tmp.value > (1u << 31))
             return 1;
+        node->semanticType = value->semanticType;
         tmp.value = -tmp.value;
     } else
         return 1;

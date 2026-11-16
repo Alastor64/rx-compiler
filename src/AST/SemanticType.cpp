@@ -1,6 +1,7 @@
 #include "SemanticType.hpp"
 #include "Crate.hpp"
 #include "Expr.hpp"
+#include "myErr.hpp"
 SemanticType::Layer::Layer() {
     len = 0;
     type = UNDEF;
@@ -12,7 +13,9 @@ SemanticType::Layer::Layer(string s, ASTCrate *root) : Layer() {
         type = STRUCT;
         _struct = root->_structs.find(s)->second;
     } else {
-        if (s == "Vec") {
+        if (s == "bool") {
+            type = BOOL;
+        } else if (s == "Vec") {
             type = VEC;
         } else if (s == "Box") {
             type = BOX;
@@ -20,7 +23,8 @@ SemanticType::Layer::Layer(string s, ASTCrate *root) : Layer() {
             type = UNIT;
         } else if (getIntType(s) != ERRMARK) {
             type = getIntType(s);
-        }
+        } else
+            throw MyErr("unknown layer");
     }
 }
 bool SemanticType::operator==(const SemanticType &x) const {
