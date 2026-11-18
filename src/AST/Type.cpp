@@ -61,6 +61,7 @@ ASTTArray::~ASTTArray() {
 ASTTArray::ASTTArray(Span p) : ASTType(p) {
     elem = nullptr;
     len = nullptr;
+    _len = 0;
 }
 std::any MyParserVisitor::visitArrayType(RxParser::ArrayTypeContext *ctx) {
     ASTTArray *res = new ASTTArray(Span::getRuleSpan(ctx));

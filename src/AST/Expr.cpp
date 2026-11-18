@@ -68,7 +68,10 @@ ASTEArray::~ASTEArray() {
         i = nullptr;
     }
 }
-ASTERepeat::ASTERepeat(Span p) : ASTExpr(p) { elem = len = nullptr; }
+ASTERepeat::ASTERepeat(Span p) : ASTExpr(p) {
+    elem = len = nullptr;
+    _len = 0;
+}
 ASTERepeat::~ASTERepeat() {
     delete elem;
     delete len;

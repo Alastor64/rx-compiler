@@ -1,8 +1,9 @@
 #pragma once
+#include "ConstValueErase.hpp"
 #include "ConstValueShrink.hpp"
 #include "Crate.hpp"
 #include "ImplShrink.hpp"
-#include "IntUppering.hpp"
+#include "LiteralShrink.hpp"
 #include "MethodSheink.hpp"
 #include "NameCollect.hpp"
 #include "SelfEraseAndTypeArgsCheck.hpp"
@@ -20,12 +21,15 @@ class SemanticChecker {
     // replace Self(do not handle self) with ture type name,Check all generic
     // args num
     SelfEraseAndTypeArgsCheck SEATAC;
+    // calculate out all literal
+    LiteralShrink LS;
+
     // calculate all constantItem,get its _value and semanticType,remove its
     // value and type
     ConstValueShrink CVS;
 
     // calculate all constvalue(seems only arrytype use it)
-    // ConstValueErase CE;
+    ConstValueErase CVE;
 
     // replace ASTELiteral with SEMImm
     //  ConstErase CE;

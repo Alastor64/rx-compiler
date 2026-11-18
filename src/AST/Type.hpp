@@ -23,6 +23,7 @@ class ASTTArray : public ASTType {
   public:
     ASTType *elem;
     ASTExpr *len;
+    unsigned int _len;
     ASTTArray(Span p);
     virtual ~ASTTArray();
     virtual int accept(ASTvisitor *visitor) override;

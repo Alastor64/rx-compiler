@@ -86,6 +86,7 @@ class ASTELiteral : public ASTExpr {
     string int_text;
     int if_true;
     int type;
+    unsigned int value;
     ASTELiteral(Span p);
     virtual int accept(ASTvisitor *visitor) override;
     virtual int visitChildren(ASTvisitor *) override;
@@ -105,6 +106,7 @@ class ASTERepeat : public ASTExpr {
   public:
     ASTExpr *elem;
     ASTExpr *len;
+    unsigned int _len;
     ASTERepeat(Span p);
     virtual ~ASTERepeat();
     virtual int accept(ASTvisitor *visitor) override;

@@ -114,43 +114,9 @@ int ConstValueShrink::visitConstant(ASTConstant *node) {
 }
 int ConstValueShrink::visitELiteral(ASTELiteral *node) {
     ConstexprValue tmp;
-    if (node->type == ASTELiteral::BOOL) {
-        node->semanticType.setBool();
-        tmp.value = bool(node->if_true);
-        results.push_back(tmp);
-        return 0;
-    }
-    if (node->type == ASTELiteral::INT) {
-        const auto &S = node->int_text;
-        node->semanticType.setInt();
-        string text = S;
-        // i32 u32
-        string suc = "";
-        if (S.size() >= 3) {
-            suc = S.substr(S.length() - 3, 3);
-        }
-        if (SemanticType::Layer::getIntType(suc) !=
-            SemanticType::Layer::ERRMARK) {
-            node->semanticType.setType(suc, root);
-            text = S.substr(0, S.length() - 3);
-        }
-
-        // isize usize
-        suc = "";
-        if (S.size() >= 5) {
-            suc = S.substr(S.length() - 5, 5);
-        }
-        if (SemanticType::Layer::getIntType(suc) !=
-            SemanticType::Layer::ERRMARK) {
-            node->semanticType.setType(suc, root);
-            text = S.substr(0, S.length() - 5);
-        }
-        if (SemanticTool::calIntValue(text, tmp.value, tmp.overflow))
-            return 1;
-        results.push_back(tmp);
-        return 0;
-    }
-    return 1;
+    tmp.value = node->value;
+    results.push_back(tmp);
+    return 0;
 }
 int ConstValueShrink::visitOUnary(ASTOUnary *node) {
     ConstexprValue tmp;
@@ -187,7 +153,7 @@ int ConstValueShrink::visitOUnary(ASTOUnary *node) {
         if (t.unsign())
             return 1;
         if (tmp.value > (1u << 31))
-            return 1;
+            throw MyErr("Literal low overflow");
         node->semanticType = value->semanticType;
         tmp.value = -tmp.value;
     } else
