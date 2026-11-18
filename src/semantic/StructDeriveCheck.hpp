@@ -1,5 +1,5 @@
 #pragma once
 #include "Crate.hpp"
 #include "Struct.hpp"
-bool StructDeriveCheck(ASTStruct *);
-bool StructDeriveCheck(ASTCrate *);
+bool StructMultiDeriveCheck(ASTStruct *);
+bool StructMultiDeriveCheck(ASTCrate *);

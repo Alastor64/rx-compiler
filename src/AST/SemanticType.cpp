@@ -8,25 +8,32 @@ SemanticType::Layer::Layer() {
     _struct = nullptr;
 }
 SemanticType::Layer::Layer(int _type) : Layer() { type = _type; }
-SemanticType::Layer::Layer(string s, ASTCrate *root) : Layer() {
+int SemanticType::Layer::generate(string s, ASTCrate *root, Layer &res) {
+    res = Layer();
     if (root->_structs.find(s) != root->_structs.end()) {
-        type = STRUCT;
-        _struct = root->_structs.find(s)->second;
+        res.type = STRUCT;
+        res._struct = root->_structs.find(s)->second;
     } else {
         if (s == "bool") {
-            type = BOOL;
+            res.type = BOOL;
         } else if (s == "Vec") {
-            type = VEC;
+            res.type = VEC;
         } else if (s == "Box") {
-            type = BOX;
+            res.type = BOX;
         } else if (s == "") {
-            type = UNIT;
+            res.type = UNIT;
         } else if (getIntType(s) != ERRMARK) {
-            type = getIntType(s);
+            res.type = getIntType(s);
         } else
-            throw MyErr("unknown layer");
+            return 1;
     }
+    return 0;
 }
+SemanticType::Layer::Layer(string s, ASTCrate *root) {
+    if (generate(s, root, *this))
+        throw MyErr("unknown layer");
+}
+void SemanticType::clear() { layers.clear(); }
 bool SemanticType::operator==(const SemanticType &x) const {
     return layers == x.layers;
 }
@@ -59,6 +66,10 @@ int SemanticType::Layer::ifint() const {
 void SemanticType::setBool() {
     layers.clear();
     layers.push_back(Layer(SemanticType::Layer::BOOL));
+}
+void SemanticType::setType(int t) {
+    layers.clear();
+    layers.push_back(Layer(t));
 }
 void SemanticType::setInt() {
     layers.clear();

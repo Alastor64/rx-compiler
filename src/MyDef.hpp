@@ -18,3 +18,8 @@ class Void {
     virtual ~Void() {}
 };
 const vector<Void *> nullvecptr = vector<Void *>(0);
+
+template <typename T, typename U>
+static int mapHave(const map<T, U> &mp, const T &key) {
+    return mp.find(key) != mp.end();
+}

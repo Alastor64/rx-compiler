@@ -1,10 +1,10 @@
 #include "StructDeriveCheck.hpp"
 #include "Crate.hpp"
 #include "Struct.hpp"
-bool StructDeriveCheck(ASTStruct *ast) { return ast->derive.err(); }
-bool StructDeriveCheck(ASTCrate *ast) {
+bool StructMultiDeriveCheck(ASTStruct *ast) { return ast->derive.err(); }
+bool StructMultiDeriveCheck(ASTCrate *ast) {
     for (auto i : ast->structs) {
-        if (StructDeriveCheck(i))
+        if (StructMultiDeriveCheck(i))
             return 1;
     }
     return 0;

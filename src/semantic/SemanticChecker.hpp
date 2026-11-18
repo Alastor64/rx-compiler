@@ -31,12 +31,8 @@ class SemanticChecker {
     // calculate all constvalue(seems only arrytype use it)
     ConstValueErase CVE;
 
-    // replace ASTELiteral with SEMImm
-    //  ConstErase CE;
-
-    // NamePathErase NPE; replace paths that represent constants
-    // or variables with symbol IntUppering IU; ConstValueShrink CVS; TypeShrink
-    // TS;
+    // turn all ASTType into SemanticType
+    TypeShrink TS;
 
     // 1:fail 0:pass
     int SemanticCheck(ASTCrate *ast);

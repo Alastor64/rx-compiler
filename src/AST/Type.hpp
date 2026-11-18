@@ -5,7 +5,7 @@
 #include "SemanticType.hpp"
 class ASTType : public ASTnode {
   public:
-    SemanticType semanticType;
+    // SemanticType semanticType;
     using ASTnode::ASTnode;
     virtual int accept(ASTvisitor *visitor) override;
     virtual int visitChildren(ASTvisitor *) override;

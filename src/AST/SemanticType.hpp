@@ -20,11 +20,15 @@ class SemanticType {
             U32,
             ISIZE,
             USIZE,
+            ARRAY,
         };
+        // the size of muts is the number of &
+        // the value of muts is whether there's a mut in related &
         vector<int> muts; // head:inner tail:outter
         ASTStruct *_struct;
         int type;
-        int len; // 0 not array ; >0 array
+        int len; // type!=ARRAY,len=0 type=ARRAY,len>0
+        static int generate(string, ASTCrate *, Layer &);
         Layer(string, ASTCrate *);
         Layer();
         Layer(int);
@@ -46,9 +50,11 @@ class SemanticType {
     };
     void setBool();
     void setInt();
+    void setType(int t);
     void setType(string, ASTCrate *);
     Layer &outter();
     const Layer &outter() const;
+    void clear();
     vector<Layer> layers; // head:inner tail:outter
     bool operator==(const SemanticType &) const;
     bool operator!=(const SemanticType &) const;

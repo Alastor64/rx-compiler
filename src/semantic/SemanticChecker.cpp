@@ -8,7 +8,8 @@ int SemanticChecker::SemanticCheck(ASTCrate *ast) {
     IS.reset();
     SEATAC.reset();
     CVS.reset();
-    return StructDeriveCheck(ast) || IS.visit(ast) || NC.visit(ast) ||
+    TS.reset();
+    return StructMultiDeriveCheck(ast) || IS.visit(ast) || NC.visit(ast) ||
            MS.visit(ast) || SEATAC.visit(ast) || LS.visit(ast) ||
-           CVS.visit(ast);
+           CVS.visit(ast) || CVE.visit(ast) || TS.visit(ast);
 }
