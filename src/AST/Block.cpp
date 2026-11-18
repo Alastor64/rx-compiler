@@ -16,6 +16,7 @@ int ASTBlock::accept(ASTvisitor *visitor) { return visitor->visitBlock(this); }
 
 ASTLet::ASTLet(Span p) : ASTnode(p) {
     if_mut = 0;
+    undef = 0;
     type = nullptr;
     expr = nullptr;
 }
@@ -125,7 +126,8 @@ any MyParserVisitor::visitLetStatement(RxParser::LetStatementContext *ctx) {
     res->id = tmp.first;
     if (ctx->COLON()) {
         res->type = ASTtool::unpack<ASTType>(ctx->typeRef()->accept(this));
-    }
+    } else
+        res->undef = 1;
     res->expr = ASTtool::unpack<ASTExpr>(ctx->expression()->accept(this));
     return ASTtool::pack(res);
 }

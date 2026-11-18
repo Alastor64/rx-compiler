@@ -9,6 +9,7 @@ class ASTLet : public ASTnode {
     virtual ~ASTLet();
     string id;
     ASTType *type;
+    bool undef;
     bool if_mut;
     ASTExpr *expr;
     virtual int accept(ASTvisitor *visitor) override;

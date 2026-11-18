@@ -58,4 +58,5 @@ class SemanticType {
     vector<Layer> layers; // head:inner tail:outter
     bool operator==(const SemanticType &) const;
     bool operator!=(const SemanticType &) const;
+    static const SemanticType &undef();
 };

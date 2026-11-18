@@ -79,3 +79,11 @@ void SemanticType::setType(string s, ASTCrate *root) {
     layers.clear();
     layers.push_back(Layer(s, root));
 }
+const SemanticType &SemanticType::undef() {
+    static const SemanticType tmp = [] {
+        SemanticType value;
+        value.setType(SemanticType::Layer::UNDEF);
+        return value;
+    }();
+    return tmp;
+}

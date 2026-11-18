@@ -22,6 +22,8 @@ int TypeShrink::shrink(ASTType *&node, SemanticType &res) {
         return 1;
     res.clear();
     swap(res, result);
+    delete node;
+    node = nullptr;
     return 0;
 }
 int TypeShrink::visitTUnit(ASTTUnit *node) {
@@ -64,10 +66,11 @@ int TypeShrink::visitParam(ASTParam *node) {
     return node->visitChildren(this);
 }
 int TypeShrink::visitLet(ASTLet *node) {
-    if (node->type) {
-        if (shrink(node->type, node->semanticType))
+    if (!node->undef) {
+        if (node->type && shrink(node->type, node->semanticType))
             return 1;
     } else {
+        node->undef = 0;
         node->semanticType.setType(SemanticType::Layer::UNDEF);
     }
     return node->visitChildren(this);
