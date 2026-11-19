@@ -32,6 +32,10 @@ ASTFuncDef::~ASTFuncDef() {
         delete i;
         i = nullptr;
     }
+    for (auto &i : _params) {
+        delete i.second;
+        i.second = nullptr;
+    }
 }
 any MyParserVisitor::visitFunctionDefinition(
     RxParser::FunctionDefinitionContext *ctx) {
@@ -69,5 +73,6 @@ int ASTFuncDef::visitChildren(ASTvisitor *visitor) {
     res |= ChildrenTool::visitList(params, visitor);
     res |= ChildrenTool::visitChild(ret, visitor);
     res |= ChildrenTool::visitChild(block, visitor);
+    res |= ChildrenTool::visitMap(_params, visitor);
     return res;
 }

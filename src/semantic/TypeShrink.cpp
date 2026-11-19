@@ -8,6 +8,7 @@
 #include "SemanticType.hpp"
 #include "Struct.hpp"
 #include "Type.hpp"
+#include "myErr.hpp"
 void TypeShrink::reset() {
     root = nullptr;
     result.clear();
@@ -17,6 +18,8 @@ int TypeShrink::visitCrate(ASTCrate *node) {
     return node->visitChildren(this);
 }
 int TypeShrink::shrink(ASTType *&node, SemanticType &res) {
+    if (!node)
+        return 0;
     result.clear();
     if (node->accept(this))
         return 1;
@@ -28,7 +31,7 @@ int TypeShrink::shrink(ASTType *&node, SemanticType &res) {
 }
 int TypeShrink::visitTUnit(ASTTUnit *node) {
     if (!result.layers.empty())
-        throw "Unit not innest";
+        throw MyErr("Unit not innest");
     result.setType(SemanticType::Layer::UNIT);
     return 0;
 }
@@ -71,7 +74,7 @@ int TypeShrink::visitLet(ASTLet *node) {
             return 1;
     } else {
         node->undef = 0;
-        node->semanticType.setType(SemanticType::Layer::UNDEF);
+        node->semanticType = SemanticType::undef();
     }
     return node->visitChildren(this);
 }

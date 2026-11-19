@@ -1,6 +1,8 @@
 #include "NameCollect.hpp"
 #include "Crate.hpp"
+#include "FuncDef.hpp"
 #include "Impl.hpp"
+#include "MyDef.hpp"
 #include "SemanticTool.hpp"
 #include "Struct.hpp"
 typename NameCollect::MP NameCollect::tmp;
@@ -40,6 +42,14 @@ int NameCollect::visitStruct(ASTStruct *node) {
         return 1;
     tmp.clear();
     return 0;
+}
+int NameCollect::visitFuncDef(ASTFuncDef *node) {
+    tmp.clear();
+    if (collect(tmp, node->params, node->_params))
+        return 1;
+    if (mapHave(node->_params, string("self")))
+        return 1;
+    tmp.clear();
 }
 int NameCollect::visitImpl(ASTImpl *node) {
     if (root->_structs.find(node->id) == root->_structs.end())

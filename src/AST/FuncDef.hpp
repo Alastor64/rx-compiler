@@ -4,11 +4,13 @@
 #include "Param.hpp"
 #include "SelfParam.hpp"
 #include "Type.hpp"
+#include <vector>
 class ASTFuncDef : public ASTnode {
   public:
     std::string name;
     ASTSelfParam *self;
     vector<ASTParam *> params;
+    map<string, ASTParam *> _params;
     ASTType *ret;
     ASTBlock *block;
     ASTFuncDef(Span p);

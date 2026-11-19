@@ -27,7 +27,7 @@ class SemanticType {
         vector<int> muts; // head:inner tail:outter
         ASTStruct *_struct;
         int type;
-        int len; // type!=ARRAY,len=0 type=ARRAY,len>0
+        unsigned int len; // type!=ARRAY,len=0 type=ARRAY,len>0
         static int generate(string, ASTCrate *, Layer &);
         Layer(string, ASTCrate *);
         Layer();

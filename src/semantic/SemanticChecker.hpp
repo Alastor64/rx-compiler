@@ -7,6 +7,7 @@
 #include "MethodSheink.hpp"
 #include "NameCollect.hpp"
 #include "SelfEraseAndTypeArgsCheck.hpp"
+#include "TypeCheckAndInfer.hpp"
 #include "TypeShrink.hpp"
 class SemanticChecker {
   public:
@@ -33,6 +34,9 @@ class SemanticChecker {
 
     // turn all ASTType into SemanticType
     TypeShrink TS;
+
+    // type check and infer
+    TypeCheckAndInfer TCAI;
 
     // 1:fail 0:pass
     int SemanticCheck(ASTCrate *ast);

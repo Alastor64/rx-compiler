@@ -1,6 +1,7 @@
 #pragma once
 #include "ASTvisitor.hpp"
 #include "Crate.hpp"
+#include "FuncDef.hpp"
 #include "Impl.hpp"
 #include "MyDef.hpp"
 #include "Struct.hpp"
@@ -52,4 +53,5 @@ class NameCollect : public ASTvisitor {
     int visitCrate(ASTCrate *) override;
     int visitStruct(ASTStruct *) override;
     int visitImpl(ASTImpl *) override;
+    int visitFuncDef(ASTFuncDef *) override;
 };
