@@ -29,8 +29,6 @@ any MyParserVisitor::visitConstantItem(RxParser::ConstantItemContext *ctx) {
 }
 
 int ASTConstant::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(type, visitor);
-    res |= ChildrenTool::visitChild(value, visitor);
-    return res;
+    return ChildrenTool::visitChild(type, visitor) ||
+           ChildrenTool::visitChild(value, visitor);
 }

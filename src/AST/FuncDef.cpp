@@ -68,11 +68,9 @@ any MyParserVisitor::visitFunctionParameters(
 }
 
 int ASTFuncDef::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(self, visitor);
-    res |= ChildrenTool::visitList(params, visitor);
-    res |= ChildrenTool::visitChild(ret, visitor);
-    res |= ChildrenTool::visitChild(block, visitor);
-    res |= ChildrenTool::visitMap(_params, visitor);
-    return res;
+    return ChildrenTool::visitChild(self, visitor) ||
+           ChildrenTool::visitList(params, visitor) ||
+           ChildrenTool::visitChild(ret, visitor) ||
+           ChildrenTool::visitChild(block, visitor) ||
+           ChildrenTool::visitMap(_params, visitor);
 }

@@ -44,9 +44,7 @@ any MyParserVisitor::visitAssociatedItem(RxParser::AssociatedItemContext *ctx) {
 }
 
 int ASTImpl::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(type, visitor);
-    res |= ChildrenTool::visitList(consts, visitor);
-    res |= ChildrenTool::visitList(funcs, visitor);
-    return res;
+    return ChildrenTool::visitChild(type, visitor) ||
+           ChildrenTool::visitList(consts, visitor) ||
+           ChildrenTool::visitList(funcs, visitor);
 }

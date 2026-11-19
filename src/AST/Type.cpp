@@ -77,10 +77,8 @@ int ASTTRef::visitChildren(ASTvisitor *visitor) {
 }
 
 int ASTTArray::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(elem, visitor);
-    res |= ChildrenTool::visitChild(len, visitor);
-    return res;
+    return ChildrenTool::visitChild(elem, visitor) ||
+           ChildrenTool::visitChild(len, visitor);
 }
 
 int ASTTUnit::visitChildren(ASTvisitor *) { return 0; }

@@ -50,6 +50,7 @@ int NameCollect::visitFuncDef(ASTFuncDef *node) {
     if (mapHave(node->_params, string("self")))
         return 1;
     tmp.clear();
+    return 0;
 }
 int NameCollect::visitImpl(ASTImpl *node) {
     if (root->_structs.find(node->id) == root->_structs.end())

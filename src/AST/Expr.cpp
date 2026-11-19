@@ -256,26 +256,23 @@ int ASTExpr::visitChildren(ASTvisitor *) { return 0; }
 int ASTEUnit::visitChildren(ASTvisitor *) { return 0; }
 
 int ASTEIf::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(condition, visitor);
-    res |= ChildrenTool::visitChild(truestat, visitor);
-    res |= ChildrenTool::visitChild(falsestat, visitor);
-    return res;
+    return ChildrenTool::visitChild(condition, visitor) ||
+           ChildrenTool::visitChild(truestat, visitor) ||
+           ChildrenTool::visitChild(falsestat, visitor);
 }
 
 int ASTEWhile::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(condition, visitor);
-    res |= ChildrenTool::visitChild(block, visitor);
-    return res;
+    return ChildrenTool::visitChild(condition, visitor) ||
+           ChildrenTool::visitChild(block, visitor);
 }
 
 int ASTEStruct::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(path, visitor);
+    if (ChildrenTool::visitChild(path, visitor))
+        return 1;
     for (const auto &field : member)
-        res |= ChildrenTool::visitChild(field.value, visitor);
-    return res;
+        if (ChildrenTool::visitChild(field.value, visitor))
+            return 1;
+    return 0;
 }
 
 int ASTELiteral::visitChildren(ASTvisitor *) { return 0; }
@@ -285,10 +282,8 @@ int ASTEArray::visitChildren(ASTvisitor *visitor) {
 }
 
 int ASTERepeat::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(elem, visitor);
-    res |= ChildrenTool::visitChild(len, visitor);
-    return res;
+    return ChildrenTool::visitChild(elem, visitor) ||
+           ChildrenTool::visitChild(len, visitor);
 }
 
 int ASTEBranch::visitChildren(ASTvisitor *visitor) {
@@ -298,10 +293,8 @@ int ASTEBranch::visitChildren(ASTvisitor *visitor) {
 int ASTEOperator::visitChildren(ASTvisitor *) { return 0; }
 
 int ASTOBinary::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(left, visitor);
-    res |= ChildrenTool::visitChild(right, visitor);
-    return res;
+    return ChildrenTool::visitChild(left, visitor) ||
+           ChildrenTool::visitChild(right, visitor);
 }
 
 int ASTOUnary::visitChildren(ASTvisitor *visitor) {
@@ -309,17 +302,13 @@ int ASTOUnary::visitChildren(ASTvisitor *visitor) {
 }
 
 int ASTOCall::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(func, visitor);
-    res |= ChildrenTool::visitList(args, visitor);
-    return res;
+    return ChildrenTool::visitChild(func, visitor) ||
+           ChildrenTool::visitList(args, visitor);
 }
 
 int ASTOIndex::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(array, visitor);
-    res |= ChildrenTool::visitChild(index, visitor);
-    return res;
+    return ChildrenTool::visitChild(array, visitor) ||
+           ChildrenTool::visitChild(index, visitor);
 }
 
 int ASTOField::visitChildren(ASTvisitor *visitor) {
@@ -327,30 +316,22 @@ int ASTOField::visitChildren(ASTvisitor *visitor) {
 }
 
 int ASTOMethod::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(owner, visitor);
-    res |= ChildrenTool::visitChild(func, visitor);
-    res |= ChildrenTool::visitList(args, visitor);
-    return res;
+    return ChildrenTool::visitChild(owner, visitor) ||
+           ChildrenTool::visitChild(func, visitor) ||
+           ChildrenTool::visitList(args, visitor);
 }
 
 int ASTOAssign::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(place, visitor);
-    res |= ChildrenTool::visitChild(value, visitor);
-    return res;
+    return ChildrenTool::visitChild(place, visitor) ||
+           ChildrenTool::visitChild(value, visitor);
 }
 
 int ASTOCast::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(value, visitor);
-    res |= ChildrenTool::visitChild(type, visitor);
-    return res;
+    return ChildrenTool::visitChild(value, visitor) ||
+           ChildrenTool::visitChild(type, visitor);
 }
 
 int ASTOShift::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(base, visitor);
-    res |= ChildrenTool::visitChild(expo, visitor);
-    return res;
+    return ChildrenTool::visitChild(base, visitor) ||
+           ChildrenTool::visitChild(expo, visitor);
 }

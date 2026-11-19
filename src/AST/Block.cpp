@@ -133,22 +133,16 @@ any MyParserVisitor::visitLetStatement(RxParser::LetStatementContext *ctx) {
 }
 
 int ASTLet::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(type, visitor);
-    res |= ChildrenTool::visitChild(expr, visitor);
-    return res;
+    return ChildrenTool::visitChild(type, visitor) ||
+           ChildrenTool::visitChild(expr, visitor);
 }
 
 int ASTStatement::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitChild(expr, visitor);
-    res |= ChildrenTool::visitChild(let, visitor);
-    return res;
+    return ChildrenTool::visitChild(expr, visitor) ||
+           ChildrenTool::visitChild(let, visitor);
 }
 
 int ASTBlock::visitChildren(ASTvisitor *visitor) {
-    int res = 0;
-    res |= ChildrenTool::visitList(statement, visitor);
-    res |= ChildrenTool::visitChild(tail, visitor);
-    return res;
+    return ChildrenTool::visitList(statement, visitor) ||
+           ChildrenTool::visitChild(tail, visitor);
 }
