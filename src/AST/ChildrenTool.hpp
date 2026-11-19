@@ -12,19 +12,17 @@ class ChildrenTool {
 
     template <typename T>
     static int visitList(const vector<T *> &nodes, ASTvisitor *visitor) {
-        int res = 0;
         for (auto *node : nodes)
-            if (node)
-                res |= visitChild(node, visitor);
-        return res;
+            if (auto ret = visitChild(node, visitor))
+                return ret;
+        return 0;
     }
 
     template <typename T>
     static int visitMap(const map<string, T *> &nodes, ASTvisitor *visitor) {
-        int res = 0;
         for (const auto &[_, node] : nodes)
-            if (node)
-                res |= visitChild(node, visitor);
-        return res;
+            if (auto ret = visitChild(node, visitor))
+                return ret;
+        return 0;
     }
 };
