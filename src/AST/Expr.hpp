@@ -59,18 +59,19 @@ class ASTEWhile : public ASTExpr {
     virtual int accept(ASTvisitor *visitor) override;
     virtual int visitChildren(ASTvisitor *visitor) override;
 };
+class ASTESField : public ASTnode {
+  public:
+    string id;
+    ASTExpr *value;
+    ASTESField(Span, const string &, ASTExpr *);
+    virtual ~ASTESField() override;
+    virtual int accept(ASTvisitor *visitor) override;
+    virtual int visitChildren(ASTvisitor *visitor) override;
+};
 class ASTEStruct : public ASTExpr {
   public:
-    class Field {
-      public:
-        Span pos;
-        string id;
-        ASTExpr *value;
-        Field(Span, const string &, ASTExpr *);
-        void del();
-    };
     ASTEPath *path;
-    vector<Field> member;
+    vector<ASTESField *> member;
     ASTEStruct(Span);
     virtual ~ASTEStruct();
     virtual int accept(ASTvisitor *visitor) override;

@@ -14,6 +14,9 @@ int ASTEIf::accept(ASTvisitor *visitor) { return visitor->visitEIf(this); }
 int ASTEWhile::accept(ASTvisitor *visitor) {
     return visitor->visitEWhile(this);
 }
+int ASTESField::accept(ASTvisitor *visitor) {
+    return visitor->visitESField(this);
+}
 int ASTEStruct::accept(ASTvisitor *visitor) {
     return visitor->visitEStruct(this);
 }
@@ -157,15 +160,15 @@ ASTEStruct::~ASTEStruct() {
     delete path;
     path = nullptr;
     for (auto &i : member) {
-        i.del();
+        delete i;
+        i = nullptr;
     }
 }
-ASTEStruct::Field::Field(Span p, const string &i, ASTExpr *v) {
-    pos = p;
+ASTESField::ASTESField(Span p, const string &i, ASTExpr *v) : ASTnode(p) {
     id = i;
     value = v;
 }
-void ASTEStruct::Field::del() {
+ASTESField::~ASTESField() {
     delete value;
     value = nullptr;
 }
@@ -266,13 +269,13 @@ int ASTEWhile::visitChildren(ASTvisitor *visitor) {
            ChildrenTool::visitChild(block, visitor);
 }
 
+int ASTESField::visitChildren(ASTvisitor *visitor) {
+    return ChildrenTool::visitChild(value, visitor);
+}
+
 int ASTEStruct::visitChildren(ASTvisitor *visitor) {
-    if (ChildrenTool::visitChild(path, visitor))
-        return 1;
-    for (const auto &field : member)
-        if (ChildrenTool::visitChild(field.value, visitor))
-            return 1;
-    return 0;
+    return ChildrenTool::visitChild(path, visitor) ||
+           ChildrenTool::visitList(member, visitor);
 }
 
 int ASTELiteral::visitChildren(ASTvisitor *) { return 0; }

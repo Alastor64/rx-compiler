@@ -37,6 +37,7 @@ class ASTvisitor {
     virtual int visitEIf(ASTEIf *);
     virtual int visitEWhile(ASTEWhile *);
     virtual int visitEStruct(ASTEStruct *);
+    virtual int visitESField(ASTESField *);
     virtual int visitELiteral(ASTELiteral *);
     virtual int visitEArray(ASTEArray *);
     virtual int visitERepeat(ASTERepeat *);

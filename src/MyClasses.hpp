@@ -55,6 +55,7 @@ class ASTEPath;
 class ASTEIf;
 class ASTEWhile;
 class ASTEStruct;
+class ASTESField;
 class ASTELiteral;
 class ASTEArray;
 class ASTERepeat;

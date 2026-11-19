@@ -46,6 +46,7 @@ int ASTvisitor::visitEPath(ASTEPath *node) { return visitChildren(node); }
 int ASTvisitor::visitEIf(ASTEIf *node) { return visitChildren(node); }
 int ASTvisitor::visitEWhile(ASTEWhile *node) { return visitChildren(node); }
 int ASTvisitor::visitEStruct(ASTEStruct *node) { return visitChildren(node); }
+int ASTvisitor::visitESField(ASTESField *node) { return visitChildren(node); }
 int ASTvisitor::visitELiteral(ASTELiteral *node) { return visitChildren(node); }
 int ASTvisitor::visitEArray(ASTEArray *node) { return visitChildren(node); }
 int ASTvisitor::visitERepeat(ASTERepeat *node) { return visitChildren(node); }

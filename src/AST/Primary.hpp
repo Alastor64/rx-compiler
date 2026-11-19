@@ -13,7 +13,7 @@ class BuildPrimary {
             ASTtool::unpack<ASTEPath>(ctx->pathInExpression()->accept(visitor));
         if (ctx->structExprFields()) {
             for (auto i : ctx->structExprFields()->structExprField()) {
-                res->member.push_back(ASTEStruct::Field(
+                res->member.push_back(new ASTESField(
                     Span::getRuleSpan(i), i->identifier()->getText(),
                     ASTtool::unpack<ASTExpr>(
                         i->expression()->accept(visitor))));
